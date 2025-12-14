@@ -45,6 +45,8 @@
   "table-item-avatar": "Avatar",
   "table-item-banner": "Banner",
   "table-item-code": "Code",
+  "table-item-gender": "Gender",
+  "table-item-role": "Role",
   "table-item-amount": "Amount",
   "table-item-minimum-amount": "Minimum Amount",
   "table-item-active": "Active",

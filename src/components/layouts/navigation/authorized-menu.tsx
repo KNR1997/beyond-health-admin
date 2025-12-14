@@ -36,7 +36,7 @@ export default function AuthorizedMenu() {
         />
         <div className="hidden w-[calc(100%-48px)] flex-col items-start space-y-0.5 truncate text-sm ltr:text-left rtl:text-right xl:flex">
           <span className="w-full truncate font-semibold capitalize text-black">
-            {data?.name}
+            {data?.username}
           </span>
           <span className="w-full truncate text-xs capitalize text-gray-400">
             {role ? role.split('_').join(' ') : data?.email}
@@ -70,7 +70,7 @@ export default function AuthorizedMenu() {
                 />
                 <div className="flex w-[calc(100%-40px)] flex-col items-start space-y-0.5 text-sm">
                   <span className="w-full truncate font-semibold capitalize text-black">
-                    {data?.name}
+                    {data?.username}
                   </span>
                   <span className="break-all text-xs text-gray-400">
                     {data?.email}

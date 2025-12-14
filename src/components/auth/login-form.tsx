@@ -54,7 +54,9 @@ const LoginForm = () => {
             setErrorMessage('form:error-credential-wrong');
           }
         },
-        onError: () => {},
+        onError: (error: any) => {
+          setErrorMessage('form:error-credential-wrong');
+        },
       }
     );
   }

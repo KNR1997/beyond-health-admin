@@ -25,6 +25,9 @@ export const Routes = {
   user: {
     ...routesFactory('/users'),
   },
+  patient: {
+    ...routesFactory('/patients'),
+  },
   type: {
     ...routesFactory('/groups'),
   },

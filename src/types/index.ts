@@ -446,17 +446,17 @@ export interface MakeAdminInput {
 
 export interface User {
   id: string;
-  name: string;
-  shops: Shop[];
-  managed_shop: Shop;
-  is_active: boolean;
+  username: string;
+  first_name: string;
+  last_name: string;
   email: string;
+  is_active: boolean;
   created_at: string;
   updated_at: string;
-  profile?: Profile;
-  address: Address[];
-  orders?: OrderPaginator;
-  email_verified: boolean;
+  // profile?: Profile;
+  // address: Address[];
+  // orders?: OrderPaginator;
+  // email_verified: boolean;
 }
 
 export interface Domain {
@@ -517,6 +517,16 @@ export interface Coupon {
   target?: boolean;
   shop_id?: string;
   is_approve?: boolean;
+}
+
+export interface Patient {
+  id: string;
+  gender: string;
+  user: User;
+}
+
+export interface PatientInput {
+  gender: string;
 }
 
 export interface CouponInput {
@@ -1917,6 +1927,11 @@ export interface CouponQueryOptions extends QueryOptions {
   code: string;
   shop_id: string;
 }
+
+export interface PatientQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface StoreNoticeQueryOptions extends QueryOptions {
   notice: string;
   shops: string;
@@ -2015,6 +2030,8 @@ export interface OrderPaginator extends PaginatorInfo<Order> {}
 export interface NotifyLogsPaginator extends PaginatorInfo<NotifyLogs> {}
 
 export interface CouponPaginator extends PaginatorInfo<Coupon> {}
+
+export interface PatientPaginator extends PaginatorInfo<Patient> {}
 
 export interface StoreNoticePaginator extends PaginatorInfo<StoreNotice> {}
 

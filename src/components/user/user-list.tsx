@@ -88,57 +88,65 @@ const UserList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'first_name',
+      key: 'first_name',
       align: alignLeft,
       width: 250,
       ellipsis: true,
-      onHeaderCell: () => onHeaderClick('name'),
+      onHeaderCell: () => onHeaderClick('first_name'),
       render: (
-        name: string,
+        first_name: string,
+        record: User,
         { profile, email }: { profile: any; email: string }
       ) => (
         <div className="flex items-center">
-          <Avatar name={name} src={profile?.avatar?.thumbnail} />
+          <Avatar name={first_name} src={profile?.avatar?.thumbnail} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {name}
+            {first_name} {record?.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
-              {email}
+              {record?.email}
             </span>
           </div>
         </div>
       ),
     },
     {
-      title: t('table:table-item-permissions'),
-      dataIndex: 'permissions',
-      key: 'permissions',
-      align: alignLeft,
-      width: 300,
-      render: (permissions: any) => {
-        return (
-          <div className="flex flex-wrap gap-1.5 whitespace-nowrap">
-            {permissions?.map(
-              ({ name, index }: { name: string; index: number }) => (
-                <span
-                  key={index}
-                  className="rounded bg-gray-200/50 px-2.5 py-1"
-                >
-                  {name}
-                </span>
-              )
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      title: t('table:table-item-available_wallet_points'),
-      dataIndex: ['wallet', 'available_points'],
-      key: 'available_wallet_points',
+      title: t('table:table-item-role'),
+      dataIndex: 'role_name',
+      key: 'role_name',
       align: 'center',
       width: 150,
     },
+    // {
+    //   title: t('table:table-item-permissions'),
+    //   dataIndex: 'permissions',
+    //   key: 'permissions',
+    //   align: alignLeft,
+    //   width: 300,
+    //   render: (permissions: any) => {
+    //     return (
+    //       <div className="flex flex-wrap gap-1.5 whitespace-nowrap">
+    //         {permissions?.map(
+    //           ({ name, index }: { name: string; index: number }) => (
+    //             <span
+    //               key={index}
+    //               className="rounded bg-gray-200/50 px-2.5 py-1"
+    //             >
+    //               {name}
+    //             </span>
+    //           )
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
+    // {
+    //   title: t('table:table-item-available_wallet_points'),
+    //   dataIndex: ['wallet', 'available_points'],
+    //   key: 'available_wallet_points',
+    //   align: 'center',
+    //   width: 150,
+    // },
     {
       title: (
         <TitleWithSort
