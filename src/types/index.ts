@@ -193,7 +193,7 @@ export interface PaginatorInfo<T> {
 }
 
 export interface LoginInput {
-  email: string;
+  login: string;
   password: string;
 }
 
