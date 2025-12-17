@@ -61,24 +61,24 @@ const AdminsList = ({
   });
 
   const columns = [
-    {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-id')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-          }
-          isActive={sortingObj.column === 'id'}
-        />
-      ),
-      className: 'cursor-pointer',
-      dataIndex: 'id',
-      key: 'id',
-      align: alignLeft,
-      width: 150,
-      onHeaderCell: () => onHeaderClick('id'),
-      render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    },
+    // {
+    //   title: (
+    //     <TitleWithSort
+    //       title={t('table:table-item-id')}
+    //       ascending={
+    //         sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
+    //       }
+    //       isActive={sortingObj.column === 'id'}
+    //     />
+    //   ),
+    //   className: 'cursor-pointer',
+    //   dataIndex: 'id',
+    //   key: 'id',
+    //   align: alignLeft,
+    //   width: 150,
+    //   onHeaderCell: () => onHeaderClick('id'),
+    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
+    // },
     {
       title: (
         <TitleWithSort
@@ -111,36 +111,36 @@ const AdminsList = ({
         </div>
       ),
     },
-    {
-      title: t('table:table-item-permissions'),
-      dataIndex: 'permissions',
-      key: 'permissions',
-      align: alignLeft,
-      width: 300,
-      render: (permissions: any) => {
-        return (
-          <div className="flex flex-wrap gap-1.5 whitespace-nowrap">
-            {permissions?.map(
-              ({ name, index }: { name: string; index: number }) => (
-                <span
-                  key={index}
-                  className="rounded bg-gray-200/50 px-2.5 py-1"
-                >
-                  {name}
-                </span>
-              )
-            )}
-          </div>
-        );
-      },
-    },
-    {
-      title: t('table:table-item-available_wallet_points'),
-      dataIndex: ['wallet', 'available_points'],
-      key: 'available_wallet_points',
-      align: 'center',
-      width: 150,
-    },
+    // {
+    //   title: t('table:table-item-permissions'),
+    //   dataIndex: 'permissions',
+    //   key: 'permissions',
+    //   align: alignLeft,
+    //   width: 300,
+    //   render: (permissions: any) => {
+    //     return (
+    //       <div className="flex flex-wrap gap-1.5 whitespace-nowrap">
+    //         {permissions?.map(
+    //           ({ name, index }: { name: string; index: number }) => (
+    //             <span
+    //               key={index}
+    //               className="rounded bg-gray-200/50 px-2.5 py-1"
+    //             >
+    //               {name}
+    //             </span>
+    //           )
+    //         )}
+    //       </div>
+    //     );
+    //   },
+    // },
+    // {
+    //   title: t('table:table-item-available_wallet_points'),
+    //   dataIndex: ['wallet', 'available_points'],
+    //   key: 'available_wallet_points',
+    //   align: 'center',
+    //   width: 150,
+    // },
     {
       title: (
         <TitleWithSort
@@ -184,7 +184,7 @@ const AdminsList = ({
                 id={id}
                 userStatus={true}
                 isUserActive={is_active}
-                showAddWalletPoints={true}
+                // showAddWalletPoints={true}
                 showMakeAdminButton={true}
               />
             )}
