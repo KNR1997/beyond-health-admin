@@ -18,6 +18,7 @@ import TitleWithSort from '@/components/ui/title-with-sort';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import Avatar from '@/components/common/avatar';
 import Badge from '@/components/ui/badge/badge';
+import RoleColor from './role-color';
 
 type IProps = {
   customers: User[] | undefined;
@@ -115,7 +116,9 @@ const UserList = ({
       dataIndex: 'role_name',
       key: 'role_name',
       align: 'center',
-      width: 150,
+      render: (role_name: string) => (
+        <Badge text={t(role_name)} color={RoleColor(role_name)} />
+      ),
     },
     // {
     //   title: t('table:table-item-permissions'),
@@ -190,7 +193,7 @@ const UserList = ({
                 id={id}
                 userStatus={true}
                 isUserActive={is_active}
-                showAddWalletPoints={true}
+                // showAddWalletPoints={true}
                 showMakeAdminButton={true}
               />
             )}
