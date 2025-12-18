@@ -1,26 +1,21 @@
-import { useTranslation } from 'next-i18next';
 import Layout from '@/components/layouts/admin';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { adminOnly } from '@/utils/auth-utils';
 import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
+import PatientPageHeader from '@/components/patient/patient-page-header';
 
-export default function CreatePatientsPage() {
-  const { t } = useTranslation();
+export default function CreatePatientGeneralInfoPage() {
   return (
     <>
-      <div className="flex border-b border-dashed border-gray-300 pb-5 md:pb-7">
-        <h1 className="text-lg font-semibold text-heading">
-          {t('form:button-label-add-patient')}
-        </h1>
-      </div>
+      <PatientPageHeader pageTitle="form:button-label-add-patient" />
       <CreateOrUpdatePatientForm />
     </>
   );
 }
-CreatePatientsPage.authenticate = {
+CreatePatientGeneralInfoPage.authenticate = {
   permissions: adminOnly,
 };
-CreatePatientsPage.Layout = Layout;
+CreatePatientGeneralInfoPage.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
