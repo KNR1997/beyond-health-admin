@@ -73,6 +73,19 @@ export const siteSettings = {
         ],
       },
 
+      content: {
+        href: '',
+        label: 'text-clinic-details',
+        icon: 'SettingsIcon',
+        childMenu: [
+          {
+            href: Routes.dentalProblem.list,
+            label: 'text-all-dental-problems',
+            icon: 'DentalDrillIcon',
+          },
+        ],
+      },
+
       // analytics: {
       //   href: '',
       //   label: 'Analytics',
@@ -507,75 +520,75 @@ export const siteSettings = {
       //   ],
       // },
 
-      // settings: {
-      //   href: '',
-      //   label: 'text-site-management',
-      //   icon: 'SettingsIcon',
-      //   childMenu: [
-      //     {
-      //       href: Routes.settings,
-      //       label: 'sidebar-nav-item-settings',
-      //       icon: 'SettingsIcon',
-      //       childMenu: [
-      //         {
-      //           href: Routes.settings,
-      //           label: 'text-general-settings',
-      //           icon: 'SettingsIcon',
-      //         },
-      //         {
-      //           href: Routes.paymentSettings,
-      //           label: 'text-payment-settings',
-      //           icon: 'RefundsIcon',
-      //         },
-      //         {
-      //           href: Routes.seoSettings,
-      //           label: 'text-seo-settings',
-      //           icon: 'StoreNoticeIcon',
-      //         },
-      //         {
-      //           href: Routes.eventSettings,
-      //           label: 'text-events-settings',
-      //           icon: 'RefundsIcon',
-      //         },
-      //         {
-      //           href: Routes.shopSettings,
-      //           label: 'text-shop-settings',
-      //           icon: 'RefundsIcon',
-      //         },
-      //         {
-      //           href: Routes?.maintenance,
-      //           label: 'text-maintenance-settings',
-      //           icon: 'InformationIcon',
-      //         },
-      //         {
-      //           href: Routes?.companyInformation,
-      //           label: 'text-company-settings',
-      //           icon: 'InformationIcon',
-      //         },
-      //         {
-      //           href: Routes?.promotionPopup,
-      //           label: 'text-popup-settings',
-      //           icon: 'InformationIcon',
-      //         },
-      //         // {
-      //         //   href: '',
-      //         //   label: 'Social settings',
-      //         //   icon: 'RefundsIcon',
-      //         // },
-      //       ],
-      //     },
-      //     // {
-      //     //   href: '',
-      //     //   label: 'Company Information',
-      //     //   icon: 'InformationIcon',
-      //     // },
-      //     // {
-      //     //   href: '',
-      //     //   label: 'Maintenance',
-      //     //   icon: 'MaintenanceIcon',
-      //     // },
-      //   ],
-      // },
+      settings: {
+        href: '',
+        label: 'text-site-management',
+        icon: 'SettingsIcon',
+        childMenu: [
+          {
+            href: Routes.settings,
+            label: 'sidebar-nav-item-settings',
+            icon: 'SettingsIcon',
+            childMenu: [
+              {
+                href: Routes.settings,
+                label: 'text-general-settings',
+                icon: 'SettingsIcon',
+              },
+              {
+                href: Routes.paymentSettings,
+                label: 'text-payment-settings',
+                icon: 'RefundsIcon',
+              },
+              {
+                href: Routes.seoSettings,
+                label: 'text-seo-settings',
+                icon: 'StoreNoticeIcon',
+              },
+              {
+                href: Routes.eventSettings,
+                label: 'text-events-settings',
+                icon: 'RefundsIcon',
+              },
+              {
+                href: Routes.shopSettings,
+                label: 'text-shop-settings',
+                icon: 'RefundsIcon',
+              },
+              {
+                href: Routes?.maintenance,
+                label: 'text-maintenance-settings',
+                icon: 'InformationIcon',
+              },
+              {
+                href: Routes?.companyInformation,
+                label: 'text-company-settings',
+                icon: 'InformationIcon',
+              },
+              {
+                href: Routes?.promotionPopup,
+                label: 'text-popup-settings',
+                icon: 'InformationIcon',
+              },
+              // {
+              //   href: '',
+              //   label: 'Social settings',
+              //   icon: 'RefundsIcon',
+              // },
+            ],
+          },
+          // {
+          //   href: '',
+          //   label: 'Company Information',
+          //   icon: 'InformationIcon',
+          // },
+          // {
+          //   href: '',
+          //   label: 'Maintenance',
+          //   icon: 'MaintenanceIcon',
+          // },
+        ],
+      },
 
       // license: {
       //   href: '',
