@@ -1,6 +1,6 @@
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
-import { Patient, SortOrder, User } from '@/types';
+import { DentalProblem, SortOrder } from '@/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
@@ -13,22 +13,20 @@ import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import { useIsRTL } from '@/utils/locals';
-import Avatar from '@/components/common/avatar';
-import Badge from '@/components/ui/badge/badge';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
 type IProps = {
-  patients: Patient[] | undefined;
+  dentalProblems: DentalProblem[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
   onOrder: (current: string) => void;
 };
-const PatientList = ({
-  patients,
+const DentalProblemList = ({
+  dentalProblems,
   paginatorInfo,
   onPagination,
   onSort,
@@ -63,93 +61,54 @@ const PatientList = ({
   });
 
   const columns = [
-    // {
-    //   title: (
-    //     <TitleWithSort
-    //       title={t('table:table-item-id')}
-    //       ascending={
-    //         sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-    //       }
-    //       isActive={sortingObj.column === 'id'}
-    //     />
-    //   ),
-    //   className: 'cursor-pointer',
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   align: alignLeft,
-    //   width: 120,
-    //   onHeaderCell: () => onHeaderClick('id'),
-    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    // },
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-title')}
+          title={t('table:table-item-name')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
+            sortingObj?.sort === SortOrder?.Asc &&
+            sortingObj?.column === 'faq_title'
           }
-          isActive={sortingObj.column === 'id'}
+          isActive={sortingObj?.column === 'faq_title'}
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'user',
-      key: 'user',
+      dataIndex: 'name',
+      key: 'name',
       align: alignLeft,
-      width: 250,
       ellipsis: true,
-      render: (user: User) => (
-        <div className="flex items-center">
-          <Avatar name={user?.first_name} />
-          <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {user?.first_name} {user?.last_name}
-            <span className="text-[13px] font-normal text-gray-500/80">
-              {user?.email}
-            </span>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: t('table:table-item-gender'),
-      className: 'cursor-pointer',
-      dataIndex: 'gender',
-      key: 'gender',
-      align: 'center',
-      width: 250,
-      onHeaderCell: () => onHeaderClick('gender'),
-      render: (gender: string) => (
-        <span className="whitespace-nowrap">{gender}</span>
+      width: 200,
+      onHeaderCell: () => onHeaderClick('name'),
+      render: (name: string) => (
+        <span className="whitespace-nowrap">{name}</span>
       ),
     },
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-status')}
+          title={t('table:table-item-description')}
           ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
+            sortingObj?.sort === SortOrder?.Asc &&
+            sortingObj?.column === 'faq_description'
           }
-          isActive={sortingObj.column === 'is_active'}
+          isActive={sortingObj?.column === 'faq_description'}
         />
       ),
-      width: 150,
       className: 'cursor-pointer',
-      dataIndex: 'is_active',
-      key: 'is_active',
-      align: 'center',
-      onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean, record: Patient) => (
-        <Badge
-          textKey={
-            record?.user.is_active
-              ? 'common:text-active'
-              : 'common:text-inactive'
-          }
-          color={
-            record?.user.is_active
-              ? 'bg-accent/10 !text-accent'
-              : 'bg-status-failed/10 text-status-failed'
-          }
+      dataIndex: 'description',
+      key: 'description',
+      align: alignLeft,
+      width: 300,
+      ellipsis: true,
+      onHeaderCell: () => onHeaderClick('description'),
+      render: (description: string) => (
+        <span
+          dangerouslySetInnerHTML={{
+            __html:
+              description?.length < 140
+                ? description
+                : description?.substring(0, 140) + '...',
+          }}
         />
       ),
     },
@@ -159,13 +118,13 @@ const PatientList = ({
       key: 'actions',
       align: 'right',
       width: 260,
-      render: (id: string, record: Patient) => (
+      render: (id: string, record: DentalProblem) => (
         <LanguageSwitcher
           slug={id}
           record={record}
           deleteModalView="DELETE_COUPON"
           deleteBySlug={record.id}
-          routes={Routes?.patient}
+          routes={Routes?.dentalProblem}
         />
       ),
     },
@@ -186,7 +145,7 @@ const PatientList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={patients}
+          data={dentalProblems}
           rowKey="id"
           scroll={{ x: 900 }}
         />
@@ -206,4 +165,4 @@ const PatientList = ({
   );
 };
 
-export default PatientList;
+export default DentalProblemList;

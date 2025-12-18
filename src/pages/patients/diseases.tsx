@@ -1,21 +1,21 @@
 import Layout from '@/components/layouts/admin';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { adminOnly } from '@/utils/auth-utils';
-import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
 import PatientPageHeader from '@/components/patient/patient-page-header';
+import CreateOrUpdatePatientDiseaseForm from '@/components/patient/patient-disease-form';
 
-export default function CreatePatientGeneralInfoPage() {
+export default function CreatePatientDiseasePage() {
   return (
     <>
       <PatientPageHeader pageTitle="form:button-label-add-patient" />
-      <CreateOrUpdatePatientForm />
+      <CreateOrUpdatePatientDiseaseForm />
     </>
   );
 }
-CreatePatientGeneralInfoPage.authenticate = {
+CreatePatientDiseasePage.authenticate = {
   permissions: adminOnly,
 };
-CreatePatientGeneralInfoPage.Layout = Layout;
+CreatePatientDiseasePage.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({
   props: {

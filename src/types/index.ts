@@ -529,6 +529,17 @@ export interface PatientInput {
   gender: string;
 }
 
+export interface DentalProblem {
+  id: string;
+  gender: string;
+  user: User;
+}
+
+export interface DentalProblemInput {
+  name: string;
+  description: string;
+}
+
 export interface CouponInput {
   code: string;
   type: CouponType;
@@ -1932,6 +1943,10 @@ export interface PatientQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface DentalProblemQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface StoreNoticeQueryOptions extends QueryOptions {
   notice: string;
   shops: string;
@@ -2032,6 +2047,8 @@ export interface NotifyLogsPaginator extends PaginatorInfo<NotifyLogs> {}
 export interface CouponPaginator extends PaginatorInfo<Coupon> {}
 
 export interface PatientPaginator extends PaginatorInfo<Patient> {}
+
+export interface DentalProblemPaginator extends PaginatorInfo<DentalProblem> {}
 
 export interface StoreNoticePaginator extends PaginatorInfo<StoreNotice> {}
 
