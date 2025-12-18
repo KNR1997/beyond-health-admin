@@ -11,6 +11,7 @@ export const API_ENDPOINTS = {
   POPULAR_PRODUCTS: 'popular-products',
   COUPONS: 'coupons',
   PATIENTS: 'patients',
+  DENTAL_PROBLEMS: 'dental-problems',
   VERIFY_COUPONS: 'coupons/verify',
   // CUSTOMERS: 'customers',
   TAXES: 'taxes',
