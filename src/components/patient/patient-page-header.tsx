@@ -10,8 +10,10 @@ import { Routes } from '@/config/routes';
 
 export default function PatientPageHeader({
   pageTitle,
+  patientId,
 }: {
   pageTitle: string;
+  patientId: string;
 }) {
   const { t } = useTranslation();
   const router = useRouter();
@@ -25,12 +27,12 @@ export default function PatientPageHeader({
   const sanitizedPath = router.asPath.split('#')[0].split('?')[0];
   const childMenu = [
     {
-      href: Routes.patient.create,
+      href: Routes.patient.editWithoutLang(patientId),
       label: 'text-general-info',
       icon: 'SettingsIcon',
     },
     {
-      href: Routes.patientDiseases,
+      href: Routes.patient.diseases(patientId),
       label: 'text-diseases',
       icon: 'RefundsIcon',
     },

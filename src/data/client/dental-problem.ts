@@ -4,6 +4,7 @@ import {
   DentalProblem,
   DentalProblemInput,
   DentalProblemQueryOptions,
+  DentalProblemPaginator,
 } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
 import { crudFactory } from './curd-factory';
@@ -14,7 +15,7 @@ export const dentalProblemClient = {
     API_ENDPOINTS.DENTAL_PROBLEMS,
   ),
   paginated: ({ name, ...params }: Partial<DentalProblemQueryOptions>) => {
-    return HttpClient.get<PatientPaginator>(API_ENDPOINTS.DENTAL_PROBLEMS, {
+    return HttpClient.get<DentalProblemPaginator>(API_ENDPOINTS.DENTAL_PROBLEMS, {
       searchJoin: 'and',
       ...params,
       search: HttpClient.formatSearchParams({ name }),

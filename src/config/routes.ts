@@ -196,5 +196,8 @@ function routesFactory(endpoint: string) {
     editByIdWithoutLang: (id: string, shop?: string) => {
       return shop ? `/${shop}${endpoint}/${id}/edit` : `${endpoint}/${id}/edit`;
     },
+    diseases: (slug: string) => {
+      return `${endpoint}/${slug}/diseases`
+    }
   };
 }
