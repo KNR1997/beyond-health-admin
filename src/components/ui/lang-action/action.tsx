@@ -19,6 +19,8 @@ export type LanguageSwitcherProps = {
   shopSlug?: string;
   couponApproveButton?: boolean;
   isCouponApprove?: boolean;
+  dentalProblemActiveButton?: boolean;
+  isDentalProblemActive?: boolean;
   deleteBySlug?: string;
 };
 
@@ -33,6 +35,8 @@ export default function LanguageSwitcher({
   shopSlug,
   couponApproveButton,
   isCouponApprove,
+  dentalProblemActiveButton,
+  isDentalProblemActive,
   deleteBySlug
 }: LanguageSwitcherProps) {
   const { enableMultiLang } = Config;
@@ -67,6 +71,8 @@ export default function LanguageSwitcher({
           deleteModalView={deleteModalView}
           couponApproveButton={couponApproveButton}
           isCouponApprove={isCouponApprove}
+          dentalProblemActiveButton={dentalProblemActiveButton}
+          isDentalProblemActive={isDentalProblemActive}
           deleteBySlug={deleteBySlug}
         />
       )}
