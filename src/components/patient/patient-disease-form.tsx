@@ -16,7 +16,7 @@ import { patientDiseaseValidationSchema } from './patient-disease-validation-sch
 import { yupResolver } from '@hookform/resolvers/yup';
 
 type PatientDentalProblemInput = {
-  id: string | null;
+  db_id: string | null;
   dental_problem: { label: string; value: string } | null;
   severity: { label: string; value: string } | null;
 };
@@ -37,6 +37,9 @@ export default function CreateOrUpdatePatientDiseaseForm({
 }: IProps) {
   const { t } = useTranslation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [removedDentalProblemIds, setRemovedDentalProblemIds] = useState<
+    string[]
+  >([]);
 
   const { dentalProblems } = useDentalProblemsQuery({});
 
@@ -57,7 +60,6 @@ export default function CreateOrUpdatePatientDiseaseForm({
 
   const {
     control,
-    watch,
     handleSubmit,
     setError,
     formState: { errors },
@@ -66,7 +68,7 @@ export default function CreateOrUpdatePatientDiseaseForm({
     defaultValues: initialValues
       ? {
           dentalProblems: initialValues.map((dentalProblem) => ({
-            id: dentalProblem.id,
+            db_id: dentalProblem.id,
             dental_problem: {
               label: dentalProblem.problem.name,
               value: dentalProblem.problem.id,
@@ -89,7 +91,6 @@ export default function CreateOrUpdatePatientDiseaseForm({
     useCreatePatientDentalProblemMutation();
 
   const handleMutationError = (error: any) => {
-    console.log('error----: ', error);
     Object.keys(error?.response?.data).forEach((field: any) => {
       setError(field, {
         type: 'manual',
@@ -108,19 +109,28 @@ export default function CreateOrUpdatePatientDiseaseForm({
     name: 'dentalProblems',
   });
 
+  const handleRemoveDentalProblem = (index: number) => {
+    const removedItem = socialFields[index];
+    if (removedItem?.db_id) {
+      let removeId = removedItem.db_id;
+      setRemovedDentalProblemIds((prev) => [...prev, removeId]);
+    }
+    socialRemove(index);
+  };
+
   const onSubmit = async (values: FormValues) => {
     if (!values?.dentalProblems) return;
-
     const input = {
       patient: patientId,
       problems: values?.dentalProblems?.map((dentalProblem) => ({
-        id: dentalProblem.id,
+        id: dentalProblem.db_id,
         problem: dentalProblem.dental_problem
           ? dentalProblem.dental_problem.value
           : '',
         severity: dentalProblem.severity ? dentalProblem.severity.value : '',
         // notes: dentalProblem.notes,
       })),
+      deleted_problem_ids: removedDentalProblemIds,
     };
     const mutationOptions = { onError: handleMutationError };
     createPatientDentalProblem(input, mutationOptions);
@@ -152,7 +162,7 @@ export default function CreateOrUpdatePatientDiseaseForm({
                     <div className="grid grid-cols-1 gap-5 sm:grid-cols-5">
                       <div className="sm:col-span-2">
                         <Input
-                          name={`dentalProblems.${index}.id` as const}
+                          name={`dentalProblems.${index}.db_id` as const}
                           className="hidden"
                         />
                         <SelectInput
@@ -189,12 +199,9 @@ export default function CreateOrUpdatePatientDiseaseForm({
                         />
                       </div>
                       <button
-                        onClick={() => {
-                          socialRemove(index);
-                        }}
+                        onClick={() => handleRemoveDentalProblem(index)}
                         type="button"
                         className="text-sm text-red-500 transition-colors duration-200 hover:text-red-700 focus:outline-none sm:col-span-1 sm:mt-4"
-                        // disabled={isNotDefaultSettingsPage}
                       >
                         {t('form:button-label-remove')}
                       </button>
@@ -207,13 +214,12 @@ export default function CreateOrUpdatePatientDiseaseForm({
               type="button"
               onClick={() =>
                 socialAppend({
-                  id: null,
+                  db_id: null,
                   dental_problem: null,
                   severity: null,
                 })
               }
               className="w-full sm:w-auto"
-              // disabled={isNotDefaultSettingsPage}
             >
               {t('form:button-label-add-dental-problem')}
             </Button>
