@@ -13,6 +13,7 @@ import { Routes } from '@/config/routes';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import { useIsRTL } from '@/utils/locals';
+import Badge from '../ui/badge/badge';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -109,6 +110,38 @@ const DentalProblemList = ({
                 ? description
                 : description?.substring(0, 140) + '...',
           }}
+        />
+      ),
+    },
+    {
+      title: (
+        <TitleWithSort
+          title={t('table:table-item-status')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'is_active'
+          }
+          isActive={sortingObj.column === 'is_active'}
+        />
+      ),
+      width: 150,
+      className: 'cursor-pointer',
+      dataIndex: 'is_active',
+      key: 'is_active',
+      align: 'center',
+      onHeaderCell: () => onHeaderClick('is_active'),
+      render: (is_active: boolean, record: DentalProblem) => (
+        <Badge
+          textKey={
+            record?.is_active
+              ? 'common:text-active'
+              : 'common:text-inactive'
+          }
+          color={
+            record?.is_active
+              ? 'bg-accent/10 !text-accent'
+              : 'bg-status-failed/10 text-status-failed'
+          }
         />
       ),
     },
