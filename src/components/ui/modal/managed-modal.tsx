@@ -3,6 +3,9 @@ import Modal from '@/components/ui/modal/modal';
 import dynamic from 'next/dynamic';
 import { MODAL_VIEWS, useModalAction, useModalState } from './modal.context';
 
+const DentalProblemStatusChangeView = dynamic(
+  () => import('@/components/dental-problem/dental-problem-status-change-view'),
+);
 const FlashSaleDeleteView = dynamic(
   () => import('@/components/flash-sale/flash-sale-delete-view'),
 );
@@ -255,6 +258,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <ApproveCouponView />;
     case 'COUPON_DISAPPROVE_VIEW':
       return <DisApproveCouponView />;
+    case 'DENTAL_PROBLEM_STATUS_CHANGE_VIEW':
+      return <DentalProblemStatusChangeView />;
     case 'DELETE_FLASH_SALE_REQUEST':
       return <FlashSaleRequestDeleteView />;
     case 'VENDOR_FS_REQUEST_APPROVE_VIEW':
