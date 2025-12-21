@@ -112,3 +112,17 @@ export const useDeleteDentalProblemMutation = () => {
     },
   });
 };
+
+export const useDentalProblemStatusChangeMutation = () => {
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+  return useMutation(dentalProblemClient.statusChange, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.DENTAL_PROBLEMS);
+    },
+  });
+};

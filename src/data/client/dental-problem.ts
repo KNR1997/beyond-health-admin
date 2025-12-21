@@ -21,4 +21,10 @@ export const dentalProblemClient = {
       search: HttpClient.formatSearchParams({ name }),
     });
   },
+  statusChange: (variables: { id: string }) => {
+    return HttpClient.post<{ id: string }>(
+      API_ENDPOINTS.DENTAL_PROBLEM_STATUS_CHANGE,
+      variables
+    );
+  },
 };
