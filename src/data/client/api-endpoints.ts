@@ -94,6 +94,7 @@ export const API_ENDPOINTS = {
   MY_STAFFS: '/my-staffs',
   ALL_STAFFS: '/all-staffs',
   APPROVE_COUPON: 'approve-coupon',
+  DENTAL_PROBLEM_STATUS_CHANGE: 'dental-problem-status-change',
   DISAPPROVE_COUPON: 'disapprove-coupon',
   REQUEST_LISTS_FOR_FLASH_SALE: 'vendor-requests-for-flash-sale',
   REQUESTED_PRODUCTS_FOR_FLASH_SALE: 'requested-products-for-flash-sale',
