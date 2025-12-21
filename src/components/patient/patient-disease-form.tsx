@@ -1,25 +1,27 @@
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import Button from '@/components/ui/button';
 import Description from '@/components/ui/description';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { patientValidationSchema } from './patient-validation-schema';
-import { Patient } from '@/types';
+import { DentalProblem, PatientDentalProblem, ShopSocialInput } from '@/types';
 import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
-import {
-  useCreatePatientMutation,
-  useUpdatePatientMutation,
-} from '@/data/patient';
+import SelectInput from '@/components/ui/select-input';
+import Alert from '@/components/ui/alert';
+import Card from '@/components/common/card';
+import { useDentalProblemsQuery } from '@/data/dental-problem';
+import { useCreatePatientDentalProblemMutation } from '@/data/patient-dental-problem';
+import { useState } from 'react';
+import Input from '../ui/input';
+
+type PatientDentalProblemInput = {
+  id: string | null;
+  dental_problem: { label: string; value: string };
+  severity: { label: string; value: string };
+};
 
 type FormValues = {
-  username: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  gender: { label: string; value: string };
-  password: string;
+  dentalProblems?: PatientDentalProblemInput[];
 };
 
 const defaultValues = {
@@ -29,20 +31,33 @@ const defaultValues = {
 };
 
 type IProps = {
-  initialValues?: Patient;
+  initialValues?: PatientDentalProblem[];
+  patientId: string;
 };
-export default function CreateOrUpdatePatientDiseaseForm({ initialValues }: IProps) {
+export default function CreateOrUpdatePatientDiseaseForm({
+  initialValues,
+  patientId,
+}: IProps) {
   const router = useRouter();
   const { t } = useTranslation();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const genderOptions = [
+  const { dentalProblems } = useDentalProblemsQuery({});
+
+  console.log('initialValues--------: ', initialValues);
+
+  const severityOptions = [
     {
-      label: 'Male',
-      value: 'M',
+      label: 'Mild',
+      value: 'mild',
     },
     {
-      label: 'FeMale',
-      value: 'F',
+      label: 'Moderate',
+      value: 'moderate',
+    },
+    {
+      label: 'Severe',
+      value: 'severe',
     },
   ];
 
@@ -56,22 +71,28 @@ export default function CreateOrUpdatePatientDiseaseForm({ initialValues }: IPro
     // @ts-ignore
     defaultValues: initialValues
       ? {
-          ...initialValues,
-          ...initialValues.user,
-          gender: genderOptions.find(
-            (genderOption) => genderOption.value == initialValues.gender,
-          ),
-          // ...initialValues,
+          dentalProblems: initialValues.map((dentalProblem) => ({
+            id: dentalProblem.id,
+            dental_problem: {
+              label: dentalProblem.problem.name,
+              value: dentalProblem.problem.id,
+            },
+            severity: {
+              label: severityOptions.find(
+                (severityOption) =>
+                  severityOption.value == dentalProblem.severity,
+              )?.label,
+              value: dentalProblem.severity,
+            },
+          })),
         }
       : defaultValues,
     //@ts-ignore
-    resolver: yupResolver(patientValidationSchema),
-    context: { isEditMode: !!initialValues },
+    // resolver: yupResolver(patientValidationSchema),
+    // context: { isEditMode: !!initialValues },
   });
-  const { mutate: createPatient, isLoading: creating } =
-    useCreatePatientMutation();
-  const { mutate: updatePatient, isLoading: updating } =
-    useUpdatePatientMutation();
+  const { mutate: createPatientDentalProblem, isLoading: creating } =
+    useCreatePatientDentalProblemMutation();
 
   const handleMutationError = (error: any) => {
     Object.keys(error?.response?.data).forEach((field: any) => {
@@ -83,66 +104,133 @@ export default function CreateOrUpdatePatientDiseaseForm({ initialValues }: IPro
     animateScroll.scrollToTop();
   };
 
-  const onSubmit = async (values: FormValues) => {
-    const input = {
-      username: values.username,
-      first_name: values.first_name,
-      last_name: values.last_name,
-      email: values.email,
-      gender: values.gender.value,
-      password: values.password,
-    };
-    const mutationOptions = { onError: handleMutationError };
+  const {
+    fields: socialFields,
+    append: socialAppend,
+    remove: socialRemove,
+  } = useFieldArray({
+    control,
+    name: 'dentalProblems',
+  });
 
-    if (!initialValues) {
-      createPatient(input, mutationOptions);
-    } else {
-      updatePatient(
-        {
-          ...input,
-          id: initialValues.id!,
-        },
-        mutationOptions,
-      );
-    }
+  const onSubmit = async (values: FormValues) => {
+    if (!values?.dentalProblems) return;
+
+    console.log(values?.dentalProblems);
+
+    const input = {
+      patient: patientId,
+      problems: values?.dentalProblems?.map((dentalProblem) => ({
+        id: dentalProblem.id,
+        problem: dentalProblem.dental_problem.value,
+        severity: dentalProblem.severity.value,
+        // notes: dentalProblem.notes,
+      })),
+    };
+
+    console.log('input-----------: ', input);
+    const mutationOptions = { onError: handleMutationError };
+    createPatientDentalProblem(input);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-wrap my-5 sm:my-8">
-        <Description
-          title={t('form:input-label-description')}
-          details={`${
-            initialValues
-              ? t('form:item-description-edit')
-              : t('form:item-description-add')
-          } ${t('form:patient-diseases-form-info-help-text')}`}
-          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
+    <>
+      {errorMessage ? (
+        <Alert
+          message={errorMessage}
+          variant="error"
+          closeable={true}
+          className="mt-5"
+          onClose={() => setErrorMessage(null)}
         />
-      </div>
-      <StickyFooterPanel className="z-0">
-        <div className="text-end">
-          {initialValues && (
+      ) : null}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-wrap my-5 sm:my-8">
+          <Description
+            title={t('form:input-label-description')}
+            details={`${t('form:item-description-add')} ${t('form:patient-diseases-form-info-help-text')}`}
+            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
+          />
+          <Card className="w-full sm:w-8/12 md:w-2/3">
+            <div>
+              {socialFields?.map(
+                (item: ShopSocialInput & { id: string }, index: number) => (
+                  <div className="py-5" key={item.id}>
+                    <div className="grid grid-cols-1 gap-5 sm:grid-cols-5">
+                      <div className="sm:col-span-2">
+                        <Input
+                          name={`dentalProblems.${index}.id` as const}
+                          className="hidden"
+                        />
+                        <SelectInput
+                          name={
+                            `dentalProblems.${index}.dental_problem` as const
+                          }
+                          control={control}
+                          options={dentalProblems.map(
+                            (dentalProblem: DentalProblem) => ({
+                              label: dentalProblem.name,
+                              value: dentalProblem.id,
+                            }),
+                          )}
+                          isClearable={true}
+                          // defaultValue={item?.icon!}
+                          label={t('form:input-label-select-dental-problem')}
+                          // toolTipText={t('form:input-tooltip-company-social-platform')}
+                          // disabled={isNotDefaultSettingsPage}
+                        />
+                      </div>
+                      <div className="sm:col-span-2">
+                        <SelectInput
+                          name={`dentalProblems.${index}.severity` as const}
+                          control={control}
+                          options={severityOptions}
+                          isClearable={true}
+                          // defaultValue={item?.icon!}
+                          label={t('form:input-label-select-severity')}
+                          // toolTipText={t('form:input-tooltip-company-social-platform')}
+                          // disabled={isNotDefaultSettingsPage}
+                        />
+                      </div>
+                      <button
+                        onClick={() => {
+                          socialRemove(index);
+                        }}
+                        type="button"
+                        className="text-sm text-red-500 transition-colors duration-200 hover:text-red-700 focus:outline-none sm:col-span-1 sm:mt-4"
+                        // disabled={isNotDefaultSettingsPage}
+                      >
+                        {t('form:button-label-remove')}
+                      </button>
+                    </div>
+                  </div>
+                ),
+              )}
+            </div>
             <Button
-              variant="outline"
-              onClick={router.back}
-              className="me-4"
               type="button"
+              onClick={() =>
+                socialAppend({
+                  id: null,
+                  dental_problem: { label: '', value: '' },
+                  severity: { label: '', value: '' },
+                })
+              }
+              className="w-full sm:w-auto"
+              // disabled={isNotDefaultSettingsPage}
             >
-              {t('form:button-label-back')}
+              {t('form:button-label-add-dental-problem')}
             </Button>
-          )}
-
-          <Button
-            loading={creating || updating}
-            disabled={creating || updating}
-          >
-            {initialValues
-              ? t('form:button-label-update-patient')
-              : t('form:button-label-add-patient')}
-          </Button>
+          </Card>
         </div>
-      </StickyFooterPanel>
-    </form>
+        <StickyFooterPanel className="z-0">
+          <div className="text-end">
+            <Button loading={creating} disabled={creating}>
+              {t('form:button-label-update-patient')}
+            </Button>
+          </div>
+        </StickyFooterPanel>
+      </form>
+    </>
   );
 }

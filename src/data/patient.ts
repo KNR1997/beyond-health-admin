@@ -20,9 +20,9 @@ export const useCreatePatientMutation = () => {
   const router = useRouter();
 
   return useMutation(patientClient.create, {
-    onSuccess: async () => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.patient.list}`
+    onSuccess: async (data: Patient) => {
+      const generateRedirectUrl = data.id
+        ? Routes.patient.diseases(data.id)
         : Routes.patient.list;
       await Router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
@@ -61,8 +61,8 @@ export const useUpdatePatientMutation = () => {
   const router = useRouter();
   return useMutation(patientClient.update, {
     onSuccess: async (data) => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.patient.list}`
+      const generateRedirectUrl = data.id
+        ? Routes.patient.diseases(data.id)
         : Routes.patient.list;
       await router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
@@ -80,10 +80,10 @@ export const useUpdatePatientMutation = () => {
   });
 };
 
-export const usePatientQuery = ({ slug, language }: GetParams) => {
+export const usePatientQuery = ({ slug }: GetParams) => {
   const { data, error, isLoading } = useQuery<Patient, Error>(
-    [API_ENDPOINTS.PATIENTS, { slug, language }],
-    () => patientClient.get({ slug, language }),
+    [API_ENDPOINTS.PATIENTS, { slug }],
+    () => patientClient.get({ slug }),
   );
 
   return {

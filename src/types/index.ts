@@ -160,7 +160,7 @@ export enum Permission {
 
 export interface GetParams {
   slug: string;
-  language: string;
+  language?: string;
 }
 
 export interface QueryOptions {
@@ -525,14 +525,21 @@ export interface Patient {
   user: User;
 }
 
+export interface PatientDentalProblem {
+  id: string;
+  problem: DentalProblem;
+  severity: string;
+}
+
 export interface PatientInput {
   gender: string;
 }
 
 export interface DentalProblem {
   id: string;
-  gender: string;
-  user: User;
+  name: string;
+  description: string;
+  is_active: boolean;
 }
 
 export interface DentalProblemInput {
@@ -1545,6 +1552,11 @@ export interface RegisterInput {
   // permission: Permission;
 }
 
+export interface PatientDentalProblemInput {
+  patient: string;
+  problems: {problem: string, severity: string}[]
+}
+
 export interface ChangePasswordInput {
   oldPassword: string;
   newPassword: string;
@@ -2047,6 +2059,8 @@ export interface NotifyLogsPaginator extends PaginatorInfo<NotifyLogs> {}
 export interface CouponPaginator extends PaginatorInfo<Coupon> {}
 
 export interface PatientPaginator extends PaginatorInfo<Patient> {}
+
+export interface PatientDentalProblemPaginator extends PaginatorInfo<PatientDentalProblem> {}
 
 export interface DentalProblemPaginator extends PaginatorInfo<DentalProblem> {}
 

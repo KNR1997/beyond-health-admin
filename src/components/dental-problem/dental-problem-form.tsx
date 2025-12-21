@@ -118,7 +118,6 @@ export default function CreateOrUpdateDentalProblemForm({
             //     ?.message,
             // )}
             editorClassName="mb-0"
-            required
           />
         </Card>
       </div>

@@ -14,16 +14,17 @@ import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import ValidationError from '@/components/ui/form-validation-error';
 import PasswordInput from '@/components/ui/password-input';
+import PhoneNumberInput from '@/components/ui/phone-input';
 import {
   useCreatePatientMutation,
   useUpdatePatientMutation,
 } from '@/data/patient';
 
 type FormValues = {
-  username: string;
   first_name: string;
   last_name: string;
   email: string;
+  mobile_number: string;
   gender: { label: string; value: string };
   password: string;
 };
@@ -91,10 +92,10 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
 
   const onSubmit = async (values: FormValues) => {
     const input = {
-      username: values.username,
       first_name: values.first_name,
       last_name: values.last_name,
       email: values.email,
+      mobile_number: values.mobile_number,
       gender: values.gender.value,
       password: values.password,
     };
@@ -127,7 +128,7 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
         />
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
-          <Input
+          {/* <Input
             label={t('form:input-label-username')}
             {...register('username')}
             type="text"
@@ -135,7 +136,7 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
             className="mb-4"
             error={t(errors.username?.message!)}
             required
-          />
+          /> */}
           <Input
             label={t('form:input-label-first-name')}
             {...register('first_name')}
@@ -161,6 +162,12 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
             variant="outline"
             className="mb-4"
             error={t(errors.email?.message!)}
+          />
+          <PhoneNumberInput
+            label={t('form:input-label-contact')}
+            {...register('mobile_number')}
+            control={control}
+            error={t(errors.mobile_number?.message!)}
             required
           />
           <div className="mb-5">
