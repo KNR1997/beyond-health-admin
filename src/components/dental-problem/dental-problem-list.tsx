@@ -155,9 +155,11 @@ const DentalProblemList = ({
         <LanguageSwitcher
           slug={id}
           record={record}
-          deleteModalView="DELETE_COUPON"
-          deleteBySlug={record.id}
+          // deleteModalView="DELETE_COUPON"
+          // deleteBySlug={record.id}
           routes={Routes?.dentalProblem}
+          dentalProblemActiveButton={true}
+          isDentalProblemActive={record.is_active}
         />
       ),
     },
