@@ -46,7 +46,7 @@ export const useCreatePatientDentalProblemMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.DENTAL_PROBLEMS);
+      queryClient.invalidateQueries(API_ENDPOINTS.PATIENT_DENTAL_PROBLEMS);
     },
   });
 };
