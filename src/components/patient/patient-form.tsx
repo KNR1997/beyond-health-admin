@@ -23,10 +23,12 @@ import {
 type FormValues = {
   first_name: string;
   last_name: string;
+  age: string;
+  nic: string;
   email: string;
   mobile_number: string;
   gender: { label: string; value: string };
-  password: string;
+  //password: string;
 };
 
 const defaultValues = {
@@ -63,13 +65,13 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
     // @ts-ignore
     defaultValues: initialValues
       ? {
-          ...initialValues,
-          ...initialValues.user,
-          gender: genderOptions.find(
-            (genderOption) => genderOption.value == initialValues.gender,
-          ),
-          // ...initialValues,
-        }
+        ...initialValues,
+        ...initialValues.user,
+        gender: genderOptions.find(
+          (genderOption) => genderOption.value == initialValues.gender,
+        ),
+        // ...initialValues,
+      }
       : defaultValues,
     //@ts-ignore
     resolver: yupResolver(patientValidationSchema),
@@ -97,7 +99,9 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
       email: values.email,
       mobile_number: values.mobile_number,
       gender: values.gender.value,
-      password: values.password,
+      age: values.age,
+      nic: values.nic,
+      password: values.mobile_number,
     };
     const mutationOptions = { onError: handleMutationError };
 
@@ -119,11 +123,10 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
           title={t('form:input-label-description')}
-          details={`${
-            initialValues
+          details={`${initialValues
               ? t('form:item-description-edit')
               : t('form:item-description-add')
-          } ${t('form:patient-form-info-help-text')}`}
+            } ${t('form:patient-form-info-help-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
 
@@ -156,13 +159,24 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
             required
           />
           <Input
-            label={t('form:input-label-email')}
-            {...register('email')}
-            type="email"
+            label={t('form:input-label-age')}
+            {...register('age')}
+            type="text"
             variant="outline"
             className="mb-4"
-            error={t(errors.email?.message!)}
+            error={t(errors.age?.message!)}
+            required
           />
+          <Input
+            label={t('form:input-label-nic')}
+            {...register('nic')}
+            type="text"
+            variant="outline"
+            className="mb-4"
+            error={t(errors.nic?.message!)}
+            required
+          />
+
           <PhoneNumberInput
             label={t('form:input-label-contact')}
             {...register('mobile_number')}
@@ -171,16 +185,25 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
             required
           />
           <div className="mb-5">
-            <Label>{t('form:input-label-select-gender')}</Label>
             <SelectInput
+              label={t('form:input-label-select-gender')}
               name="gender"
               control={control}
               options={genderOptions}
               isClearable={true}
+              required
             />
             <ValidationError message={t(errors.gender?.message)} />
           </div>
-          {!initialValues && (
+          <Input
+            label={t('form:input-label-email')}
+            {...register('email')}
+            type="email"
+            variant="outline"
+            className="mb-4"
+            error={t(errors.email?.message!)}
+          />
+          {/* {!initialValues && (
             <PasswordInput
               label={t('form:input-label-password')}
               type="password"
@@ -190,7 +213,7 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
               className="mb-5"
               required
             />
-          )}
+          )} */}
         </Card>
       </div>
       <StickyFooterPanel className="z-0">

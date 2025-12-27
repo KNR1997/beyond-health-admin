@@ -28,6 +28,9 @@ export const Routes = {
   dentalProblem: {
     ...routesFactory('/dental-problems'),
   },
+  medicalVital: {
+    ...routesFactory('/medical-vitals'),
+  },
   patient: {
     ...routesFactory('/patients'),
   },
