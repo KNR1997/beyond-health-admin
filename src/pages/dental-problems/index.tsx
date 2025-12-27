@@ -7,6 +7,7 @@ import ErrorMessage from '@/components/ui/error-message';
 import LinkButton from '@/components/ui/link-button';
 import Loader from '@/components/ui/loader/loader';
 import { Config } from '@/config';
+import { Routes } from '@/config/routes';
 import { useDentalProblemsQuery } from '@/data/dental-problem';
 import { SortOrder } from '@/types';
 import { adminOnly } from '@/utils/auth-utils';
@@ -58,7 +59,7 @@ export default function DentalProblems() {
 
           {locale === Config.defaultLanguage && (
             <LinkButton
-              href="/dental-problems/create"
+              href={`${Routes.dentalProblem.create}`}
               className="w-full h-12 md:w-auto md:ms-6"
             >
               <span>+ {t('form:button-label-add-dental-problem')}</span>
