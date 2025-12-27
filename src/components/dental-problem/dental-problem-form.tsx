@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { dentalProblemValidationSchema } from './dental-problem-validation-schema';
-import { Patient } from '@/types';
+import { DentalProblem, Patient } from '@/types';
 import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import {
@@ -27,7 +27,7 @@ const defaultValues = {
 };
 
 type IProps = {
-  initialValues?: Patient;
+  initialValues?: DentalProblem ;
 };
 export default function CreateOrUpdateDentalProblemForm({
   initialValues,
