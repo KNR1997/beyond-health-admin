@@ -193,7 +193,7 @@ export interface PaginatorInfo<T> {
 }
 
 export interface LoginInput {
-  login: string;
+  email: string;
   password: string;
 }
 
@@ -522,7 +522,8 @@ export interface Coupon {
 export interface Patient {
   id: string;
   gender: string;
-  user: User;
+  user: User | null;
+  email: string;
 }
 
 export interface PatientDentalProblem {

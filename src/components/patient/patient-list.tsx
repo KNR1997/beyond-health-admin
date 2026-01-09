@@ -92,18 +92,18 @@ const PatientList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'user',
-      key: 'user',
+      dataIndex: 'name',
+      key: 'name',
       align: alignLeft,
       width: 250,
       ellipsis: true,
-      render: (user: User) => (
+      render: (name: string, record: Patient) => (
         <div className="flex items-center">
-          <Avatar name={user?.first_name} />
+          <Avatar name={name} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {user?.first_name} {user?.last_name}
+            {name}
             <span className="text-[13px] font-normal text-gray-500/80">
-              {user?.email}
+              {record?.email}
             </span>
           </div>
         </div>
@@ -121,38 +121,38 @@ const PatientList = ({
         <span className="whitespace-nowrap">{gender}</span>
       ),
     },
-    {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-status')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      width: 150,
-      className: 'cursor-pointer',
-      dataIndex: 'is_active',
-      key: 'is_active',
-      align: 'center',
-      onHeaderCell: () => onHeaderClick('is_active'),
-      render: (is_active: boolean, record: Patient) => (
-        <Badge
-          textKey={
-            record?.user.is_active
-              ? 'common:text-active'
-              : 'common:text-inactive'
-          }
-          color={
-            record?.user.is_active
-              ? 'bg-accent/10 !text-accent'
-              : 'bg-status-failed/10 text-status-failed'
-          }
-        />
-      ),
-    },
+    // {
+    //   title: (
+    //     <TitleWithSort
+    //       title={t('table:table-item-status')}
+    //       ascending={
+    //         sortingObj.sort === SortOrder.Asc &&
+    //         sortingObj.column === 'is_active'
+    //       }
+    //       isActive={sortingObj.column === 'is_active'}
+    //     />
+    //   ),
+    //   width: 150,
+    //   className: 'cursor-pointer',
+    //   dataIndex: 'is_active',
+    //   key: 'is_active',
+    //   align: 'center',
+    //   onHeaderCell: () => onHeaderClick('is_active'),
+    //   render: (is_active: boolean, record: Patient) => (
+    //     <Badge
+    //       textKey={
+    //         record?.user.is_active
+    //           ? 'common:text-active'
+    //           : 'common:text-inactive'
+    //       }
+    //       color={
+    //         record?.user.is_active
+    //           ? 'bg-accent/10 !text-accent'
+    //           : 'bg-status-failed/10 text-status-failed'
+    //       }
+    //     />
+    //   ),
+    // },
     {
       title: t('table:table-item-actions'),
       dataIndex: 'id',

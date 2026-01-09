@@ -21,8 +21,8 @@ import {
 } from '@/data/patient';
 
 type FormValues = {
-  first_name: string;
-  last_name: string;
+  name: string;
+  // last_name: string;
   email: string;
   mobile_number: string;
   gender: { label: string; value: string };
@@ -30,8 +30,7 @@ type FormValues = {
 };
 
 const defaultValues = {
-  first_name: '',
-  last_name: '',
+  name: '',
   email: '',
 };
 
@@ -92,8 +91,8 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
 
   const onSubmit = async (values: FormValues) => {
     const input = {
-      first_name: values.first_name,
-      last_name: values.last_name,
+      name: values.name,
+      // last_name: values.last_name,
       email: values.email,
       mobile_number: values.mobile_number,
       gender: values.gender.value,
@@ -138,15 +137,15 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
             required
           /> */}
           <Input
-            label={t('form:input-label-first-name')}
-            {...register('first_name')}
+            label={t('form:input-label-name')}
+            {...register('name')}
             type="text"
             variant="outline"
             className="mb-4"
-            error={t(errors.first_name?.message!)}
+            error={t(errors.name?.message!)}
             required
           />
-          <Input
+          {/* <Input
             label={t('form:input-label-last-name')}
             {...register('last_name')}
             type="text"
@@ -154,7 +153,7 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
             className="mb-4"
             error={t(errors.last_name?.message!)}
             required
-          />
+          /> */}
           <Input
             label={t('form:input-label-email')}
             {...register('email')}

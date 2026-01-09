@@ -380,11 +380,11 @@ export const siteSettings = {
             label: 'text-all-users',
             icon: 'UsersIcon',
           },
-          {
-            href: Routes.adminList,
-            label: 'text-admin-list',
-            icon: 'AdminListIcon',
-          },
+          // {
+          //   href: Routes.adminList,
+          //   label: 'text-admin-list',
+          //   icon: 'AdminListIcon',
+          // },
           {
             href: Routes.patient.list,
             label: 'text-all-patients',

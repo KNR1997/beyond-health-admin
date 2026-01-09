@@ -16,8 +16,6 @@ const DentalProblemStatusChangeView = () => {
   const { data: modalData } = useModalState();
   const { closeModal } = useModalAction();
 
-  console.log('modalData', modalData);
-
   async function handleDelete() {
     StatusChange(
       { id: modalData.id as string },
