@@ -24,7 +24,7 @@ export const useCreatePatientMutation = () => {
       const generateRedirectUrl = data.id
         ? Routes.patient.diseases(data.id)
         : Routes.patient.list;
-      await Router.push(generateRedirectUrl, undefined, {
+      await Router.push(Routes.patient.list, undefined, {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-created'));
@@ -64,7 +64,7 @@ export const useUpdatePatientMutation = () => {
       const generateRedirectUrl = data.id
         ? Routes.patient.diseases(data.id)
         : Routes.patient.list;
-      await router.push(generateRedirectUrl, undefined, {
+      await router.push(Routes.patient.list, undefined, {
         locale: Config.defaultLanguage,
       });
 

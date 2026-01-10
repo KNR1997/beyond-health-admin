@@ -31,11 +31,11 @@ export default function PatientPageHeader({
       label: 'text-general-info',
       icon: 'SettingsIcon',
     },
-    {
-      href: Routes.patient.diseases(patientId),
-      label: 'text-diseases',
-      icon: 'RefundsIcon',
-    },
+    // {
+    //   href: Routes.patient.diseases(patientId),
+    //   label: 'text-diseases',
+    //   icon: 'RefundsIcon',
+    // },
   ];
 
   return (

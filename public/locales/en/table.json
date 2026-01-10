@@ -47,6 +47,8 @@
   "table-item-banner": "Banner",
   "table-item-code": "Code",
   "table-item-gender": "Gender",
+  "table-item-specialization": "Specialization",
+  "table-item-license-number": "License Number",
   "table-item-role": "Role",
   "table-item-amount": "Amount",
   "table-item-minimum-amount": "Minimum Amount",

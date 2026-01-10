@@ -79,6 +79,11 @@ export const siteSettings = {
         icon: 'SettingsIcon',
         childMenu: [
           {
+            href: Routes.treatment.list,
+            label: 'text-all-treatments',
+            icon: 'DentalDrillIcon',
+          },
+          {
             href: Routes.dentalProblem.list,
             label: 'text-all-dental-problems',
             icon: 'DentalDrillIcon',
@@ -385,6 +390,11 @@ export const siteSettings = {
           //   label: 'text-admin-list',
           //   icon: 'AdminListIcon',
           // },
+          {
+            href: Routes.dentist.list,
+            label: 'text-all-dentists',
+            icon: 'UsersIcon',
+          },
           {
             href: Routes.patient.list,
             label: 'text-all-patients',

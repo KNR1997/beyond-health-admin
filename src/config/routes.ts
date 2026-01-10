@@ -25,11 +25,17 @@ export const Routes = {
   user: {
     ...routesFactory('/users'),
   },
+  treatment: {
+    ...routesFactory('/treatments'),
+  },
   dentalProblem: {
     ...routesFactory('/dental-problems'),
   },
   patient: {
     ...routesFactory('/patients'),
+  },
+  dentist: {
+    ...routesFactory('/dentists'),
   },
   patientDiseases: '/patients/diseases',
   type: {

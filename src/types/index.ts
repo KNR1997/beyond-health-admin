@@ -519,6 +519,14 @@ export interface Coupon {
   is_approve?: boolean;
 }
 
+export interface Dentist {
+  id: string;
+  gender: string;
+  user: User | null;
+  email: string;
+  specialization: string;
+}
+
 export interface Patient {
   id: string;
   gender: string;
@@ -534,6 +542,24 @@ export interface PatientDentalProblem {
 
 export interface PatientInput {
   gender: string;
+}
+
+export interface UserInput {
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_number: string;
+  password: string;
+}
+
+export interface DentistInput {
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_number: string;
+  password: string;
+  license_number: string;
+  specialization: string;
 }
 
 export interface DentalProblem {
@@ -1956,6 +1982,10 @@ export interface PatientQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface DentistQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface DentalProblemQueryOptions extends QueryOptions {
   name: string;
 }
@@ -2060,6 +2090,8 @@ export interface NotifyLogsPaginator extends PaginatorInfo<NotifyLogs> {}
 export interface CouponPaginator extends PaginatorInfo<Coupon> {}
 
 export interface PatientPaginator extends PaginatorInfo<Patient> {}
+
+export interface DentistPaginator extends PaginatorInfo<Dentist> {}
 
 export interface PatientDentalProblemPaginator extends PaginatorInfo<PatientDentalProblem> {}
 
