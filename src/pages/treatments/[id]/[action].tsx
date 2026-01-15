@@ -1,23 +1,21 @@
 import Layout from '@/components/layouts/admin';
-import CreateOrUpdateCategoriesForm from '@/components/category/category-form';
 import { useRouter } from 'next/router';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useCategoryQuery } from '@/data/category';
 import { Config } from '@/config';
-import { useDentistQuery } from '@/data/dentist';
-import CreateOrUpdateDentistForm from '@/components/dentist/dentist-form';
+import CreateOrUpdateTreatmentForm from '@/components/treatment/treatment-form';
+import { useTreatmentQuery } from '@/data/treatment';
 
-export default function UpdateDentistPage() {
+export default function updateTreatmentPage() {
   const { query, locale } = useRouter();
   const { t } = useTranslation();
   const {
-    dentist,
+    treatment,
     loading,
     error,
-  } = useDentistQuery({
+  } = useTreatmentQuery({
     slug: query.id as string,
     language:
       query.action!.toString() === 'edit' ? locale! : Config.defaultLanguage,
@@ -30,16 +28,16 @@ export default function UpdateDentistPage() {
     <>
       <div className="flex border-b border-dashed border-border-base pb-5 md:pb-7">
         <h1 className="text-lg font-semibold text-heading">
-          {t('form:form-title-edit-dentist')}
+          {t('form:form-title-edit-treatment')}
         </h1>
       </div>
 
-      <CreateOrUpdateDentistForm initialValues={dentist} />
+      <CreateOrUpdateTreatmentForm initialValues={treatment} />
     </>
   );
 }
 
-UpdateDentistPage.Layout = Layout;
+updateTreatmentPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {
