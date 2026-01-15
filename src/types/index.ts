@@ -540,6 +540,12 @@ export interface PatientDentalProblem {
   severity: string;
 }
 
+export interface PatientTreatment {
+  id: string;
+  treatment: Treatment;
+  status: string; 
+}
+
 export interface PatientInput {
   gender: string;
 }
@@ -569,7 +575,19 @@ export interface DentalProblem {
   is_active: boolean;
 }
 
+export interface Treatment {
+  id: string;
+  name: string;
+  description: string;
+  is_active: boolean;
+}
+
 export interface DentalProblemInput {
+  name: string;
+  description: string;
+}
+
+export interface TreatmentInput {
   name: string;
   description: string;
 }
@@ -1584,6 +1602,11 @@ export interface PatientDentalProblemInput {
   problems: {problem: string, severity: string}[]
 }
 
+export interface PatientTreatmentInput {
+  patient: string;
+  treatments: {treatment: string, status: string}[]
+}
+
 export interface ChangePasswordInput {
   oldPassword: string;
   newPassword: string;
@@ -1990,6 +2013,10 @@ export interface DentalProblemQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface TreatmentQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface StoreNoticeQueryOptions extends QueryOptions {
   notice: string;
   shops: string;
@@ -2096,6 +2123,8 @@ export interface DentistPaginator extends PaginatorInfo<Dentist> {}
 export interface PatientDentalProblemPaginator extends PaginatorInfo<PatientDentalProblem> {}
 
 export interface DentalProblemPaginator extends PaginatorInfo<DentalProblem> {}
+
+export interface TreatmentPaginator extends PaginatorInfo<Treatment> {}
 
 export interface StoreNoticePaginator extends PaginatorInfo<StoreNotice> {}
 
