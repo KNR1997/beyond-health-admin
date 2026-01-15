@@ -26,7 +26,7 @@ type FormValues = {
   email: string;
   mobile_number: string;
   gender: { label: string; value: string };
-  password: string;
+  //password: string;
 };
 
 const defaultValues = {
@@ -96,7 +96,7 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
       email: values.email,
       mobile_number: values.mobile_number,
       gender: values.gender.value,
-      password: values.password,
+      //password: values.password,
     };
     const mutationOptions = { onError: handleMutationError };
 
@@ -179,7 +179,7 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
             />
             <ValidationError message={t(errors.gender?.message)} />
           </div>
-          {!initialValues && (
+          {/* {!initialValues && (
             <PasswordInput
               label={t('form:input-label-password')}
               type="password"
@@ -189,7 +189,7 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
               className="mb-5"
               required
             />
-          )}
+          )} */}
         </Card>
       </div>
       <StickyFooterPanel className="z-0">
