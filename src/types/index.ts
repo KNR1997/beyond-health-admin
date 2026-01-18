@@ -579,6 +579,9 @@ export interface Treatment {
   id: string;
   name: string;
   description: string;
+  category: string;
+  cost: number;
+  duration: number;
   is_active: boolean;
 }
 

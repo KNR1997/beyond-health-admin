@@ -8,16 +8,23 @@ import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { treatmentValidationSchema } from './treatment-validation-schema';
-import { Patient } from '@/types';
+import { Patient, Treatment } from '@/types';
 import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import {
   useCreateTreatmentMutation,
   useUpdateTreatmentMutation,
 } from '@/data/treatment';
+import SelectInput from '../ui/select-input';
+import ValidationError from '@/components/ui/form-validation-error';
+import Categories from '@/pages/categories';
+import { dummy } from 'react-laag/dist/types';
 
 type FormValues = {
   name: string;
+  category: { label: string; value: string };
+  duration: number;
+  cost: number;
   description: string;
 };
 
@@ -26,9 +33,33 @@ const defaultValues = {
   description: '',
 };
 
+const categoryOptions = [
+  {
+    label: 'Preventive',
+    value: 'preventive',
+  },
+  {
+    label: 'Restorative',
+    value: 'restorative',
+  },
+  {
+    label: 'Cosmetic',
+    value: 'cosmetic',
+  },
+  {
+    label: 'Orthodontics',
+    value: 'ortho',
+  },
+  {
+    label: 'Surgical',
+    value: 'surgical',
+  },
+];
+
 type IProps = {
-  initialValues?: Patient;
+  initialValues?: Treatment;
 };
+
 export default function CreateOrUpdateTreatmentForm({
   initialValues,
 }: IProps) {
@@ -45,13 +76,18 @@ export default function CreateOrUpdateTreatmentForm({
     // @ts-ignore
     defaultValues: initialValues
       ? {
-          ...initialValues,
-        }
+        ...initialValues,
+        category: categoryOptions.find(
+          (categoryOption) =>
+            categoryOption.value == initialValues.category,
+        ),
+      }
       : defaultValues,
     //@ts-ignore
     resolver: yupResolver(treatmentValidationSchema),
     context: { isEditMode: !!initialValues },
   });
+
   const { mutate: createTreatment, isLoading: creating } =
     useCreateTreatmentMutation();
   const { mutate: updateTreatment, isLoading: updating } =
@@ -70,6 +106,9 @@ export default function CreateOrUpdateTreatmentForm({
   const onSubmit = async (values: FormValues) => {
     const input = {
       name: values.name,
+      category: values.category.value,
+      duration: values.duration,
+      cost: values.cost,
       description: values.description,
     };
     const mutationOptions = { onError: handleMutationError };
@@ -92,11 +131,10 @@ export default function CreateOrUpdateTreatmentForm({
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
           title={t('form:input-label-description')}
-          details={`${
-            initialValues
-              ? t('form:item-description-edit')
-              : t('form:item-description-add')
-          } ${t('form:treatment-form-info-help-text')}`}
+          details={`${initialValues
+            ? t('form:item-description-edit')
+            : t('form:item-description-add')
+            } ${t('form:treatment-form-info-help-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
         <Card className="w-full sm:w-8/12 md:w-2/3">
@@ -107,6 +145,35 @@ export default function CreateOrUpdateTreatmentForm({
             variant="outline"
             className="mb-4"
             error={t(errors.name?.message!)}
+            required
+          />
+          <div className="mb-5">
+            <SelectInput
+              required
+              label={t('form:input-label-select-category')}
+              name="category"
+              control={control}
+              options={categoryOptions}
+              isClearable={true}
+            />
+            <ValidationError message={t(errors.category?.message)} />
+          </div>
+          <Input
+            label={t('form:input-label-duration')}
+            {...register('duration')}
+            type="number"
+            variant="outline"
+            className="mb-4"
+            error={t(errors.duration?.message!)}
+            required
+          />
+          <Input
+            label={t('form:input-label-cost')}
+            {...register('cost')}
+            type="number"
+            variant="outline"
+            className="mb-4"
+            error={t(errors.cost?.message!)}
             required
           />
           <RichTextEditor
