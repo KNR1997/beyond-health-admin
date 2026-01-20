@@ -590,7 +590,14 @@ export interface DentalProblemInput {
   description: string;
 }
 
-export interface TreatmentInput {
+export interface MedicalVital {
+  id: string;
+  name: string;
+  description: string;
+  is_active: boolean;
+}
+
+export interface MedicalVitalInput {
   name: string;
   description: string;
 }
@@ -2016,7 +2023,7 @@ export interface DentalProblemQueryOptions extends QueryOptions {
   name: string;
 }
 
-export interface TreatmentQueryOptions extends QueryOptions {
+export interface MedicalVitalQueryOptions extends QueryOptions {
   name: string;
 }
 
@@ -2127,7 +2134,7 @@ export interface PatientDentalProblemPaginator extends PaginatorInfo<PatientDent
 
 export interface DentalProblemPaginator extends PaginatorInfo<DentalProblem> {}
 
-export interface TreatmentPaginator extends PaginatorInfo<Treatment> {}
+export interface MedicalVitalPaginator extends PaginatorInfo<MedicalVital> {}
 
 export interface StoreNoticePaginator extends PaginatorInfo<StoreNotice> {}
 

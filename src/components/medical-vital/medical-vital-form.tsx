@@ -7,14 +7,15 @@ import RichTextEditor from '@/components/ui/wysiwyg-editor/editor';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { dentalProblemValidationSchema } from './dental-problem-validation-schema';
-import { DentalProblem, Patient } from '@/types';
+import { dentalProblemValidationSchema } from './medical-vital-validation-schema';
+import { MedicalVital, Patient } from '@/types';
 import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import {
   useCreateDentalProblemMutation,
   useUpdateDentalProblemMutation,
 } from '@/data/dental-problem';
+import { useCreateMedicalVitalMutation, useUpdateMedicalVitalMutation } from '@/data/medical-vital';
 
 type FormValues = {
   name: string;
@@ -27,9 +28,9 @@ const defaultValues = {
 };
 
 type IProps = {
-  initialValues?: DentalProblem ;
+  initialValues?: MedicalVital;
 };
-export default function CreateOrUpdateDentalProblemForm({
+export default function CreateOrUpdateMedicalVitalForm({
   initialValues,
 }: IProps) {
   const router = useRouter();
@@ -52,10 +53,10 @@ export default function CreateOrUpdateDentalProblemForm({
     resolver: yupResolver(dentalProblemValidationSchema),
     context: { isEditMode: !!initialValues },
   });
-  const { mutate: createDentalProblem, isLoading: creating } =
-    useCreateDentalProblemMutation();
-  const { mutate: updateDentalProblem, isLoading: updating } =
-    useUpdateDentalProblemMutation();
+  const { mutate: createMedicalVital, isLoading: creating } =
+    useCreateMedicalVitalMutation();
+  const { mutate: updateMedicalVital, isLoading: updating } =
+    useUpdateMedicalVitalMutation();
 
   const handleMutationError = (error: any) => {
     Object.keys(error?.response?.data).forEach((field: any) => {
@@ -75,9 +76,9 @@ export default function CreateOrUpdateDentalProblemForm({
     const mutationOptions = { onError: handleMutationError };
 
     if (!initialValues) {
-      createDentalProblem(input, mutationOptions);
+      createMedicalVital(input, mutationOptions);
     } else {
-      updateDentalProblem(
+      updateMedicalVital(
         {
           ...input,
           id: initialValues.id!,
@@ -139,8 +140,8 @@ export default function CreateOrUpdateDentalProblemForm({
             disabled={creating || updating}
           >
             {initialValues
-              ? t('form:button-label-update-dental-problem')
-              : t('form:button-label-add-dental-problem')}
+              ? t('form:button-label-update-medical-vital')
+              : t('form:button-label-add-medical-vital')}
           </Button>
         </div>
       </StickyFooterPanel>
