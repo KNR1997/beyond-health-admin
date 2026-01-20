@@ -1,6 +1,6 @@
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
-import { DentalProblem, SortOrder, Treatment } from '@/types';
+import { SortOrder, Treatment } from '@/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
@@ -133,9 +133,7 @@ const TreatmentList = ({
       render: (is_active: boolean, record: Treatment) => (
         <Badge
           textKey={
-            record?.is_active
-              ? 'common:text-active'
-              : 'common:text-inactive'
+            record?.is_active ? 'common:text-active' : 'common:text-inactive'
           }
           color={
             record?.is_active

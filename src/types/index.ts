@@ -2015,6 +2015,10 @@ export interface PatientQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface TreatmentQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface DentistQueryOptions extends QueryOptions {
   name: string;
 }
@@ -2127,6 +2131,8 @@ export interface NotifyLogsPaginator extends PaginatorInfo<NotifyLogs> {}
 export interface CouponPaginator extends PaginatorInfo<Coupon> {}
 
 export interface PatientPaginator extends PaginatorInfo<Patient> {}
+
+export interface TreatmentPaginator extends PaginatorInfo<Treatment> {}
 
 export interface DentistPaginator extends PaginatorInfo<Dentist> {}
 

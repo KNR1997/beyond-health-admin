@@ -14,11 +14,7 @@ import { API_ENDPOINTS } from './client/api-endpoints';
 import { Config } from '@/config';
 import { treatmentClient } from './client/treatment';
 
-
-
-export const useTreatmentsQuery = (
-  options: Partial<TreatmentQueryOptions>,
-) => {
+export const useTreatmentsQuery = (options: Partial<TreatmentQueryOptions>) => {
   const { data, error, isLoading } = useQuery<TreatmentPaginator, Error>(
     [API_ENDPOINTS.TREATMENTS, options],
     ({ queryKey, pageParam }) =>
@@ -48,8 +44,6 @@ export const useTreatmentQuery = ({ slug, language }: GetParams) => {
     loading: isLoading,
   };
 };
-
-
 
 export const useCreateTreatmentMutation = () => {
   const queryClient = useQueryClient();
