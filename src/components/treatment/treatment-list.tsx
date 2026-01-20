@@ -87,7 +87,7 @@ const TreatmentList = ({
     {
       title: (
         <TitleWithSort
-          title={t('table:table-item-description')}
+          title={t('table:table-item-category')}
           ascending={
             sortingObj?.sort === SortOrder?.Asc &&
             sortingObj?.column === 'faq_description'
@@ -96,22 +96,12 @@ const TreatmentList = ({
         />
       ),
       className: 'cursor-pointer',
-      dataIndex: 'description',
-      key: 'description',
+      dataIndex: 'category',
+      key: 'category',
       align: alignLeft,
       width: 300,
       ellipsis: true,
-      onHeaderCell: () => onHeaderClick('description'),
-      render: (description: string) => (
-        <span
-          dangerouslySetInnerHTML={{
-            __html:
-              description?.length < 140
-                ? description
-                : description?.substring(0, 140) + '...',
-          }}
-        />
-      ),
+      onHeaderCell: () => onHeaderClick('category'),
     },
     {
       title: (
