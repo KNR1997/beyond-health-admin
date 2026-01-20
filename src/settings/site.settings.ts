@@ -88,11 +88,11 @@ export const siteSettings = {
             label: 'text-all-dental-problems',
             icon: 'DentalDrillIcon',
           },
-          {
-            href: Routes.medicalVital.list,
-            label: 'text-all-medical-vitals',
-            icon: 'DentalDrillIcon',
-          },
+          // {
+          //   href: Routes.medicalVital.list,
+          //   label: 'text-all-medical-vitals',
+          //   icon: 'DentalDrillIcon',
+          // },
         ],
       },
 
