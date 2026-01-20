@@ -18,6 +18,7 @@ export const API_ENDPOINTS = {
   PATIENT_TREATMENTS: 'patient-treatments/',
   VERIFY_COUPONS: 'coupons/verify',
   TREATMENTS: 'treatments',
+  TREATMENT_PLANS: 'treatment-plans',
   // CUSTOMERS: 'customers',
   TAXES: 'taxes',
   SHIPPINGS: 'shippings',

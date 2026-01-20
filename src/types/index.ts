@@ -529,9 +529,11 @@ export interface Dentist {
 
 export interface Patient {
   id: string;
+  name: string;
+  email: string;
+  mobile_number: string;
   gender: string;
   user: User | null;
-  email: string;
 }
 
 export interface PatientDentalProblem {
@@ -583,6 +585,12 @@ export interface Treatment {
   cost: number;
   duration: number;
   is_active: boolean;
+}
+
+export interface TreatmentPlan {
+  id: string;
+  patient: Patient;
+  doctor: User;
 }
 
 export interface DentalProblemInput {
@@ -724,6 +732,17 @@ export interface TermsAndConditionsInput {
   title: string;
   description?: string;
   shop_id?: string;
+}
+
+export interface TreatmentInput {
+  title: string;
+  description?: string;
+  shop_id?: string;
+}
+
+export interface TreatmentPlanInput {
+  patient: string;
+  doctor: string;
 }
 
 export interface StoreNoticeUserToNotifyInput {
@@ -2019,6 +2038,10 @@ export interface TreatmentQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface TreatmentPlanQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface DentistQueryOptions extends QueryOptions {
   name: string;
 }
@@ -2133,6 +2156,8 @@ export interface CouponPaginator extends PaginatorInfo<Coupon> {}
 export interface PatientPaginator extends PaginatorInfo<Patient> {}
 
 export interface TreatmentPaginator extends PaginatorInfo<Treatment> {}
+
+export interface TreatmentPlanPaginator extends PaginatorInfo<TreatmentPlan> {}
 
 export interface DentistPaginator extends PaginatorInfo<Dentist> {}
 
