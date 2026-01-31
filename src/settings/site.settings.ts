@@ -81,7 +81,7 @@ export const siteSettings = {
           {
             href: Routes.treatment.list,
             label: 'text-all-treatments',
-            icon: 'DentalDrillIcon',
+            icon: 'InjectionVaccineIcon',
           },
           {
             href: Routes.dentalProblem.list,
@@ -91,7 +91,7 @@ export const siteSettings = {
           {
             href: Routes.treatmentPlan.list,
             label: 'text-all-treatment-plans',
-            icon: 'DentalDrillIcon',
+            icon: 'HospitalFileIcon',
           },
           // {
           //   href: Routes.medicalVital.list,
@@ -403,12 +403,12 @@ export const siteSettings = {
           {
             href: Routes.dentist.list,
             label: 'text-all-dentists',
-            icon: 'UsersIcon',
+            icon: 'DoctorManProfileIcon',
           },
           {
             href: Routes.patient.list,
             label: 'text-all-patients',
-            icon: 'UsersIcon',
+            icon: 'WheelChairDisabledIcon',
           },
           // {
           //   href: '',
