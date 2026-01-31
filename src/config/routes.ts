@@ -183,6 +183,9 @@ export const Routes = {
     ...routesFactory('/shop-transfer'),
   },
   ownerDashboardShopTransferRequest: '/shop-transfer/vendor',
+  reports: {
+    incomeReport: '/reports/income-report',
+  },
 };
 
 function routesFactory(endpoint: string) {
