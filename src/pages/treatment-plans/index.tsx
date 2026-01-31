@@ -59,7 +59,7 @@ export default function TreatmentPlans() {
 
           {locale === Config.defaultLanguage && (
             <LinkButton
-              href={Routes.treatment.create}
+              href={Routes.treatmentPlan.create}
               className="w-full h-12 md:w-auto md:ms-6"
             >
               <span>+ {t('form:button-label-add-treatment-plan')}</span>
