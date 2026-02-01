@@ -5,8 +5,10 @@ export const WheelChairDisabledIcon: React.FC<React.SVGAttributes<{}>> = (
     fill="currentColor"
     {...props}
     viewBox="0 0 30 30"
-    fill-rule="evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;"
-    version="1.1"
+    fillRule="evenodd"
+    clipRule="evenodd"
+    strokeLinejoin="round"
+    strokeMiterlimit="2"    version="1.1"
     xmlns="http://www.w3.org/2000/svg"
   >
     <path d="M16.816,23.395c-1.145,1.573 -2.998,2.608 -5.056,2.608c-3.292,-0 -5.871,-2.671 -5.756,-5.961c0.059,-1.698 0.819,-3.232 1.99,-4.329c0.192,-0.18 0.396,-0.348 0.609,-0.503c0.446,-0.325 0.544,-0.951 0.219,-1.397c-0.325,-0.447 -0.951,-0.545 -1.397,-0.22c-0.279,0.204 -0.546,0.424 -0.798,0.661c-1.546,1.447 -2.544,3.476 -2.622,5.718c-0.155,4.433 3.32,8.031 7.755,8.031c2.714,-0 5.162,-1.356 6.673,-3.431c0.324,-0.446 0.226,-1.072 -0.22,-1.397c-0.447,-0.325 -1.073,-0.226 -1.397,0.22Z" />

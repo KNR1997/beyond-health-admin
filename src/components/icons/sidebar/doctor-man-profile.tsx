@@ -5,10 +5,10 @@ export const DoctorManProfileIcon: React.FC<React.SVGAttributes<{}>> = (
     fill="currentColor"
     {...props}
     viewBox="0 0 30 30"
-    fill-rule="evenodd"
-    clip-rul="evenodd"
-    stroke-linejoin="round"
-    stroke-miterlimit="2"
+    fillRule="evenodd"
+    clipRule="evenodd"
+    strokeLinejoin="round"
+    strokeMiterlimit="2"
     version="1.1"
     xmlns="http://www.w3.org/2000/svg"
   >
