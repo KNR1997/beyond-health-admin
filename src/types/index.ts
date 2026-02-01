@@ -744,7 +744,7 @@ export interface TreatmentInput {
 
 export interface TreatmentPlanInput {
   patient: string;
-  doctor: string;
+  dentist: string;
 }
 
 export interface StoreNoticeUserToNotifyInput {
