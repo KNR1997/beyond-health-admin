@@ -48,13 +48,10 @@ export const useTreatmentPlanQuery = ({ slug, language }: GetParams) => {
 export const useCreateTreatmentPlanMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  const router = useRouter();
 
   return useMutation(treatmentPlanClient.create, {
     onSuccess: async () => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.treatmentPlan.list}`
-        : Routes.treatmentPlan.list;
+      const generateRedirectUrl = Routes.treatmentPlan.list;
       await Router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
       });
@@ -66,7 +63,7 @@ export const useCreateTreatmentPlanMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENTS);
+      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENT_PLANS);
     },
   });
 };
@@ -77,9 +74,7 @@ export const useUpdateTreatmentPlanMutation = () => {
   const router = useRouter();
   return useMutation(treatmentPlanClient.update, {
     onSuccess: async (data) => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.treatment.list}`
-        : Routes.treatment.list;
+      const generateRedirectUrl = Routes.treatmentPlan.list;
       await router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
       });
@@ -88,7 +83,7 @@ export const useUpdateTreatmentPlanMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENTS);
+      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENT_PLANS);
     },
     onError: (error: any) => {
       toast.error(t(`common:${error?.response?.data.message}`));
