@@ -2,7 +2,11 @@ import StoreNoticeDeleteView from '@/components/store-notice/store-notice-delete
 import Modal from '@/components/ui/modal/modal';
 import dynamic from 'next/dynamic';
 import { MODAL_VIEWS, useModalAction, useModalState } from './modal.context';
+import TreatmentStatusChangeView from '@/components/treatment/treatment-status-change-view';
 
+const DentalProblemStatusChangeView = dynamic(
+  () => import('@/components/dental-problem/dental-problem-status-change-view'),
+);
 const FlashSaleDeleteView = dynamic(
   () => import('@/components/flash-sale/flash-sale-delete-view'),
 );
@@ -255,6 +259,10 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <ApproveCouponView />;
     case 'COUPON_DISAPPROVE_VIEW':
       return <DisApproveCouponView />;
+    case 'DENTAL_PROBLEM_STATUS_CHANGE_VIEW':
+      return <DentalProblemStatusChangeView />;
+     case 'TREATMENT_STATUS_CHANGE_VIEW':
+      return <TreatmentStatusChangeView />;
     case 'DELETE_FLASH_SALE_REQUEST':
       return <FlashSaleRequestDeleteView />;
     case 'VENDOR_FS_REQUEST_APPROVE_VIEW':

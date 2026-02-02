@@ -160,7 +160,7 @@ export enum Permission {
 
 export interface GetParams {
   slug: string;
-  language: string;
+  language?: string;
 }
 
 export interface QueryOptions {
@@ -193,7 +193,7 @@ export interface PaginatorInfo<T> {
 }
 
 export interface LoginInput {
-  login: string;
+  email: string;
   password: string;
 }
 
@@ -519,14 +519,95 @@ export interface Coupon {
   is_approve?: boolean;
 }
 
-export interface Patient {
+export interface Dentist {
   id: string;
   gender: string;
-  user: User;
+  user: User | null;
+  email: string;
+  specialization: string;
+}
+
+export interface Patient {
+  id: string;
+  name: string;
+  email: string;
+  mobile_number: string;
+  gender: string;
+  user: User | null;
+}
+
+export interface PatientDentalProblem {
+  id: string;
+  problem: DentalProblem;
+  severity: string;
+}
+
+export interface PatientTreatment {
+  id: string;
+  treatment: Treatment;
+  status: string; 
 }
 
 export interface PatientInput {
   gender: string;
+}
+
+export interface UserInput {
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_number: string;
+  password: string;
+}
+
+export interface DentistInput {
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_number: string;
+  password: string;
+  license_number: string;
+  specialization: string;
+}
+
+export interface DentalProblem {
+  id: string;
+  name: string;
+  description: string;
+  is_active: boolean;
+}
+
+export interface Treatment {
+  id: string;
+  name: string;
+  description: string;
+  category: string;
+  cost: number;
+  duration: number;
+  is_active: boolean;
+}
+
+export interface TreatmentPlan {
+  id: string;
+  patient: Patient;
+  doctor: User;
+}
+
+export interface DentalProblemInput {
+  name: string;
+  description: string;
+}
+
+export interface MedicalVital {
+  id: string;
+  name: string;
+  description: string;
+  is_active: boolean;
+}
+
+export interface MedicalVitalInput {
+  name: string;
+  description: string;
 }
 
 export interface CouponInput {
@@ -651,6 +732,19 @@ export interface TermsAndConditionsInput {
   title: string;
   description?: string;
   shop_id?: string;
+}
+
+export interface TreatmentInput {
+  name: string;
+  category: string;
+  duration: number;
+  cost: number;
+  description: string;
+}
+
+export interface TreatmentPlanInput {
+  patient: string;
+  dentist: string;
 }
 
 export interface StoreNoticeUserToNotifyInput {
@@ -1534,6 +1628,16 @@ export interface RegisterInput {
   // permission: Permission;
 }
 
+export interface PatientDentalProblemInput {
+  patient: string;
+  problems: {problem: string, severity: string}[]
+}
+
+export interface PatientTreatmentInput {
+  patient: string;
+  treatments: {treatment: string, status: string}[]
+}
+
 export interface ChangePasswordInput {
   oldPassword: string;
   newPassword: string;
@@ -1932,6 +2036,26 @@ export interface PatientQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface TreatmentQueryOptions extends QueryOptions {
+  name: string;
+}
+
+export interface TreatmentPlanQueryOptions extends QueryOptions {
+  name: string;
+}
+
+export interface DentistQueryOptions extends QueryOptions {
+  name: string;
+}
+
+export interface DentalProblemQueryOptions extends QueryOptions {
+  name: string;
+}
+
+export interface MedicalVitalQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface StoreNoticeQueryOptions extends QueryOptions {
   notice: string;
   shops: string;
@@ -2032,6 +2156,18 @@ export interface NotifyLogsPaginator extends PaginatorInfo<NotifyLogs> {}
 export interface CouponPaginator extends PaginatorInfo<Coupon> {}
 
 export interface PatientPaginator extends PaginatorInfo<Patient> {}
+
+export interface TreatmentPaginator extends PaginatorInfo<Treatment> {}
+
+export interface TreatmentPlanPaginator extends PaginatorInfo<TreatmentPlan> {}
+
+export interface DentistPaginator extends PaginatorInfo<Dentist> {}
+
+export interface PatientDentalProblemPaginator extends PaginatorInfo<PatientDentalProblem> {}
+
+export interface DentalProblemPaginator extends PaginatorInfo<DentalProblem> {}
+
+export interface MedicalVitalPaginator extends PaginatorInfo<MedicalVital> {}
 
 export interface StoreNoticePaginator extends PaginatorInfo<StoreNotice> {}
 

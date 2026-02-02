@@ -50,6 +50,7 @@ const LoginForm = () => {
     resolver: yupResolver(loginFormSchema),
   });
 
+  // mutation
   const { mutate: login, isLoading, error } = useLogin();
 
   const onSubmit = ({ email, password }: FormValues) => {
@@ -57,7 +58,7 @@ const LoginForm = () => {
 
     login(
       {
-        login: email,
+        email,
         password,
       },
       {

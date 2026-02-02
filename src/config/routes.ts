@@ -25,9 +25,25 @@ export const Routes = {
   user: {
     ...routesFactory('/users'),
   },
+  treatment: {
+    ...routesFactory('/treatments'),
+  },
+  treatmentPlan: {
+    ...routesFactory('/treatment-plans'),
+  },
+  dentalProblem: {
+    ...routesFactory('/dental-problems'),
+  },
+  medicalVital: {
+    ...routesFactory('/medical-vitals'),
+  },
   patient: {
     ...routesFactory('/patients'),
   },
+  dentist: {
+    ...routesFactory('/dentists'),
+  },
+  patientDiseases: '/patients/diseases',
   type: {
     ...routesFactory('/groups'),
   },
@@ -167,6 +183,9 @@ export const Routes = {
     ...routesFactory('/shop-transfer'),
   },
   ownerDashboardShopTransferRequest: '/shop-transfer/vendor',
+  reports: {
+    incomeReport: '/reports/income-report',
+  },
 };
 
 function routesFactory(endpoint: string) {
@@ -192,5 +211,8 @@ function routesFactory(endpoint: string) {
     editByIdWithoutLang: (id: string, shop?: string) => {
       return shop ? `/${shop}${endpoint}/${id}/edit` : `${endpoint}/${id}/edit`;
     },
+    diseases: (slug: string) => {
+      return `${endpoint}/${slug}/diseases`
+    }
   };
 }

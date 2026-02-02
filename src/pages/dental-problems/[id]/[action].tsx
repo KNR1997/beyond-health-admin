@@ -5,13 +5,13 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Config } from '@/config';
 import { useRouter } from 'next/router';
-import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
-import { usePatientQuery } from '@/data/patient';
+import CreateOrUpdateDentalProblemForm from '@/components/dental-problem/dental-problem-form';
+import { useDentalProblemQuery } from '@/data/dental-problem';
 
-export default function UpdatePatientPage() {
+export default function UpdateDentalProblemPage() {
   const { query, locale } = useRouter();
   const { t } = useTranslation();
-  const { patient, loading, error } = usePatientQuery({
+  const { dentalProblem, loading, error } = useDentalProblemQuery({
     slug: query.id as string,
     language:
       query.action!.toString() === 'edit' ? locale! : Config.defaultLanguage,
@@ -23,14 +23,14 @@ export default function UpdatePatientPage() {
     <>
       <div className="flex pb-5 border-b border-dashed border-border-base md:pb-7">
         <h1 className="text-lg font-semibold text-heading">
-          {t('form:form-title-edit-patient')}
+          {t('form:form-title-edit-dental-problem')}
         </h1>
       </div>
-      <CreateOrUpdatePatientForm initialValues={patient} />
+      <CreateOrUpdateDentalProblemForm initialValues={dentalProblem} />
     </>
   );
 }
-UpdatePatientPage.Layout = Layout;
+UpdateDentalProblemPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {

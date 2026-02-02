@@ -33,6 +33,8 @@ type Props = {
   approveButton?: boolean;
   termApproveButton?: boolean;
   couponApproveButton?: boolean;
+  dentalProblemActiveButton?: boolean;
+  treatmentActiveButton?: boolean;
   showAddWalletPoints?: boolean;
   changeRefundStatus?: boolean;
   showMakeAdminButton?: boolean;
@@ -40,6 +42,8 @@ type Props = {
   customLocale?: string;
   isTermsApproved?: boolean;
   isCouponApprove?: boolean;
+  isDentalProblemActive?: boolean;
+  isTreatmentActive?: boolean;
   flashSaleVendorRequestApproveButton?: boolean;
   isFlashSaleVendorRequestApproved?: boolean;
   transferShopOwnership?: boolean;
@@ -71,6 +75,10 @@ const ActionButtons = ({
   isTermsApproved,
   couponApproveButton,
   isCouponApprove,
+  dentalProblemActiveButton,
+  isDentalProblemActive,
+  treatmentActiveButton,
+  isTreatmentActive,
   flashSaleVendorRequestApproveButton = false,
   isFlashSaleVendorRequestApproved,
   transferShopOwnership,
@@ -137,6 +145,14 @@ const ActionButtons = ({
     } else {
       openModal('COUPON_DISAPPROVE_VIEW', id);
     }
+  }
+
+  function handleDentalProblemStatus(status: boolean) {
+    openModal('DENTAL_PROBLEM_STATUS_CHANGE_VIEW', { id: id, status: status });
+  }
+
+  function handleTreatmentStatus(status: boolean) {
+    openModal('TREATMENT_STATUS_CHANGE_VIEW', { id: id, status: status });
   }
 
   function handleReplyQuestion() {
@@ -317,6 +333,44 @@ const ActionButtons = ({
           <Eye className="w-5 h-5" />
         </Link>
       )}
+
+      {dentalProblemActiveButton && (
+        !isDentalProblemActive ? (
+          <button
+            onClick={() => handleDentalProblemStatus(true)}
+            className="transition duration-200 text-accent hover:text-accent-hover focus:outline-none"
+            title={t('common:text-dental-problem-deactive')}
+          >
+            <CheckMarkCircle width={18} />
+          </button>
+        ) : (
+          <button
+            onClick={() => handleDentalProblemStatus(false)}
+            className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
+            title={t('common:text-dental-problem-activate')}
+          >
+            <CloseFillIcon width={18} />
+          </button>
+        ))}
+
+      {treatmentActiveButton && (
+        !isTreatmentActive ? (
+          <button
+            onClick={() => handleTreatmentStatus(true)}
+            className="transition duration-200 text-accent hover:text-accent-hover focus:outline-none"
+            title={t('common:text-treatment-deactive')}
+          >
+            <CheckMarkCircle width={18} />
+          </button>
+        ) : (
+          <button
+            onClick={() => handleTreatmentStatus(false)}
+            className="text-red-500 transition duration-200 hover:text-red-600 focus:outline-none"
+            title={t('common:text-treatment-activate')}
+          >
+            <CloseFillIcon width={18} />
+          </button>
+        ))}
 
       {deleteModalView &&
         (role !== STAFF ||
