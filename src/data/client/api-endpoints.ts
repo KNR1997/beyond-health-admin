@@ -19,6 +19,7 @@ export const API_ENDPOINTS = {
   VERIFY_COUPONS: 'coupons/verify',
   TREATMENTS: 'treatments',
   TREATMENT_PLANS: 'treatment-plans',
+  TREATMENT_PLAN_ITEMS: 'treatment-plan-items',
   // CUSTOMERS: 'customers',
   TAXES: 'taxes',
   SHIPPINGS: 'shippings',
