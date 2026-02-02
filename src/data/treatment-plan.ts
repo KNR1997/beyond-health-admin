@@ -6,6 +6,7 @@ import { mapPaginatorData } from '@/utils/data-mappers';
 import {
   GetParams,
   TreatmentPlan,
+  TreatmentPlanItem,
   TreatmentPlanPaginator,
   TreatmentPlanQueryOptions,
 } from '@/types';
@@ -13,8 +14,11 @@ import { Routes } from '@/config/routes';
 import { API_ENDPOINTS } from './client/api-endpoints';
 import { Config } from '@/config';
 import { treatmentPlanClient } from './client/treatment-plan';
+import { treatmentPlanItemsKey } from '@/utils/queryKeys';
 
-export const useTreatmentPlansQuery = (options: Partial<TreatmentPlanQueryOptions>) => {
+export const useTreatmentPlansQuery = (
+  options: Partial<TreatmentPlanQueryOptions>,
+) => {
   const { data, error, isLoading } = useQuery<TreatmentPlanPaginator, Error>(
     [API_ENDPOINTS.TREATMENT_PLANS, options],
     ({ queryKey, pageParam }) =>
@@ -48,13 +52,10 @@ export const useTreatmentPlanQuery = ({ slug, language }: GetParams) => {
 export const useCreateTreatmentPlanMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
-  const router = useRouter();
 
   return useMutation(treatmentPlanClient.create, {
     onSuccess: async () => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.treatmentPlan.list}`
-        : Routes.treatmentPlan.list;
+      const generateRedirectUrl = Routes.treatmentPlan.list;
       await Router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
       });
@@ -66,7 +67,7 @@ export const useCreateTreatmentPlanMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENTS);
+      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENT_PLANS);
     },
   });
 };
@@ -77,9 +78,7 @@ export const useUpdateTreatmentPlanMutation = () => {
   const router = useRouter();
   return useMutation(treatmentPlanClient.update, {
     onSuccess: async (data) => {
-      const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.treatment.list}`
-        : Routes.treatment.list;
+      const generateRedirectUrl = Routes.treatmentPlan.list;
       await router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
       });
@@ -88,7 +87,64 @@ export const useUpdateTreatmentPlanMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENTS);
+      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENT_PLANS);
+    },
+    onError: (error: any) => {
+      toast.error(t(`common:${error?.response?.data.message}`));
+    },
+  });
+};
+
+export const useTreatmentPlanItemsQuery = ({
+  treatmentPlanId,
+}: {
+  treatmentPlanId: string;
+}) => {
+  const { data, error, isLoading } = useQuery<TreatmentPlanItem[], Error>(
+    treatmentPlanItemsKey(treatmentPlanId),
+    () => treatmentPlanClient.planItems(treatmentPlanId),
+  );
+
+  return {
+    treatmentPlanItems: data ?? [],
+    error,
+    loading: isLoading,
+  };
+};
+
+export const useCreateTreatmentPlanItemsMutation = () => {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  return useMutation(treatmentPlanClient.createItems, {
+    onSuccess: (data) => {
+      router.push(Routes.treatmentPlan.list);
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENT_PLAN_ITEMS);
+    },
+    onError: (error: any) => {
+      toast.error(t(`common:${error?.response?.data.message}`));
+    },
+  });
+};
+
+export const useUpdateTreatmentPlanItemsMutation = () => {
+  const router = useRouter();
+  const { t } = useTranslation();
+  const queryClient = useQueryClient();
+
+  return useMutation(treatmentPlanClient.updateItems, {
+    onSuccess: (data) => {
+      router.push(Routes.treatmentPlan.list);
+      toast.success(t('common:successfully-updated'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.TREATMENT_PLAN_ITEMS);
     },
     onError: (error: any) => {
       toast.error(t(`common:${error?.response?.data.message}`));
