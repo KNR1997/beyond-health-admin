@@ -1,21 +1,24 @@
-import Layout from '@/components/layouts/admin';
+import { Config } from '@/config';
 import { useRouter } from 'next/router';
-import ErrorMessage from '@/components/ui/error-message';
-import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Config } from '@/config';
-import CreateOrUpdateTreatmentForm from '@/components/treatment/treatment-form';
-import { useTreatmentQuery } from '@/data/treatment';
+// hooks
+import { useTreatmentPlanQuery } from '@/data/treatment-plan';
+// component
+import Layout from '@/components/layouts/admin';
+import Loader from '@/components/ui/loader/loader';
+import ErrorMessage from '@/components/ui/error-message';
+import CreateOrUpdateTreatmentPlanForm from '@/components/treatment-plan/treatment-plan-form';
 
-export default function updateTreatmentPage() {
+export default function updateTreatmentPlanPage() {
   const { query, locale } = useRouter();
   const { t } = useTranslation();
+  // query
   const {
-    treatment,
+    treatmentPlan,
     loading,
     error,
-  } = useTreatmentQuery({
+  } = useTreatmentPlanQuery({
     slug: query.id as string,
     language:
       query.action!.toString() === 'edit' ? locale! : Config.defaultLanguage,
@@ -28,16 +31,16 @@ export default function updateTreatmentPage() {
     <>
       <div className="flex border-b border-dashed border-border-base pb-5 md:pb-7">
         <h1 className="text-lg font-semibold text-heading">
-          {t('form:form-title-edit-treatment')}
+          {t('form:form-title-edit-treatment-plan')}
         </h1>
       </div>
 
-      <CreateOrUpdateTreatmentForm initialValues={treatment} />
+      <CreateOrUpdateTreatmentPlanForm initialValues={treatmentPlan} />
     </>
   );
 }
 
-updateTreatmentPage.Layout = Layout;
+updateTreatmentPlanPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {

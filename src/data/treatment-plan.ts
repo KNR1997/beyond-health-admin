@@ -53,8 +53,8 @@ export const useCreateTreatmentPlanMutation = () => {
   return useMutation(treatmentPlanClient.create, {
     onSuccess: async () => {
       const generateRedirectUrl = router.query.shop
-        ? `/${router.query.shop}${Routes.treatment.list}`
-        : Routes.treatment.list;
+        ? `/${router.query.shop}${Routes.treatmentPlan.list}`
+        : Routes.treatmentPlan.list;
       await Router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
       });

@@ -1,30 +1,95 @@
-import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { animateScroll } from 'react-scroll';
+import { useTranslation } from 'next-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Control, FieldErrors, useForm } from 'react-hook-form';
+// form-validations
+import { treatmentPlanValidationSchema } from './treatment-plan-validation-schema';
+// types
+import { Dentist, Patient, TreatmentPlan } from '@/types';
+// hooks
+import { useDentistsQuery } from '@/data/dentist';
+import { usePatientsQuery } from '@/data/patient';
+import { useCreateTreatmentPlanMutation, useUpdateTreatmentPlanMutation } from '@/data/treatment-plan';
+// components
 import Button from '@/components/ui/button';
-import Input from '@/components/ui/input';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
 import RichTextEditor from '@/components/ui/wysiwyg-editor/editor';
-import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { treatmentValidationSchema } from './treatment-plan-validation-schema';
-import { Patient, Treatment } from '@/types';
-import { animateScroll } from 'react-scroll';
-import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
-import {
-  useCreateTreatmentMutation,
-  useUpdateTreatmentMutation,
-} from '@/data/treatment';
-import SelectInput from '../ui/select-input';
+import SelectInput from '@/components/ui/select-input';
 import ValidationError from '@/components/ui/form-validation-error';
-import Categories from '@/pages/categories';
-import { dummy } from 'react-laag/dist/types';
+import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
+
+function SelectPatient({
+  control,
+  errors,
+}: {
+  control: Control<FormValues>;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const { patients, paginatorInfo, loading, error } = usePatientsQuery({
+    limit: 20,
+  });
+  return (
+    <div className="mb-5">
+      <SelectInput
+        label={t('form:input-label-patient')}
+        required
+        name="patient"
+        control={control}
+        // @ts-ignore
+        getOptionLabel={(option: Patient) =>
+          `${option.name}`
+        }
+        // @ts-ignore
+        getOptionValue={(option: Patient) => option.id}
+
+        options={patients!}
+        isLoading={loading}
+        isClearable={true}
+      />
+      <ValidationError message={t(errors.patient?.message)} />
+    </div>
+  );
+}
+
+function SelectDoctor({
+  control,
+  errors,
+}: {
+  control: Control<FormValues>;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const { dentists, paginatorInfo, loading, error } = useDentistsQuery({
+    limit: 20,
+  });
+  return (
+    <div className="mb-5">
+      <SelectInput
+        label={t('form:input-label-dentist')}
+        required
+        name="dentist"
+        control={control}
+        isClearable={true}
+        // @ts-ignore
+        getOptionLabel={(option: Dentist) =>
+          `${option.user?.first_name} ${option.user?.last_name}`
+        }
+        // @ts-ignore
+        getOptionValue={(option: Dentist) => option.id}
+        options={dentists!}
+        isLoading={loading}
+      />
+      <ValidationError message={t(errors.dentist?.message)} />
+    </div>
+  );
+}
 
 type FormValues = {
-  name: string;
-  category: { label: string; value: string };
-  duration: number;
-  cost: number;
+  patient: Patient;
+  dentist: Dentist;
   description: string;
 };
 
@@ -33,36 +98,11 @@ const defaultValues = {
   description: '',
 };
 
-const categoryOptions = [
-  {
-    label: 'Preventive',
-    value: 'preventive',
-  },
-  {
-    label: 'Restorative',
-    value: 'restorative',
-  },
-  {
-    label: 'Cosmetic',
-    value: 'cosmetic',
-  },
-  {
-    label: 'Orthodontics',
-    value: 'ortho',
-  },
-  {
-    label: 'Surgical',
-    value: 'surgical',
-  },
-];
-
 type IProps = {
-  initialValues?: Treatment;
+  initialValues?: TreatmentPlan;
 };
 
-export default function CreateOrUpdateTreatmentForm({
-  initialValues,
-}: IProps) {
+export default function CreateOrUpdateTreatmentForm({ initialValues }: IProps) {
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -77,21 +117,17 @@ export default function CreateOrUpdateTreatmentForm({
     defaultValues: initialValues
       ? {
         ...initialValues,
-        category: categoryOptions.find(
-          (categoryOption) =>
-            categoryOption.value == initialValues.category,
-        ),
       }
       : defaultValues,
     //@ts-ignore
-    resolver: yupResolver(treatmentValidationSchema),
+    resolver: yupResolver(treatmentPlanValidationSchema),
     context: { isEditMode: !!initialValues },
   });
 
-  const { mutate: createTreatment, isLoading: creating } =
-    useCreateTreatmentMutation();
-  const { mutate: updateTreatment, isLoading: updating } =
-    useUpdateTreatmentMutation();
+  const { mutate: createTreatmentPlan, isLoading: creating } =
+    useCreateTreatmentPlanMutation();
+  const { mutate: updateTreatmentPlan, isLoading: updating } =
+    useUpdateTreatmentPlanMutation();
 
   const handleMutationError = (error: any) => {
     Object.keys(error?.response?.data).forEach((field: any) => {
@@ -105,18 +141,16 @@ export default function CreateOrUpdateTreatmentForm({
 
   const onSubmit = async (values: FormValues) => {
     const input = {
-      name: values.name,
-      category: values.category.value,
-      duration: values.duration,
-      cost: values.cost,
+      patient: values.patient.id,
+      dentist: values.dentist.id,
       description: values.description,
     };
     const mutationOptions = { onError: handleMutationError };
 
     if (!initialValues) {
-      createTreatment(input, mutationOptions);
+      createTreatmentPlan(input, mutationOptions);
     } else {
-      updateTreatment(
+      updateTreatmentPlan(
         {
           ...input,
           id: initialValues.id!,
@@ -132,50 +166,14 @@ export default function CreateOrUpdateTreatmentForm({
         <Description
           title={t('form:input-label-description')}
           details={`${initialValues
-            ? t('form:item-description-edit')
-            : t('form:item-description-add')
+              ? t('form:item-description-edit')
+              : t('form:item-description-add')
             } ${t('form:treatment-form-info-help-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
         <Card className="w-full sm:w-8/12 md:w-2/3">
-          <Input
-            label={t('form:input-label-name')}
-            {...register('name')}
-            type="text"
-            variant="outline"
-            className="mb-4"
-            error={t(errors.name?.message!)}
-            required
-          />
-          <div className="mb-5">
-            <SelectInput
-              required
-              label={t('form:input-label-select-category')}
-              name="category"
-              control={control}
-              options={categoryOptions}
-              isClearable={true}
-            />
-            <ValidationError message={t(errors.category?.message)} />
-          </div>
-          <Input
-            label={t('form:input-label-duration')}
-            {...register('duration')}
-            type="number"
-            variant="outline"
-            className="mb-4"
-            error={t(errors.duration?.message!)}
-            required
-          />
-          <Input
-            label={t('form:input-label-cost')}
-            {...register('cost')}
-            type="number"
-            variant="outline"
-            className="mb-4"
-            error={t(errors.cost?.message!)}
-            required
-          />
+          <SelectPatient control={control} errors={errors} />
+          <SelectDoctor control={control} errors={errors} />
           <RichTextEditor
             title={t('form:input-description')}
             control={control}
@@ -206,8 +204,8 @@ export default function CreateOrUpdateTreatmentForm({
             disabled={creating || updating}
           >
             {initialValues
-              ? t('form:button-label-update-treatment')
-              : t('form:button-label-add-treatment')}
+              ? t('form:button-label-update-treatment-plan')
+              : t('form:button-label-add-treatment-plan')}
           </Button>
         </div>
       </StickyFooterPanel>

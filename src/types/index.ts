@@ -735,14 +735,16 @@ export interface TermsAndConditionsInput {
 }
 
 export interface TreatmentInput {
-  title: string;
-  description?: string;
-  shop_id?: string;
+  name: string;
+  category: string;
+  duration: number;
+  cost: number;
+  description: string;
 }
 
 export interface TreatmentPlanInput {
   patient: string;
-  doctor: string;
+  dentist: string;
 }
 
 export interface StoreNoticeUserToNotifyInput {
