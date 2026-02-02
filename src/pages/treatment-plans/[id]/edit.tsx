@@ -1,4 +1,3 @@
-import { Config } from '@/config';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -20,8 +19,6 @@ export default function updateTreatmentPlanPage() {
     error,
   } = useTreatmentPlanQuery({
     slug: query.id as string,
-    language:
-      query.action!.toString() === 'edit' ? locale! : Config.defaultLanguage,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
