@@ -111,7 +111,7 @@ export default function CreateOrUpdateTreatmenPlanItemsForm({
     const input = {
       treatment_plan_id: treatmentPlanId,
       items: values.items.map((item) => ({
-        id: item.id,
+        id: item.db_id == "" ? null : item.db_id,
         treatment_id: item?.treatment?.id,
         tooth_number: item.tooth_number,
         cost: item.cost,
@@ -151,7 +151,7 @@ export default function CreateOrUpdateTreatmenPlanItemsForm({
                 <div className="grid grid-cols-1 gap-5 sm:grid-cols-5">
                   <div className="grid grid-cols-1 gap-5 sm:col-span-4">
                     <Input
-                      {...register(`items.${index}.id` as const)}
+                      {...register(`items.${index}.db_id` as const)}
                       className="hidden"
                     />
                     <div>
