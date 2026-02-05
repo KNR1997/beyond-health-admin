@@ -591,6 +591,15 @@ export interface TreatmentPlan {
   id: string;
   patient: Patient;
   doctor: User;
+  deliveryTime: any;
+}
+
+export interface TreatmentPlanItem {
+  id: string;
+  treatment: Treatment;
+  tooth_number: string;
+  notes: string;
+  cost: string;
 }
 
 export interface DentalProblemInput {
@@ -1679,6 +1688,11 @@ export declare type AddStaffInput = {
   password: string;
   name: string;
   shop_id: number;
+};
+
+export declare type AddTreatmentPlanItemsInput = {
+  treatment_plan_id: string;
+  items: any;
 };
 
 export declare type ApproveShopInput = {
