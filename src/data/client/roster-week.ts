@@ -3,6 +3,8 @@ import {
   CreateRosterInput,
   QueryOptions,
   Roster,
+  RosterAssignment,
+  RosterAssignmentPaginator,
   RosterPaginator,
   RosterQueryOptions,
 } from '@/types';
@@ -19,5 +21,10 @@ export const rosterClient = {
       ...params,
       search: HttpClient.formatSearchParams({ name }),
     });
+  },
+  assignments: (rosterWeekId: string) => {
+    return HttpClient.get<RosterAssignmentPaginator>(
+      `${API_ENDPOINTS.ROSTER_WEEKS}/${rosterWeekId}/assignments`,
+    );
   },
 };

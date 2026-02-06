@@ -4,3 +4,8 @@ export const treatmentPlanItemsKey = (treatmentPlanId: string) => [
   API_ENDPOINTS.TREATMENT_PLAN_ITEMS,
   treatmentPlanId,
 ];
+
+export const rosterAssignmentsKey = (rosterWeekId: string) => [
+  API_ENDPOINTS.ROSTER_WEEKS,
+  rosterWeekId,
+];

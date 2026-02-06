@@ -10,9 +10,12 @@ import {
   GetParams,
   Roster,
   RosterPaginator,
+  RosterAssignment,
+  RosterAssignmentPaginator,
 } from '@/types';
 import { Config } from '@/config';
 import { rosterClient } from './client/roster-week';
+import { rosterAssignmentsKey } from '@/utils/queryKeys';
 
 export const useRosterWeeksQuery = (options: Partial<RosterQueryOptions>) => {
   const { data, error, isLoading } = useQuery<RosterPaginator, Error>(
@@ -99,4 +102,22 @@ export const useDeleteRosterMutation = () => {
       queryClient.invalidateQueries(API_ENDPOINTS.ROSTER_WEEKS);
     },
   });
+};
+
+export const useRosterWeekAssignmentsQuery = ({
+  rosterWeekId,
+}: {
+  rosterWeekId: string;
+}) => {
+  const { data, error, isLoading } = useQuery<RosterAssignmentPaginator, Error>(
+    rosterAssignmentsKey(rosterWeekId),
+    () => rosterClient.assignments(rosterWeekId),
+  );
+
+  return {
+    rosterAssignments: data?.data ?? [],
+    paginatorInfo: mapPaginatorData(data),
+    error,
+    loading: isLoading,
+  };
 };

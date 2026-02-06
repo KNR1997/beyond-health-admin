@@ -133,6 +133,12 @@ export const Routes = {
   },
   roster: {
     ...routesFactory('/roster-weeks'),
+    assignments: (id: string) => {
+      return `/roster-weeks/${id}/assignments`
+    },
+    assignmentCreate: (id: string) => {
+      return `/roster-weeks/${id}/assignments/create`
+    }
   },
   faqs: {
     ...routesFactory('/faqs'),

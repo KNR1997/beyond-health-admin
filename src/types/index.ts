@@ -970,6 +970,22 @@ export interface Roster {
   status: string;
 }
 
+export interface RosterAssignment {
+  id: string;
+  roster_week: string;
+  week_start_date: string;
+  week_end_date: string;
+  status: string;
+}
+
+export interface Shift {
+  id: string;
+  code: string;
+  start_time: string;
+  end_time: string;
+  order_index: number;
+}
+
 export interface CreateTagInput {
   name: string;
   type?: ConnectTypeBelongsTo;
@@ -981,6 +997,12 @@ export interface CreateTagInput {
 export interface CreateRosterInput {
   week_start_date: string;
   week_end_date: string;
+}
+
+export interface CreateRosterAssignmentInput {
+  roster_week: string;
+  user: string;
+  shift: string;
 }
 
 export interface Author {
@@ -2219,6 +2241,10 @@ export interface ReviewPaginator extends PaginatorInfo<Review> {}
 export interface TagPaginator extends PaginatorInfo<Tag> {}
 
 export interface RosterPaginator extends PaginatorInfo<Roster> {}
+
+export interface RosterAssignmentPaginator extends PaginatorInfo<RosterAssignment> {}
+
+export interface ShiftPaginator extends PaginatorInfo<Shift> {}
 
 export interface AttributePaginator extends PaginatorInfo<Attribute> {}
 
