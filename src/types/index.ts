@@ -963,12 +963,24 @@ export interface Tag {
   updated_at?: string;
 }
 
+export interface Roster {
+  id: string;
+  week_start_date: string;
+  week_end_date: string;
+  status: string;
+}
+
 export interface CreateTagInput {
   name: string;
   type?: ConnectTypeBelongsTo;
   details?: string;
   image?: AttachmentInput;
   icon?: string;
+}
+
+export interface CreateRosterInput {
+  week_start_date: string;
+  week_end_date: string;
 }
 
 export interface Author {
@@ -1914,6 +1926,10 @@ export interface TagQueryOptions extends QueryOptions {
   parent: number | null;
 }
 
+export interface RosterQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface InvoiceTranslatedText {
   subtotal: string;
   discount: string;
@@ -2201,6 +2217,8 @@ export interface TaxPaginator extends PaginatorInfo<Tax> {}
 export interface ReviewPaginator extends PaginatorInfo<Review> {}
 
 export interface TagPaginator extends PaginatorInfo<Tag> {}
+
+export interface RosterPaginator extends PaginatorInfo<Roster> {}
 
 export interface AttributePaginator extends PaginatorInfo<Attribute> {}
 

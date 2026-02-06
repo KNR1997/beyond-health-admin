@@ -40,6 +40,8 @@
   "table-item-order-date": "Order Date",
   "table-item-icon": "Icon",
   "table-item-slug": "Slug",
+  "table-item-week-start": "Week Start",
+  "table-item-week-end": "Week End",
   "table-item-sku": "SKU",
   "table-item-details": "Details",
   "table-item-delivery-fee": "Delivery Fee",
