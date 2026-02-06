@@ -131,6 +131,9 @@ export const Routes = {
   notifyLogs: {
     ...routesFactory('/notify-logs'),
   },
+  roster: {
+    ...routesFactory('/roster-weeks'),
+  },
   faqs: {
     ...routesFactory('/faqs'),
   },

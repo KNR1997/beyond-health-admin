@@ -53,3 +53,4 @@ export { DoctorManProfileIcon } from '@/components/icons/sidebar/doctor-man-prof
 export { InjectionVaccineIcon } from '@/components/icons/sidebar/injection-vaccine';
 export { HospitalFileIcon } from '@/components/icons/sidebar/hospital-file';
 export { ReportIcon } from '@/components/icons/sidebar/report';
+export { ScheduleRepeatIcon } from '@/components/icons/sidebar/schedule-repeat';

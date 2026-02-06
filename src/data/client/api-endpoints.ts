@@ -26,6 +26,7 @@ export const API_ENDPOINTS = {
   SETTINGS: 'settings',
   CATEGORIES: 'categories',
   TAGS: 'tags',
+  ROSTER_WEEKS: 'roster-weeks',
   TYPES: 'types',
   PROFILE_UPDATE: 'profile-update',
   LOGOUT: 'logout',
