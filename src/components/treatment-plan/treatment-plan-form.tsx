@@ -102,7 +102,7 @@ type IProps = {
   initialValues?: TreatmentPlan;
 };
 
-export default function CreateOrUpdateTreatmentForm({ initialValues }: IProps) {
+export default function CreateOrUpdateTreatmentPlanForm({ initialValues }: IProps) {
   const router = useRouter();
   const { t } = useTranslation();
 

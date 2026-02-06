@@ -1,24 +1,22 @@
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
 // hooks
-import { useTreatmentPlanQuery } from '@/data/treatment-plan';
-// component
+import { useRosterQuery } from '@/data/roster-week';
+// components
 import Layout from '@/components/layouts/admin';
 import Loader from '@/components/ui/loader/loader';
 import ErrorMessage from '@/components/ui/error-message';
-import CreateOrUpdateTreatmentPlanForm from '@/components/treatment-plan/treatment-plan-form';
-import TreatmentPlanEditPageHeader from '@/components/treatment-plan/treatment-plan-edit-page-header';
+import CreateOrUpdateRosterForm from '@/components/roster/roster-form';
+import RosterPageHeader from '@/components/roster/roster-page-header';
 
-export default function updateTreatmentPlanPage() {
-  const { query } = useRouter();
+export default function UpdateRosterWeekPage() {
   const { t } = useTranslation();
-  // query
-  const {
-    treatmentPlan,
-    loading,
-    error,
-  } = useTreatmentPlanQuery({
+  const { query } = useRouter();
+
+  const { roster, loading, error } = useRosterQuery({
     slug: query.id as string,
   });
 
@@ -27,16 +25,19 @@ export default function updateTreatmentPlanPage() {
 
   return (
     <>
-      <TreatmentPlanEditPageHeader
-        pageTitle="form:form-title-edit-treatment-plan"
-        treatmentPlanId={query.id as string}
+      <RosterPageHeader
+        pageTitle="form:form-title-edit-roster"
+        rosterWeekId={query.id as string}
       />
-      <CreateOrUpdateTreatmentPlanForm initialValues={treatmentPlan} />
+      <CreateOrUpdateRosterForm initialValues={roster} />
     </>
   );
 }
 
-updateTreatmentPlanPage.Layout = Layout;
+UpdateRosterWeekPage.authenticate = {
+  permissions: adminOnly,
+};
+UpdateRosterWeekPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {

@@ -30,6 +30,9 @@ export const Routes = {
   },
   treatmentPlan: {
     ...routesFactory('/treatment-plans'),
+    items: (id: string) => {
+      return `/treatment-plans/${id}/items`
+    }
   },
   dentalProblem: {
     ...routesFactory('/dental-problems'),
@@ -128,6 +131,15 @@ export const Routes = {
   notifyLogs: {
     ...routesFactory('/notify-logs'),
   },
+  roster: {
+    ...routesFactory('/roster-weeks'),
+    assignments: (id: string) => {
+      return `/roster-weeks/${id}/assignments`
+    },
+    assignmentCreate: (id: string) => {
+      return `/roster-weeks/${id}/assignments/create`
+    }
+  },
   faqs: {
     ...routesFactory('/faqs'),
   },
@@ -211,8 +223,8 @@ function routesFactory(endpoint: string) {
     editByIdWithoutLang: (id: string, shop?: string) => {
       return shop ? `/${shop}${endpoint}/${id}/edit` : `${endpoint}/${id}/edit`;
     },
-    diseases: (slug: string) => {
-      return `${endpoint}/${slug}/diseases`
-    }
+    // diseases: (slug: string) => {
+    //   return `${endpoint}/${slug}/diseases`
+    // }
   };
 }

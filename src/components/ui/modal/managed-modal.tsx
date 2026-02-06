@@ -46,6 +46,12 @@ const ProductDeleteView = dynamic(
 const TypeDeleteView = dynamic(
   () => import('@/components/group/group-delete-view'),
 );
+const RosterDeleteView = dynamic(
+  () => import('@/components/roster/roster-delete-view'),
+);
+const RosterAssignmentDeleteView = dynamic(
+  () => import('@/components/roster-assignment/roster-assignment-delete-view'),
+);
 const AttributeDeleteView = dynamic(
   () => import('@/components/attribute/attribute-delete-view'),
 );
@@ -187,6 +193,10 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <ShippingDeleteView />;
     case 'DELETE_TAG':
       return <TagDeleteView />;
+      case 'DELETE_ROSTER_ASSIGNMENT':
+      return <RosterAssignmentDeleteView />;
+    case 'DELETE_ROSTER':
+      return <RosterDeleteView />;
     case 'DELETE_MANUFACTURER':
       return <ManufacturerDeleteView />;
     case 'DELETE_AUTHOR':

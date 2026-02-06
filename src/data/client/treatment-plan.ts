@@ -1,7 +1,10 @@
 import {
+  AddStaffInput,
+  AddTreatmentPlanItemsInput,
   QueryOptions,
   TreatmentPlan,
   TreatmentPlanInput,
+  TreatmentPlanItem,
   TreatmentPlanPaginator,
   TreatmentPlanQueryOptions,
 } from '@/types';
@@ -14,10 +17,30 @@ export const treatmentPlanClient = {
     API_ENDPOINTS.TREATMENT_PLANS,
   ),
   paginated: ({ name, ...params }: Partial<TreatmentPlanQueryOptions>) => {
-    return HttpClient.get<TreatmentPlanPaginator>(API_ENDPOINTS.TREATMENT_PLANS, {
-      searchJoin: 'and',
-      ...params,
-      search: HttpClient.formatSearchParams({ name }),
-    });
+    return HttpClient.get<TreatmentPlanPaginator>(
+      API_ENDPOINTS.TREATMENT_PLANS,
+      {
+        searchJoin: 'and',
+        ...params,
+        search: HttpClient.formatSearchParams({ name }),
+      },
+    );
+  },
+  planItems: (treatmentPlanId: string) => {
+    return HttpClient.get<TreatmentPlanItem[]>(
+      `${API_ENDPOINTS.TREATMENT_PLANS}/${treatmentPlanId}/items`,
+    );
+  },
+  createItems: (input: AddTreatmentPlanItemsInput) => {
+    return HttpClient.post<any>(
+      `${API_ENDPOINTS.TREATMENT_PLANS}/${input.treatment_plan_id}/items`,
+      input,
+    );
+  },
+  updateItems: (input: AddTreatmentPlanItemsInput) => {
+    return HttpClient.put<any>(
+      `${API_ENDPOINTS.TREATMENT_PLANS}/${input.treatment_plan_id}/items`,
+      input,
+    );
   },
 };

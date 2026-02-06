@@ -122,6 +122,32 @@ export const siteSettings = {
         ],
       },
 
+      roster: {
+        href: '',
+        label: 'text-rosters',
+        icon: 'ScheduleRepeatIcon',
+        childMenu: [
+          {
+            href: '',
+            label: 'text-rosters',
+            icon: 'ScheduleRepeatIcon',
+            childMenu: [
+              {
+                href: Routes.roster.list,
+                label: 'text-all-rosters',
+                icon: 'ProductsIcon',
+                permissions: adminOwnerAndStaffOnly,
+              },
+              {
+                href: Routes.roster.create,
+                label: 'text-new-rosters',
+                icon: 'ProductsIcon',
+              },
+            ],
+          },
+        ],
+      },
+
       report: {
         href: '',
         label: 'text-reports',
