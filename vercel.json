@@ -1,7 +1,7 @@
 {
   "env": {
-    "NEXT_PUBLIC_REST_API_ENDPOINT": "https://mock.redq.io/api",
-    "NEXT_PUBLIC_SHOP_URL": "https://pickbazar-react-rest.vercel.app",
+    "NEXT_PUBLIC_REST_API_ENDPOINT": "https://beyond-health-ghcr-latest.onrender.com/api",
+    "NEXT_PUBLIC_SHOP_URL": "",
     "NEXT_PUBLIC_GOOGLE_MAP_API_KEY": "",
     "NEXT_PUBLIC_AUTH_TOKEN_KEY": "AUTH_CRED",
     "APPLICATION_MODE": "production",
@@ -17,12 +17,12 @@
     "NEXT_PUBLIC_STORE_NOTICE_CREATED_EVENT": "store.notice.event",
     "NEXT_PUBLIC_ORDER_CREATED_EVENT": "order.create.event",
     "NEXT_PUBLIC_MESSAGE_EVENT": "message.event",
-    "NEXT_PUBLIC_VERSION": "11.10.1"
+    "NEXT_PUBLIC_VERSION": "0.1.0"
   },
   "build": {
     "env": {
-      "NEXT_PUBLIC_REST_API_ENDPOINT": "https://mock.redq.io/api",
-      "NEXT_PUBLIC_SHOP_URL": "https://pickbazar-react-rest.vercel.app",
+      "NEXT_PUBLIC_REST_API_ENDPOINT": "https://beyond-health-ghcr-latest.onrender.com/api",
+      "NEXT_PUBLIC_SHOP_URL": "",
       "NEXT_PUBLIC_GOOGLE_MAP_API_KEY": "",
       "NEXT_PUBLIC_AUTH_TOKEN_KEY": "AUTH_CRED",
       "APPLICATION_MODE": "production",
@@ -38,7 +38,7 @@
       "NEXT_PUBLIC_STORE_NOTICE_CREATED_EVENT": "store.notice.event",
       "NEXT_PUBLIC_ORDER_CREATED_EVENT": "order.create.event",
       "NEXT_PUBLIC_MESSAGE_EVENT": "message.event",
-      "NEXT_PUBLIC_VERSION": "11.10.1"
+      "NEXT_PUBLIC_VERSION": "0.1.0"
     }
   }
 }
