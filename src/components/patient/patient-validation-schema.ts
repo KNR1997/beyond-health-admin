@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
 export const patientValidationSchema = yup.object().shape({
-  first_name: yup.string().required('form:error-first-name-required'),
-  last_name: yup.string().required('form:error-last-name-required'),
+  name: yup.string().required('form:error-name-required'),
+  // last_name: yup.string().required('form:error-last-name-required'),
   age: yup
     .number()
     .typeError('form:error-age-must-number')
