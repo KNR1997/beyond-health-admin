@@ -21,9 +21,9 @@ export const useCreatePatientMutation = () => {
 
   return useMutation(patientClient.create, {
     onSuccess: async (data: Patient) => {
-      const generateRedirectUrl = data.id
-        ? Routes.patient.diseases(data.id)
-        : Routes.patient.list;
+      // const generateRedirectUrl = data.id
+      //   ? Routes.patient.diseases(data.id)
+      //   : Routes.patient.list;
       await Router.push(Routes.patient.list, undefined, {
         locale: Config.defaultLanguage,
       });
@@ -61,9 +61,9 @@ export const useUpdatePatientMutation = () => {
   const router = useRouter();
   return useMutation(patientClient.update, {
     onSuccess: async (data) => {
-      const generateRedirectUrl = data.id
-        ? Routes.patient.diseases(data.id)
-        : Routes.patient.list;
+      // const generateRedirectUrl = data.id
+      //   ? Routes.patient.diseases(data.id)
+      //   : Routes.patient.list;
       await router.push(Routes.patient.list, undefined, {
         locale: Config.defaultLanguage,
       });
