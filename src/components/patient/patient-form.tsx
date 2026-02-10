@@ -21,14 +21,12 @@ import {
 } from '@/data/patient';
 
 type FormValues = {
-  first_name: string;
-  last_name: string;
+  name: string;
   age: string;
   nic: string;
   email: string;
   mobile_number: string;
   gender: { label: string; value: string };
-  //password: string;
 };
 
 const defaultValues = {
