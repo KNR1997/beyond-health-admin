@@ -3,11 +3,10 @@ import * as yup from 'yup';
 export const patientValidationSchema = yup.object().shape({
   name: yup.string().required('form:error-name-required'),
   // last_name: yup.string().required('form:error-last-name-required'),
-  age: yup
-    .number()
-    .typeError('form:error-age-must-number')
-    .positive('form:error-age-must-positive')
-    .required('form:error-age-required'),
+  dob: yup
+    .date()
+    .typeError('form:error-dob-must-date')
+    .required('form:error-dob-required'),
   mobile_number: yup
     .string()
     .required('form:error-contact-number-required')
