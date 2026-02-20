@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import Input from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import Button from '@/components/ui/button';
@@ -22,7 +23,7 @@ import {
 
 type FormValues = {
   name: string;
-  age: string;
+  dob: Date;
   nic: string;
   email: string;
   mobile_number: string;
@@ -96,7 +97,7 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
       email: values.email,
       mobile_number: values.mobile_number,
       gender: values.gender.value,
-      age: values.age,
+      dob: format(new Date(values.dob), 'yyyy-MM-dd'),
       nic: values.nic,
       password: values.mobile_number,
     };
@@ -156,12 +157,12 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
             required
           /> */}
           <Input
-            label={t('form:input-label-age')}
-            {...register('age')}
-            type="text"
+            label={t('form:input-label-dob')}
+            {...register('dob')}
+            type="date"
             variant="outline"
             className="mb-4"
-            error={t(errors.age?.message!)}
+            error={t(errors.dob?.message!)}
             required
           />
           <Input
