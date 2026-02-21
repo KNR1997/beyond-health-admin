@@ -16,6 +16,7 @@ import {
 // components
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
+import SelectInput from '@/components/ui/select-input';
 import DatePicker from '@/components/ui/date-picker';
 import Description from '@/components/ui/description';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
@@ -23,12 +24,28 @@ import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 type FormValues = {
   week_start_date: Date | string;
   week_end_date: Date | string;
+  status: { label: string; value: string };
 };
 
 const defaultValues = {
   week_start_date: null,
   week_end_date: null,
 };
+
+const statusOptions = [
+  {
+    label: 'Draft',
+    value: 'DRAFT',
+  },
+  {
+    label: 'Published',
+    value: 'PUBLISHED',
+  },
+  {
+    label: 'Locked',
+    value: 'LOCKED',
+  },
+];
 
 type IProps = {
   initialValues?: any;
@@ -72,6 +89,7 @@ export default function CreateOrUpdateRosterForm({ initialValues }: IProps) {
     const input = {
       week_start_date: format(new Date(values.week_start_date), 'yyyy-MM-dd'),
       week_end_date: format(new Date(values.week_end_date), 'yyyy-MM-dd'),
+      status: values.status.value,
     };
 
     try {
@@ -130,8 +148,19 @@ export default function CreateOrUpdateRosterForm({ initialValues }: IProps) {
             error={t(errors.week_end_date?.message!)}
             dateFormat="yyyy MMMM d"
           />
+
+          <div className="mb-5">
+                  <SelectInput
+                    label={t('form:input-label-status')}
+                    name="status"
+                    control={control}
+                    options={statusOptions}
+                    isClearable={true}
+                  />
+          </div>
         </Card>
       </div>
+       
       <StickyFooterPanel className="z-0">
         <div className="text-end">
           {initialValues && (
