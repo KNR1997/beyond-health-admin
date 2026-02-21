@@ -592,6 +592,7 @@ export interface TreatmentPlan {
   patient: Patient;
   doctor: User;
   deliveryTime: any;
+  status: string;
 }
 
 export interface TreatmentPlanItem {

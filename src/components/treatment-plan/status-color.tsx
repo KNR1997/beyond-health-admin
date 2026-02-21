@@ -7,7 +7,7 @@ const StatusColor = (status: string) => {
   } else if (status?.toLowerCase() === 'in_progress') {
     bg_class = 'bg-status-processing bg-opacity-10 text-status-processing';
   } else if (status?.toLowerCase() === 'completed') {
-    bg_class = 'bg-status-canceled bg-opacity-10 text-status-canceled';
+    bg_class = 'bg-status-complete bg-opacity-10 text-status-complete';
   } else if (status?.toLowerCase() === 'cancelled') {
     bg_class = 'bg-status-canceled bg-opacity-10 text-status-canceled';
   }
