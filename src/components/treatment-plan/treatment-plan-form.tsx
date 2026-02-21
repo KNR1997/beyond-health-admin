@@ -10,7 +10,10 @@ import { Dentist, Patient, TreatmentPlan } from '@/types';
 // hooks
 import { useDentistsQuery } from '@/data/dentist';
 import { usePatientsQuery } from '@/data/patient';
-import { useCreateTreatmentPlanMutation, useUpdateTreatmentPlanMutation } from '@/data/treatment-plan';
+import {
+  useCreateTreatmentPlanMutation,
+  useUpdateTreatmentPlanMutation,
+} from '@/data/treatment-plan';
 // components
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
@@ -39,12 +42,9 @@ function SelectPatient({
         name="patient"
         control={control}
         // @ts-ignore
-        getOptionLabel={(option: Patient) =>
-          `${option.name}`
-        }
+        getOptionLabel={(option: Patient) => `${option.name}`}
         // @ts-ignore
         getOptionValue={(option: Patient) => option.id}
-
         options={patients!}
         isLoading={loading}
         isClearable={true}
@@ -90,11 +90,13 @@ function SelectDoctor({
 type FormValues = {
   patient: Patient;
   dentist: Dentist;
+  status: { label: string; value: string };
   description: string;
 };
 
 const defaultValues = {
   name: '',
+  status: '',
   description: '',
 };
 
@@ -102,7 +104,32 @@ type IProps = {
   initialValues?: TreatmentPlan;
 };
 
-export default function CreateOrUpdateTreatmentPlanForm({ initialValues }: IProps) {
+const statusOptions = [
+  {
+    label: 'Proposed',
+    value: 'proposed',
+  },
+  {
+    label: 'Accepted',
+    value: 'accepted',
+  },
+  {
+    label: 'In Progress',
+    value: 'in_progress',
+  },
+  {
+    label: 'Completed',
+    value: 'completed',
+  },
+  {
+    label: 'Cancelled',
+    value: 'cancelled',
+  },
+];
+
+export default function CreateOrUpdateTreatmentPlanForm({
+  initialValues,
+}: IProps) {
   const router = useRouter();
   const { t } = useTranslation();
 
@@ -116,8 +143,11 @@ export default function CreateOrUpdateTreatmentPlanForm({ initialValues }: IProp
     // @ts-ignore
     defaultValues: initialValues
       ? {
-        ...initialValues,
-      }
+          ...initialValues,
+          status: statusOptions?.find(
+            (option) => option?.value === initialValues?.status,
+          ),
+        }
       : defaultValues,
     //@ts-ignore
     resolver: yupResolver(treatmentPlanValidationSchema),
@@ -143,6 +173,7 @@ export default function CreateOrUpdateTreatmentPlanForm({ initialValues }: IProp
     const input = {
       patient: values.patient.id,
       dentist: values.dentist.id,
+      status: values.status.value,
       description: values.description,
     };
     const mutationOptions = { onError: handleMutationError };
@@ -165,15 +196,25 @@ export default function CreateOrUpdateTreatmentPlanForm({ initialValues }: IProp
       <div className="flex flex-wrap my-5 sm:my-8">
         <Description
           title={t('form:input-label-description')}
-          details={`${initialValues
+          details={`${
+            initialValues
               ? t('form:item-description-edit')
               : t('form:item-description-add')
-            } ${t('form:treatment-form-info-help-text')}`}
+          } ${t('form:treatment-form-info-help-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <SelectPatient control={control} errors={errors} />
           <SelectDoctor control={control} errors={errors} />
+          <div className="mb-5">
+            <SelectInput
+              label={t('form:input-label-status')}
+              name="status"
+              control={control}
+              options={statusOptions}
+              isClearable={true}
+            />
+          </div>
           <RichTextEditor
             title={t('form:input-description')}
             control={control}
