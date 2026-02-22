@@ -75,10 +75,7 @@ export const useUpdateDentistMutation = () => {
   const router = useRouter();
   return useMutation(dentistClient.update, {
     onSuccess: async (data) => {
-      const generateRedirectUrl = data.id
-        ? Routes.dentist.diseases(data.id)
-        : Routes.dentist.list;
-      await router.push(generateRedirectUrl, undefined, {
+      await router.push(Routes.dentist.list, undefined, {
         locale: Config.defaultLanguage,
       });
 

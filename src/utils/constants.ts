@@ -3,6 +3,7 @@ import { atom } from 'jotai';
 export const LIMIT = 10;
 export const SUPER_ADMIN = 'super_admin';
 export const ADMIN = 'admin';
+export const DENTIST = 'dentist';
 export const STORE_OWNER = 'store_owner';
 export const STAFF = 'staff';
 export const TOKEN = 'token';

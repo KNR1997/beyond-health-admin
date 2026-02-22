@@ -1,7 +1,9 @@
 import {
+  adminAndDentistOnly,
   adminAndOwnerOnly,
   adminOnly,
   adminOwnerAndStaffOnly,
+  dentistOnly,
   ownerAndStaffOnly,
 } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
@@ -35,7 +37,7 @@ export const siteSettings = {
       href: Routes.profileUpdate,
       labelTransKey: 'authorized-nav-item-profile',
       icon: 'UserIcon',
-      permission: adminOwnerAndStaffOnly,
+      permission: adminAndDentistOnly,
     },
     // {
     //   href: Routes.settings,
@@ -47,7 +49,7 @@ export const siteSettings = {
       href: Routes.logout,
       labelTransKey: 'authorized-nav-item-logout',
       icon: 'LogOutIcon',
-      permission: adminOwnerAndStaffOnly,
+      permission: adminAndDentistOnly,
     },
   ],
   currencyCode: 'USD',
@@ -645,6 +647,15 @@ export const siteSettings = {
         ],
       },
     },
+
+    dentistDashboard: [
+      {
+        href: Routes.dashboard,
+        label: 'sidebar-nav-item-dashboard',
+        icon: 'DashboardIcon',
+        permissions: dentistOnly,
+      },
+    ],
 
     ownerDashboard: [
       {

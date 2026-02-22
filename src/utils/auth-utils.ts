@@ -3,6 +3,7 @@ import SSRCookie from 'cookie';
 import {
   ADMIN,
   AUTH_CRED,
+  DENTIST,
   EMAIL_VERIFIED,
   PERMISSIONS,
   STAFF,
@@ -11,12 +12,14 @@ import {
   TOKEN,
 } from './constants';
 
-export const allowedRoles = [SUPER_ADMIN, STORE_OWNER, STAFF];
-export const adminAndOwnerOnly = [SUPER_ADMIN, STORE_OWNER];
+export const allowedRoles = [SUPER_ADMIN, DENTIST, STORE_OWNER, STAFF];
+export const adminAndOwnerOnly = [SUPER_ADMIN, DENTIST, STORE_OWNER];
 export const adminOwnerAndStaffOnly = [SUPER_ADMIN, ADMIN, STORE_OWNER, STAFF];
+export const adminAndDentistOnly = [SUPER_ADMIN, ADMIN, DENTIST];
 export const adminOnly = [SUPER_ADMIN];
 export const ownerOnly = [STORE_OWNER];
 export const ownerAndStaffOnly = [STORE_OWNER, STAFF];
+export const dentistOnly = [DENTIST];
 
 export function setAuthCredentials(token: string, permissions: any, role: any, refresh: string) {
   Cookie.set(AUTH_CRED, JSON.stringify({ token, permissions, role, refresh }));
