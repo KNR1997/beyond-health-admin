@@ -16,21 +16,22 @@ import { profileValidationSchema } from './profile-validation-schema';
 import PhoneNumberInput from '@/components/ui/phone-input';
 
 type FormValues = {
-  name: string;
-  profile: {
-    id: string;
-    bio: string;
-    contact: string;
-    avatar: {
-      thumbnail: string;
-      original: string;
-      id: string;
-    };
-    notifications: {
-      email: string;
-      enable: boolean;
-    };
-  };
+  display_name: string;
+  mobile_number: string;
+  // profile: {
+  //   id: string;
+  //   bio: string;
+  //   contact: string;
+  //   avatar: {
+  //     thumbnail: string;
+  //     original: string;
+  //     id: string;
+  //   };
+  //   notifications: {
+  //     email: string;
+  //     enable: boolean;
+  //   };
+  // };
 };
 
 export default function ProfileUpdate({ me }: any) {
@@ -47,38 +48,40 @@ export default function ProfileUpdate({ me }: any) {
     //@ts-ignore
     resolver: yupResolver(profileValidationSchema),
     defaultValues: {
-      ...(me &&
-        pick(me, [
-          'name',
-          'profile.bio',
-          'profile.contact',
-          'profile.avatar',
-          'profile.notifications.email',
-          'profile.notifications.enable',
-        ])),
+      ...me
+      // ...(me &&
+      //   pick(me, [
+      //     'name',
+      //     'profile.bio',
+      //     'profile.contact',
+      //     'profile.avatar',
+      //     'profile.notifications.email',
+      //     'profile.notifications.enable',
+      //   ])),
     },
   });
 
   async function onSubmit(values: FormValues) {
-    const { name, profile } = values;
-    const { notifications } = profile;
+    const { display_name } = values;
+    // const { notifications } = profile;
     const input = {
       id: me?.id,
       input: {
-        name: name,
-        profile: {
-          id: me?.profile?.id,
-          bio: profile?.bio,
-          contact: profile?.contact,
-          avatar: {
-            thumbnail: profile?.avatar?.thumbnail,
-            original: profile?.avatar?.original,
-            id: profile?.avatar?.id,
-          },
-          notifications: {
-            ...notifications,
-          },
-        },
+        display_name: values.display_name,
+        mobile_number: values.mobile_number,
+        // profile: {
+        //   id: me?.profile?.id,
+        //   bio: profile?.bio,
+        //   contact: profile?.contact,
+        //   avatar: {
+        //     thumbnail: profile?.avatar?.thumbnail,
+        //     original: profile?.avatar?.original,
+        //     id: profile?.avatar?.id,
+        //   },
+        //   notifications: {
+        //     ...notifications,
+        //   },
+        // },
       },
     };
     updateUser({ ...input });
@@ -105,7 +108,7 @@ export default function ProfileUpdate({ me }: any) {
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
           />
 
-          <Card className="w-full mb-5 sm:w-8/12 md:w-2/3">
+          {/* <Card className="w-full mb-5 sm:w-8/12 md:w-2/3">
             <Input
               label={t('form:input-notification-email')}
               {...register('profile.notifications.email')}
@@ -123,7 +126,7 @@ export default function ProfileUpdate({ me }: any) {
                 {t('form:input-enable-notification')}
               </Label>
             </div>
-          </Card>
+          </Card> */}
         </div>
       ) : (
         ''
@@ -138,23 +141,23 @@ export default function ProfileUpdate({ me }: any) {
         <Card className="w-full mb-5 sm:w-8/12 md:w-2/3">
           <Input
             label={t('form:input-label-name')}
-            {...register('name')}
-            error={t(errors.name?.message!)}
+            {...register('display_name')}
+            error={t(errors.display_name?.message!)}
             variant="outline"
             className="mb-5"
           />
-          <TextArea
+          {/* <TextArea
             label={t('form:input-label-bio')}
             {...register('profile.bio')}
             error={t(errors.profile?.bio?.message!)}
             variant="outline"
             className="mb-6"
-          />
+          /> */}
           <PhoneNumberInput
             label={t('form:input-label-contact')}
-            {...register('profile.contact')}
+            {...register('mobile_number')}
             control={control}
-            error={t(errors.profile?.contact?.message!)}
+            error={t(errors.mobile_number?.message!)}
           />
         </Card>
         <div className="w-full text-end">

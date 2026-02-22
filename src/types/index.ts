@@ -453,6 +453,7 @@ export interface User {
   is_active: boolean;
   created_at: string;
   updated_at: string;
+  display_name: string;
   // profile?: Profile;
   // address: Address[];
   // orders?: OrderPaginator;
@@ -472,9 +473,9 @@ export interface LicenseAdditionalData {
 }
 
 export interface UpdateUser {
-  name?: string;
-  profile?: UserProfileInput;
-  address?: UserAddressUpsertInput[];
+  display_name?: string;
+  // profile?: UserProfileInput;
+  // address?: UserAddressUpsertInput[];
 }
 
 export interface Profile {
@@ -570,6 +571,10 @@ export interface DentistInput {
   specialization: string;
 }
 
+export interface DentistResetPasswordInput {
+  dentist_id: string
+}
+
 export interface DentalProblem {
   id: string;
   name: string;
@@ -653,6 +658,21 @@ export interface StoreNotice {
   updated_at: string;
   deleted_at?: string;
   creator?: any;
+}
+
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: string
+  priority: string;
+}
+
+export interface UserNotification {
+  id: string
+  notification: Notification;
+  user: string;
+  is_read: boolean;
 }
 
 export interface StoreNoticeInput {

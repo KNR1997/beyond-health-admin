@@ -18,11 +18,13 @@ import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
 import DatePicker from '@/components/ui/date-picker';
 import Description from '@/components/ui/description';
+import SelectInput from '@/components/ui/select-input';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 
 type FormValues = {
   week_start_date: Date | string;
   week_end_date: Date | string;
+  status: { label: string; value: string };
 };
 
 const defaultValues = {
@@ -33,6 +35,22 @@ const defaultValues = {
 type IProps = {
   initialValues?: any;
 };
+
+const statusOptions = [
+  {
+    label: 'Draft',
+    value: 'DRAFT',
+  },
+  {
+    label: 'Published',
+    value: 'PUBLISHED',
+  },
+  {
+    label: 'Locked',
+    value: 'LOCKED',
+  },
+];
+
 export default function CreateOrUpdateRosterForm({ initialValues }: IProps) {
   const router = useRouter();
   const { t } = useTranslation();
@@ -49,6 +67,9 @@ export default function CreateOrUpdateRosterForm({ initialValues }: IProps) {
     defaultValues: initialValues
       ? {
           ...initialValues,
+          status: statusOptions?.find(
+            (option) => option?.value === initialValues?.status,
+          ),
         }
       : defaultValues,
     //@ts-ignore
@@ -72,12 +93,11 @@ export default function CreateOrUpdateRosterForm({ initialValues }: IProps) {
     const input = {
       week_start_date: format(new Date(values.week_start_date), 'yyyy-MM-dd'),
       week_end_date: format(new Date(values.week_end_date), 'yyyy-MM-dd'),
+      status: values.status.value,
     };
 
     try {
-      if (
-        !initialValues
-      ) {
+      if (!initialValues) {
         createRoster({
           ...input,
         });
@@ -130,6 +150,15 @@ export default function CreateOrUpdateRosterForm({ initialValues }: IProps) {
             error={t(errors.week_end_date?.message!)}
             dateFormat="yyyy MMMM d"
           />
+          <div className="mb-5">
+            <SelectInput
+              label={t('form:input-label-status')}
+              name="status"
+              control={control}
+              options={statusOptions}
+              isClearable={true}
+            />
+          </div>
         </Card>
       </div>
       <StickyFooterPanel className="z-0">

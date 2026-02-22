@@ -38,6 +38,7 @@ type Props = {
   showAddWalletPoints?: boolean;
   changeRefundStatus?: boolean;
   showMakeAdminButton?: boolean;
+  showResetDentistPasswordButton?: boolean;
   showReplyQuestion?: boolean;
   customLocale?: string;
   isTermsApproved?: boolean;
@@ -70,6 +71,7 @@ const ActionButtons = ({
   showAddWalletPoints = false,
   changeRefundStatus = false,
   showMakeAdminButton = false,
+  showResetDentistPasswordButton = false,
   showReplyQuestion = false,
   customLocale,
   isTermsApproved,
@@ -114,6 +116,10 @@ const ActionButtons = ({
 
   function handleMakeAdmin() {
     openModal('MAKE_ADMIN', id);
+  }
+
+  function handleDentistPassowordReset() {
+    openModal('RESET_DENTIST_PASSWORD', id);
   }
 
   function handleUpdateRefundStatus() {
@@ -187,6 +193,15 @@ const ActionButtons = ({
       {showMakeAdminButton && (
         <button
           onClick={handleMakeAdmin}
+          className="transition duration-200 text-accent hover:text-accent-hover focus:outline-none"
+          title={t('common:text-make-admin')}
+        >
+          <AdminIcon width={17} />
+        </button>
+      )}
+      {showResetDentistPasswordButton && (
+        <button
+          onClick={handleDentistPassowordReset}
           className="transition duration-200 text-accent hover:text-accent-hover focus:outline-none"
           title={t('common:text-make-admin')}
         >
