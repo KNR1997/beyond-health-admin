@@ -570,6 +570,10 @@ export interface DentistInput {
   specialization: string;
 }
 
+export interface DentistResetPasswordInput {
+  dentist_id: string
+}
+
 export interface DentalProblem {
   id: string;
   name: string;

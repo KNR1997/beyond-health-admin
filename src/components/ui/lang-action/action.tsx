@@ -25,6 +25,7 @@ export type LanguageSwitcherProps = {
   isTreatmentActive?: boolean;
   isDentalProblemActive?: boolean;
   deleteBySlug?: string;
+  showResetDentistPasswordButton?: boolean;
 };
 
 export default function LanguageSwitcher({
@@ -42,7 +43,8 @@ export default function LanguageSwitcher({
   isDentalProblemActive,
   treatmentActiveButton,
   isTreatmentActive,
-  deleteBySlug
+  deleteBySlug,
+  showResetDentistPasswordButton
 }: LanguageSwitcherProps) {
   const { enableMultiLang } = Config;
   const {
@@ -81,6 +83,7 @@ export default function LanguageSwitcher({
           treatmentActiveButton={treatmentActiveButton}
           isTreatmentActive={isTreatmentActive}
           deleteBySlug={deleteBySlug}
+          showResetDentistPasswordButton={showResetDentistPasswordButton}
         />
       )}
     </>

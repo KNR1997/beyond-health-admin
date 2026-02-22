@@ -52,7 +52,7 @@ export const useCreateDentistMutation = () => {
 
   return useMutation(dentistClient.create, {
     onSuccess: async (data: Dentist) => {
-      const generateRedirectUrl = Routes.dentist.list
+      const generateRedirectUrl = Routes.dentist.list;
       await Router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
       });
@@ -101,6 +101,21 @@ export const useDeleteDentistMutation = () => {
   return useMutation(dentistClient.delete, {
     onSuccess: () => {
       toast.success(t('common:successfully-deleted'));
+    },
+    // Always refetch after error or success:
+    onSettled: () => {
+      queryClient.invalidateQueries(API_ENDPOINTS.DENTISTS);
+    },
+  });
+};
+
+export const useDentistResetPasswordMutation = () => {
+  const queryClient = useQueryClient();
+  const { t } = useTranslation();
+
+  return useMutation(dentistClient.resetPassword, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
     },
     // Always refetch after error or success:
     onSettled: () => {
