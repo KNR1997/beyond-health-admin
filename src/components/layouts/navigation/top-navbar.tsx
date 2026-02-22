@@ -39,6 +39,7 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import { useWindowSize } from 'react-use';
 import AuthorizedMenu from './authorized-menu';
+import NotificationBar from '@/components/layouts/topbar/notification-bar';
 
 export const isInArray = (array: Date[], value: Date) => {
   return !!array?.find((item) => {
@@ -249,6 +250,11 @@ const Navbar = () => {
           </div>
           <div className="relative hidden w-full max-w-[710px] py-4 me-6 lg:block 2xl:me-auto">
             <SearchBar />
+          </div>
+          <div className="flex shrink-0 grow-0 basis-auto items-center">
+            <div className="flex items-center gap-3 px-0.5 py-3 sm:relative sm:border-gray-200/80 sm:py-3.5 sm:px-6 sm:border-s lg:py-5">
+              <NotificationBar user={data} />
+            </div>
           </div>
 
           {/* <div className="flex shrink-0 grow-0 basis-auto items-center">

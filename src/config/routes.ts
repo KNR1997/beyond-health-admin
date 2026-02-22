@@ -122,6 +122,9 @@ export const Routes = {
   conversations: {
     ...routesFactory('/message/conversations'),
   },
+  notification: {
+    ...routesFactory('/notifications'),
+  },
   storeNotice: {
     ...routesFactory('/store-notices'),
   },

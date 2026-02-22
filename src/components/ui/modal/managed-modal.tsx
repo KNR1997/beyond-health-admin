@@ -30,6 +30,9 @@ const UserWalletPointsAddView = dynamic(
 const MakeAdminView = dynamic(
   () => import('@/components/user/make-admin-view'),
 );
+const DentistPasswordResetView = dynamic(
+  () => import('@/components/dentist/dentist-password-rest-view'),
+);
 const ShippingDeleteView = dynamic(
   () => import('@/components/shipping/shipping-delete-view'),
 );
@@ -219,6 +222,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <RefundImageModal />;
     case 'MAKE_ADMIN':
       return <MakeAdminView />;
+    case 'RESET_DENTIST_PASSWORD':
+      return <DentistPasswordResetView />;
     case 'EXPORT_IMPORT_PRODUCT':
       return <ExportImportView />;
     case 'EXPORT_IMPORT_ATTRIBUTE':
