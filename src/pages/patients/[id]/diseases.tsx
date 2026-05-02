@@ -1,12 +1,17 @@
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
+//components
 import Layout from '@/components/layouts/admin';
 import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { adminOnly } from '@/utils/auth-utils';
-import { useRouter } from 'next/router';
 import PatientPageHeader from '@/components/patient/patient-page-header';
 import CreateOrUpdatePatientDiseaseForm from '@/components/patient/patient-disease-form';
+
+//utils
+import { adminOnly } from '@/utils/auth-utils';
+
+//hooks
 import { usePatientDentalProblemsQuery } from '@/data/patient-dental-problem';
 
 export default function CreatePatientDiseasePage() {

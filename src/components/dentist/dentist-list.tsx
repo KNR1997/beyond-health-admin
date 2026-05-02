@@ -1,5 +1,4 @@
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
+// types
 import { Dentist, Patient, SortOrder, User } from '@/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
@@ -7,13 +6,17 @@ import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
-import TitleWithSort from '@/components/ui/title-with-sort';
 import { MappedPaginatorInfo } from '@/types';
 import { Routes } from '@/config/routes';
+// components
+import Pagination from '@/components/ui/pagination';
+import { Table } from '@/components/ui/table';
+import TitleWithSort from '@/components/ui/title-with-sort';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
 import { NoDataFound } from '@/components/icons/no-data-found';
-import { useIsRTL } from '@/utils/locals';
 import Avatar from '@/components/common/avatar';
+//utils
+import { useIsRTL } from '@/utils/locals';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);

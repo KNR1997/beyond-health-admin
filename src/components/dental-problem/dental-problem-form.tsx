@@ -1,20 +1,24 @@
 import { useForm } from 'react-hook-form';
+import { animateScroll } from 'react-scroll';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+//validations
+import { dentalProblemValidationSchema } from './dental-problem-validation-schema';
+//types
+import { DentalProblem, Patient } from '@/types';
+//hooks
+import {
+  useCreateDentalProblemMutation,
+  useUpdateDentalProblemMutation,
+} from '@/data/dental-problem';
+//components
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
 import RichTextEditor from '@/components/ui/wysiwyg-editor/editor';
-import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { dentalProblemValidationSchema } from './dental-problem-validation-schema';
-import { DentalProblem, Patient } from '@/types';
-import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
-import {
-  useCreateDentalProblemMutation,
-  useUpdateDentalProblemMutation,
-} from '@/data/dental-problem';
 
 type FormValues = {
   name: string;

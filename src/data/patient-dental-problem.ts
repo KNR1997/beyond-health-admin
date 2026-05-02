@@ -2,10 +2,15 @@ import Router, { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
+
+//configs
 import { Routes } from '@/config/routes';
-import { API_ENDPOINTS } from './client/api-endpoints';
 import { Config } from '@/config';
+
 import { patientDentalProblemClient } from './client/patient-dental-problem';
+import { API_ENDPOINTS } from './client/api-endpoints';
+
+//types
 import { PatientDentalProblem } from '@/types';
 
 export const usePatientDentalProblemsQuery = (patientId: string) => {

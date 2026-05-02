@@ -2,9 +2,16 @@ import Router, { useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
+
+//utils
 import { mapPaginatorData } from '@/utils/data-mappers';
-import { API_ENDPOINTS } from './client/api-endpoints';
+import { rosterAssignmentsKey } from '@/utils/queryKeys';
+
+//configs
 import { Routes } from '@/config/routes';
+import { Config } from '@/config';
+
+//types
 import {
   RosterQueryOptions,
   GetParams,
@@ -13,9 +20,11 @@ import {
   RosterAssignment,
   RosterAssignmentPaginator,
 } from '@/types';
-import { Config } from '@/config';
+
+
+import { API_ENDPOINTS } from './client/api-endpoints';
 import { rosterClient } from './client/roster-week';
-import { rosterAssignmentsKey } from '@/utils/queryKeys';
+
 
 export const useRosterWeeksQuery = (options: Partial<RosterQueryOptions>) => {
   const { data, error, isLoading } = useQuery<RosterPaginator, Error>(

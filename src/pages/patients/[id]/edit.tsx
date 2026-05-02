@@ -1,13 +1,19 @@
-import Layout from '@/components/layouts/admin';
-import ErrorMessage from '@/components/ui/error-message';
-import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import { adminOnly } from '@/utils/auth-utils';
-import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
-import { usePatientQuery } from '@/data/patient';
+//components
+import Layout from '@/components/layouts/admin';
+import ErrorMessage from '@/components/ui/error-message';
+import Loader from '@/components/ui/loader/loader';
 import PatientPageHeader from '@/components/patient/patient-page-header';
+import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
+
+//utils
+import { adminOnly } from '@/utils/auth-utils';
+
+//hooks
+import { usePatientQuery } from '@/data/patient';
+
 
 export default function UpdatePatientPage() {
   const { query } = useRouter();

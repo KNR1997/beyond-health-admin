@@ -7,6 +7,7 @@ import {
   ownerAndStaffOnly,
 } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
+import { Portal } from '@headlessui/react';
 
 export const siteSettings = {
   name: 'PickBazar',
@@ -88,6 +89,11 @@ export const siteSettings = {
             label: 'text-all-treatment-plans',
             icon: 'HospitalFileIcon',
           },
+          {
+            href: Routes.appointment.list,
+            label: 'text-all-appointments',
+            icon: 'CalendarScheduleIcon',
+          },
           // {
           //   href: Routes.medicalVital.list,
           //   label: 'text-all-medical-vitals',
@@ -162,6 +168,10 @@ export const siteSettings = {
           },
         ],
       },
+    },
+
+    Portal: {
+
     },
 
     shop: {

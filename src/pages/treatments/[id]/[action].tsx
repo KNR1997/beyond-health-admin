@@ -1,11 +1,16 @@
-import Layout from '@/components/layouts/admin';
 import { useRouter } from 'next/router';
-import ErrorMessage from '@/components/ui/error-message';
-import Loader from '@/components/ui/loader/loader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Config } from '@/config';
+//components
+import Layout from '@/components/layouts/admin';
 import CreateOrUpdateTreatmentForm from '@/components/treatment/treatment-form';
+import ErrorMessage from '@/components/ui/error-message';
+import Loader from '@/components/ui/loader/loader';
+
+//config
+import { Config } from '@/config';
+
+//hooks
 import { useTreatmentQuery } from '@/data/treatment';
 
 export default function updateTreatmentPage() {

@@ -1,3 +1,17 @@
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+// configs
+import { Config } from '@/config';
+import { Routes } from '@/config/routes';
+// hooks
+import { useDentistsQuery } from '@/data/dentist';
+// types
+import { SortOrder } from '@/types';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// components
 import Card from '@/components/common/card';
 import PageHeading from '@/components/common/page-heading';
 import Search from '@/components/common/search';
@@ -6,16 +20,6 @@ import Layout from '@/components/layouts/admin';
 import ErrorMessage from '@/components/ui/error-message';
 import LinkButton from '@/components/ui/link-button';
 import Loader from '@/components/ui/loader/loader';
-import { Config } from '@/config';
-import { Routes } from '@/config/routes';
-import { useDentistsQuery } from '@/data/dentist';
-import { usePatientsQuery } from '@/data/patient';
-import { SortOrder } from '@/types';
-import { adminOnly } from '@/utils/auth-utils';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
 
 export default function Dentists() {
   const { t } = useTranslation();

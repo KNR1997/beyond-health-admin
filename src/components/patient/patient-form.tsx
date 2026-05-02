@@ -1,21 +1,30 @@
 import { format } from 'date-fns';
-import Input from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { animateScroll } from 'react-scroll';
+//components
+import Input from '@/components/ui/input';
 import Button from '@/components/ui/button';
 import Description from '@/components/ui/description';
 import Card from '@/components/common/card';
 import Label from '@/components/ui/label';
 import SelectInput from '@/components/ui/select-input';
-import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { patientValidationSchema } from './patient-validation-schema';
-import { Patient } from '@/types';
-import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import ValidationError from '@/components/ui/form-validation-error';
 import PasswordInput from '@/components/ui/password-input';
 import PhoneNumberInput from '@/components/ui/phone-input';
+
+//hookform
+import { yupResolver } from '@hookform/resolvers/yup';
+
+//form validations
+import { patientValidationSchema } from './patient-validation-schema';
+
+//types
+import { Patient } from '@/types';
+
+//hooks
 import {
   useCreatePatientMutation,
   useUpdatePatientMutation,

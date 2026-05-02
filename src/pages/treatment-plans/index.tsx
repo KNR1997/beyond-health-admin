@@ -1,3 +1,8 @@
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useRouter } from 'next/router';
+import { useState } from 'react';
+//components
 import Card from '@/components/common/card';
 import PageHeading from '@/components/common/page-heading';
 import Search from '@/components/common/search';
@@ -6,15 +11,20 @@ import TreatmentPlanList from '@/components/treatment-plan/treatment-plan-list';
 import ErrorMessage from '@/components/ui/error-message';
 import LinkButton from '@/components/ui/link-button';
 import Loader from '@/components/ui/loader/loader';
+
+//configs
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
+
+//hooks
 import { useTreatmentPlansQuery } from '@/data/treatment-plan';
+
+//types
 import { SortOrder } from '@/types';
+
+//utils
 import { adminOnly } from '@/utils/auth-utils';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+
 
 export default function TreatmentPlans() {
   const { t } = useTranslation();

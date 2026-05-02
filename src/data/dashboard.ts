@@ -1,8 +1,12 @@
-import { Product, ProductQueryOptions } from '@/types';
 import { useQuery } from 'react-query';
-import { API_ENDPOINTS } from './client/api-endpoints';
+//types
+import { Product, ProductQueryOptions } from '@/types';
+
+//hooks
 import { dashboardClient } from '@/data/client/dashboard';
 import { productClient } from '@/data/client/product';
+
+import { API_ENDPOINTS } from './client/api-endpoints';
 
 export function useAnalyticsQuery() {
   return useQuery([API_ENDPOINTS.ANALYTICS], dashboardClient.analytics);
