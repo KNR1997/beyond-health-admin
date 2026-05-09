@@ -168,8 +168,8 @@ export default function CreateOrUpdateAppointmentForm({ initialValues }: IProps)
             className="text-sm md:text-base"
           >
             {initialValues
-              ? t('form:button-label-update-roster')
-              : t('form:button-label-add-roster')}
+              ? t('form:button-label-update-appointment')
+              : t('form:button-label-add-appointment')}
           </Button>
         </div>
       </StickyFooterPanel>
