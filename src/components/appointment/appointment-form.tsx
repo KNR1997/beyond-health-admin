@@ -120,7 +120,7 @@ export default function CreateOrUpdateAppointmentForm({ initialValues }: IProps)
             initialValues
               ? t('form:item-description-edit')
               : t('form:item-description-add')
-          } ${t('form:roster-description-helper-text')}`}
+          } ${t('form:appointment-description-helper-text')}`}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
         />
 
