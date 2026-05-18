@@ -17,6 +17,15 @@ export enum CouponType {
   FREE_SHIPPING = 'free_shipping',
 }
 
+export enum AppointmentStatus {
+  SCHEDULED = 'scheduled',
+  CONFIRMED = 'confirmed',
+  IN_PROGRESS = 'in_progress',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
+  NO_SHOW = 'no_show',
+}
+
 export enum ProductType {
   Simple = 'simple',
   Variable = 'variable',
@@ -240,6 +249,14 @@ export interface Category {
   products: Product[];
   created_at: string;
   updated_at: string;
+}
+
+export interface Appointment {
+  id: string;
+  patient: Patient;
+  doctor: User;
+  deliveryTime: any;
+  status: AppointmentStatus;
 }
 
 export interface Attribute {
@@ -1079,6 +1096,10 @@ export interface CreateCategoryInput {
   details?: string;
   image?: AttachmentInput;
   icon?: string;
+}
+
+export interface CreateAppointmentInput {
+
 }
 
 export interface CreateWithdrawInput {
@@ -1959,6 +1980,10 @@ export interface CategoryQueryOptions extends QueryOptions {
   self: string;
 }
 
+export interface AppointmentQueryOptions extends QueryOptions {
+  name: string;
+}
+
 export interface ConversationQueryOptions extends QueryOptions {
   search?: string;
 }
@@ -2254,6 +2279,8 @@ export interface TermsAndConditionsPaginator
 export interface ProductPaginator extends PaginatorInfo<Product> {}
 
 export interface CategoryPaginator extends PaginatorInfo<Category> {}
+
+export interface AppointmentPaginator extends PaginatorInfo<Appointment> {}
 
 export interface TaxPaginator extends PaginatorInfo<Tax> {}
 

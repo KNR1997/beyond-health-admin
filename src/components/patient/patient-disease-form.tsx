@@ -1,18 +1,28 @@
 import { useFieldArray, useForm } from 'react-hook-form';
+import { animateScroll } from 'react-scroll';
+import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
+
+//components
 import Button from '@/components/ui/button';
 import Description from '@/components/ui/description';
-import { useTranslation } from 'next-i18next';
-import { DentalProblem, PatientDentalProblem, ShopSocialInput } from '@/types';
-import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import SelectInput from '@/components/ui/select-input';
 import Alert from '@/components/ui/alert';
 import Card from '@/components/common/card';
+import Input from '@/components/ui/input';
+
+//types
+import { DentalProblem, PatientDentalProblem, ShopSocialInput } from '@/types';
+
+//hooks
 import { useDentalProblemsQuery } from '@/data/dental-problem';
 import { useCreatePatientDentalProblemMutation } from '@/data/patient-dental-problem';
-import { useState } from 'react';
-import Input from '@/components/ui/input';
+
+//form validations
 import { patientDiseaseValidationSchema } from './patient-disease-validation-schema';
+
+//hookform
 import { yupResolver } from '@hookform/resolvers/yup';
 
 type PatientDentalProblemInput = {

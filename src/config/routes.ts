@@ -34,6 +34,9 @@ export const Routes = {
       return `/treatment-plans/${id}/items`
     }
   },
+  appointment: {
+    ...routesFactory('/appointments'),
+  },
   dentalProblem: {
     ...routesFactory('/dental-problems'),
   },

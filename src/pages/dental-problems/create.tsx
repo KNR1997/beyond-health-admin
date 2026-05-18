@@ -1,8 +1,12 @@
-import Layout from '@/components/layouts/admin';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { adminOnly } from '@/utils/auth-utils';
 import { useTranslation } from 'next-i18next';
+//components
+import Layout from '@/components/layouts/admin';
 import CreateOrUpdateDentalProblemForm from '@/components/dental-problem/dental-problem-form';
+
+//utils
+import { adminOnly } from '@/utils/auth-utils';
+
 
 export default function CreateDentalProblemPage() {
   const { t } = useTranslation();

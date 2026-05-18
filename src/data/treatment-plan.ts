@@ -2,7 +2,12 @@ import Router, { useRouter } from 'next/router';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
+
+//utils
 import { mapPaginatorData } from '@/utils/data-mappers';
+import { treatmentPlanItemsKey } from '@/utils/queryKeys';
+
+//types
 import {
   GetParams,
   TreatmentPlan,
@@ -10,11 +15,14 @@ import {
   TreatmentPlanPaginator,
   TreatmentPlanQueryOptions,
 } from '@/types';
+
+//configs
 import { Routes } from '@/config/routes';
-import { API_ENDPOINTS } from './client/api-endpoints';
 import { Config } from '@/config';
+
+import { API_ENDPOINTS } from './client/api-endpoints';
 import { treatmentPlanClient } from './client/treatment-plan';
-import { treatmentPlanItemsKey } from '@/utils/queryKeys';
+
 
 export const useTreatmentPlansQuery = (
   options: Partial<TreatmentPlanQueryOptions>,

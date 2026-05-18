@@ -1,11 +1,14 @@
+import { useTranslation } from 'next-i18next';
+import { CloseFillIcon } from '../icons/close-fill';
+//components
 import ConfirmationCard from '@/components/common/confirmation-card';
 import { CheckMarkCircle } from '@/components/icons/checkmark-circle';
 import {
   useModalAction,
   useModalState,
 } from '@/components/ui/modal/modal.context';
-import { useTranslation } from 'next-i18next';
-import { CloseFillIcon } from '../icons/close-fill';
+
+//hooks
 import { useTreatmentStatusChangeMutation } from '@/data/treatment';
 
 const TreatmentStatusChangeView = () => {

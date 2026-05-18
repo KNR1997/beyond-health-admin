@@ -1,24 +1,35 @@
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { animateScroll } from 'react-scroll';
+import { dummy } from 'react-laag/dist/types';
+
+//components
 import Button from '@/components/ui/button';
 import Input from '@/components/ui/input';
 import Card from '@/components/common/card';
 import Description from '@/components/ui/description';
 import RichTextEditor from '@/components/ui/wysiwyg-editor/editor';
-import { useRouter } from 'next/router';
-import { useTranslation } from 'next-i18next';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { treatmentValidationSchema } from './treatment-validation-schema';
-import { Patient, Treatment } from '@/types';
-import { animateScroll } from 'react-scroll';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
+import ValidationError from '@/components/ui/form-validation-error';
+
+//validation
+import { treatmentValidationSchema } from './treatment-validation-schema';
+
+//types
+import { Patient, Treatment } from '@/types';
+
+//hooks
 import {
   useCreateTreatmentMutation,
   useUpdateTreatmentMutation,
 } from '@/data/treatment';
 import SelectInput from '../ui/select-input';
-import ValidationError from '@/components/ui/form-validation-error';
+
+//pages
 import Categories from '@/pages/categories';
-import { dummy } from 'react-laag/dist/types';
+
 
 type FormValues = {
   name: string;
