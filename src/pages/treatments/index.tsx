@@ -1,36 +1,37 @@
-import Card from '@/components/common/card';
-import PageHeading from '@/components/common/page-heading';
-import Search from '@/components/common/search';
-import DentistList from '@/components/dentist/dentist-list';
-import Layout from '@/components/layouts/admin';
-import TreatmentList from '@/components/treatment/treatment-list';
-import ErrorMessage from '@/components/ui/error-message';
-import LinkButton from '@/components/ui/link-button';
-import Loader from '@/components/ui/loader/loader';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+import { useTreatmentsQuery } from '@/data/treatment';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// config
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
-import { useTreatmentsQuery } from '@/data/treatment';
-import { SortOrder } from '@/types';
+// utils
 import { adminOnly } from '@/utils/auth-utils';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
+// components
+import Card from '@/components/common/card';
+import Search from '@/components/common/search';
+import Layout from '@/components/layouts/admin';
+import Loader from '@/components/ui/loader/loader';
+import LinkButton from '@/components/ui/link-button';
+import ErrorMessage from '@/components/ui/error-message';
+import PageHeading from '@/components/common/page-heading';
+import TreatmentList from '@/components/treatment/treatment-list';
 
 export default function Treatments() {
   const { t } = useTranslation();
   const { locale } = useRouter();
-  const [orderBy, setOrder] = useState('created_at');
-  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-  const [searchTerm, setSearchTerm] = useState('');
+  // states
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [ordering, setOrdering] = useState('-created_at');
+  // query
   const { treatments, loading, paginatorInfo, error } = useTreatmentsQuery({
     language: locale,
     limit: 20,
     page,
     name: searchTerm,
-    orderBy,
-    sortedBy,
+    ordering,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -72,8 +73,7 @@ export default function Treatments() {
         treatments={treatments}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
-        onOrder={setOrder}
-        onSort={setColumn}
+        onOrdering={setOrdering}
       />
     </>
   );

@@ -5,6 +5,7 @@ import {
   AUTH_CRED,
   DENTIST,
   EMAIL_VERIFIED,
+  PATIENT,
   PERMISSIONS,
   STAFF,
   STORE_OWNER,
@@ -12,7 +13,7 @@ import {
   TOKEN,
 } from './constants';
 
-export const allowedRoles = [SUPER_ADMIN, DENTIST, STORE_OWNER, STAFF];
+export const allowedRoles = [SUPER_ADMIN, DENTIST, STORE_OWNER, STAFF, PATIENT];
 export const adminAndOwnerOnly = [SUPER_ADMIN, DENTIST, STORE_OWNER];
 export const adminOwnerAndStaffOnly = [SUPER_ADMIN, ADMIN, STORE_OWNER, STAFF];
 export const adminAndDentistOnly = [SUPER_ADMIN, ADMIN, DENTIST];
@@ -20,6 +21,7 @@ export const adminOnly = [SUPER_ADMIN];
 export const ownerOnly = [STORE_OWNER];
 export const ownerAndStaffOnly = [STORE_OWNER, STAFF];
 export const dentistOnly = [DENTIST];
+export const patientOnly = [PATIENT];
 
 export function setAuthCredentials(token: string, permissions: any, role: any, refresh: string) {
   Cookie.set(AUTH_CRED, JSON.stringify({ token, permissions, role, refresh }));

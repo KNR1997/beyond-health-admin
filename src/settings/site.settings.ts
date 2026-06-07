@@ -5,6 +5,7 @@ import {
   adminOwnerAndStaffOnly,
   dentistOnly,
   ownerAndStaffOnly,
+  patientOnly,
 } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
 
@@ -647,6 +648,15 @@ export const siteSettings = {
         ],
       },
     },
+
+    patient: [
+            {
+        href: Routes.dashboard,
+        label: 'sidebar-nav-item-dashboard',
+        icon: 'DashboardIcon',
+        permissions: patientOnly,
+      },
+    ],
 
     dentistDashboard: [
       {

@@ -1,6 +1,7 @@
-import { DENTIST, SUPER_ADMIN } from '@/utils/constants';
+import { DENTIST, PATIENT, SUPER_ADMIN } from '@/utils/constants';
 import dynamic from 'next/dynamic';
 import DentistLayout from './dentist';
+import PatientLayout from './patient';
 
 const AdminLayout = dynamic(() => import('@/components/layouts/admin'));
 const OwnerLayout = dynamic(() => import('@/components/layouts/owner'));
@@ -14,9 +15,9 @@ export default function AppLayout({
   if (userPermissions?.includes(SUPER_ADMIN)) {
     return <AdminLayout {...props} />;
   } else if (userPermissions?.includes(DENTIST)) {
-    console.log('dentist layout')
     return <DentistLayout {...props} />;
+  } else if (userPermissions?.includes(PATIENT)) {
+    return <PatientLayout {...props} />
   }
-  console.log('owner layout')
   return <OwnerLayout {...props} />;
 }

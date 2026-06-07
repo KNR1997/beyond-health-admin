@@ -7,7 +7,7 @@ import {
   hasAccess,
   isAuthenticated,
 } from '@/utils/auth-utils';
-import { DENTIST, SUPER_ADMIN } from '@/utils/constants';
+import { DENTIST, PATIENT, SUPER_ADMIN } from '@/utils/constants';
 import AppLayout from '@/components/layouts/app';
 import { Routes } from '@/config/routes';
 import { Config } from '@/config';
@@ -15,6 +15,7 @@ import { Config } from '@/config';
 const AdminDashboard = dynamic(() => import('@/components/dashboard/admin'));
 const OwnerDashboard = dynamic(() => import('@/components/dashboard/owner'));
 const DentistDashboard = dynamic(() => import('@/components/dashboard/dentist'));
+const PatientDashboard = dynamic(() => import('@/components/dashboard/patient'));
 
 export default function Dashboard({
   userPermissions,
@@ -25,6 +26,8 @@ export default function Dashboard({
     return <AdminDashboard />;
   } else if (userPermissions?.includes(DENTIST)) {
     return <DentistDashboard />;
+  } else if (userPermissions?.includes(PATIENT)) {
+    return <PatientDashboard />
   }
   return <OwnerDashboard />;
 }
