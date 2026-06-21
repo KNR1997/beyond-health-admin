@@ -25,38 +25,36 @@ type IProps = {
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const PatientList = ({
   patients,
   paginatorInfo,
   onPagination,
   onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
 
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
-    column: string | null;
+    column: any | null;
   }>({
     sort: SortOrder.Desc,
     column: null,
   });
 
-  const onHeaderClick = (column: string | null) => ({
+  const onHeaderClick = (column: any | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
@@ -86,9 +84,9 @@ const PatientList = ({
         <TitleWithSort
           title={t('table:table-item-title')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
-          isActive={sortingObj.column === 'id'}
+          isActive={sortingObj.column === 'name'}
         />
       ),
       className: 'cursor-pointer',
@@ -97,6 +95,7 @@ const PatientList = ({
       align: alignLeft,
       width: 250,
       ellipsis: true,
+      onHeaderCell: () => onHeaderClick('name'),
       render: (name: string, record: Patient) => (
         <div className="flex items-center">
           <Avatar name={name} />
