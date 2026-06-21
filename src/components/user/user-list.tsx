@@ -111,10 +111,19 @@ const UserList = ({
       ),
     },
     {
-      title: t('table:table-item-role'),
+       title: (
+        <TitleWithSort
+          title={t('table:table-item-role')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'role'
+          }
+          isActive={sortingObj.column === 'role'}
+        />
+      ),
       dataIndex: 'role_name',
       key: 'role_name',
       align: 'center',
+       onHeaderCell: () => onHeaderClick('role'),
       render: (role_name: string) => (
         <Badge text={t(role_name)} color={RoleColor(role_name)} />
       ),

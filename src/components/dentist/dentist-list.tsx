@@ -87,8 +87,17 @@ const DentistList = ({
         </div>
       ),
     },
+    
     {
-      title: t('table:table-item-specialization'),
+      title: (
+        <TitleWithSort
+          title={t('table:table-item-specialization')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'specialization'
+          }
+          isActive={sortingObj.column === 'specialization'}
+        />
+      ),
       className: 'cursor-pointer',
       dataIndex: 'specialization',
       key: 'specialization',
@@ -100,7 +109,15 @@ const DentistList = ({
       ),
     },
     {
-      title: t('table:table-item-license-number'),
+      title: (
+        <TitleWithSort
+          title={t('table:table-item-license-number')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'license_number'
+          }
+          isActive={sortingObj.column === 'license_number'}
+        />
+      ),
       className: 'cursor-pointer',
       dataIndex: 'license_number',
       key: 'license_number',
