@@ -23,15 +23,13 @@ type IProps = {
   dentalProblems: DentalProblem[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const DentalProblemList = ({
   dentalProblems,
   paginatorInfo,
   onPagination,
-  onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
@@ -46,16 +44,14 @@ const DentalProblemList = ({
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
@@ -68,9 +64,9 @@ const DentalProblemList = ({
           title={t('table:table-item-name')}
           ascending={
             sortingObj?.sort === SortOrder?.Asc &&
-            sortingObj?.column === 'faq_title'
+            sortingObj?.column === 'name'
           }
-          isActive={sortingObj?.column === 'faq_title'}
+          isActive={sortingObj?.column === 'name'}
         />
       ),
       className: 'cursor-pointer',
@@ -90,9 +86,9 @@ const DentalProblemList = ({
           title={t('table:table-item-description')}
           ascending={
             sortingObj?.sort === SortOrder?.Asc &&
-            sortingObj?.column === 'faq_description'
+            sortingObj?.column === 'description'
           }
-          isActive={sortingObj?.column === 'faq_description'}
+          isActive={sortingObj?.column === 'description'}
         />
       ),
       className: 'cursor-pointer',
