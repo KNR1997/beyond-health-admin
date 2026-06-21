@@ -23,15 +23,13 @@ type IProps = {
   dentists: Dentist[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const DentistList = ({
   dentists,
   paginatorInfo,
   onPagination,
-  onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
@@ -46,16 +44,14 @@ const DentistList = ({
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
@@ -67,9 +63,9 @@ const DentistList = ({
         <TitleWithSort
           title={t('table:table-item-title')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'user__first_name'
           }
-          isActive={sortingObj.column === 'id'}
+          isActive={sortingObj.column === 'user__first_name'}
         />
       ),
       className: 'cursor-pointer',
@@ -78,6 +74,7 @@ const DentistList = ({
       align: alignLeft,
       width: 250,
       ellipsis: true,
+      onHeaderCell: () => onHeaderClick('user__first_name'),
       render: (name: string, record: Dentist) => (
         <div className="flex items-center">
           <Avatar name={name} />
