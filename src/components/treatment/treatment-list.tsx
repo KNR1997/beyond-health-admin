@@ -67,9 +67,9 @@ const TreatmentList = ({
           title={t('table:table-item-name')}
           ascending={
             sortingObj?.sort === SortOrder?.Asc &&
-            sortingObj?.column === 'faq_title'
+            sortingObj?.column === 'name'
           }
-          isActive={sortingObj?.column === 'faq_title'}
+          isActive={sortingObj?.column === 'name'}
         />
       ),
       className: 'cursor-pointer',
@@ -89,9 +89,9 @@ const TreatmentList = ({
           title={t('table:table-item-category')}
           ascending={
             sortingObj?.sort === SortOrder?.Asc &&
-            sortingObj?.column === 'faq_description'
+            sortingObj?.column === 'category'
           }
-          isActive={sortingObj?.column === 'faq_description'}
+          isActive={sortingObj?.column === 'category'}
         />
       ),
       className: 'cursor-pointer',

@@ -19,17 +19,15 @@ import { useState } from 'react';
 export default function DentalProblems() {
   const { t } = useTranslation();
   const { locale } = useRouter();
-  const [orderBy, setOrder] = useState('created_at');
-  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [searchTerm, setSearchTerm] = useState('');
+  const [ordering, setOrdering] = useState('-created_at');
   const [page, setPage] = useState(1);
   const { dentalProblems, loading, paginatorInfo, error } = useDentalProblemsQuery({
     language: locale,
     limit: 20,
     page,
     name: searchTerm,
-    orderBy,
-    sortedBy,
+    ordering
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -71,8 +69,7 @@ export default function DentalProblems() {
         dentalProblems={dentalProblems}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
-        onOrder={setOrder}
-        onSort={setColumn}
+        onOrdering={setOrdering}
       />
     </>
   );

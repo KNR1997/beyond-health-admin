@@ -1,20 +1,31 @@
+//components
 import Pagination from '@/components/ui/pagination';
 import { Table } from '@/components/ui/table';
+import Avatar from '@/components/common/avatar';
+import Badge from '@/components/ui/badge/badge';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import TitleWithSort from '@/components/ui/title-with-sort';
+//types
 import { Patient, SortOrder, User } from '@/types';
+//plugind
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
+
+//hooks
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
-import TitleWithSort from '@/components/ui/title-with-sort';
+
+//types
 import { MappedPaginatorInfo } from '@/types';
+//config
 import { Routes } from '@/config/routes';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { NoDataFound } from '@/components/icons/no-data-found';
+
+//utils
 import { useIsRTL } from '@/utils/locals';
-import Avatar from '@/components/common/avatar';
-import Badge from '@/components/ui/badge/badge';
+
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -25,38 +36,37 @@ type IProps = {
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const PatientList = ({
+
   patients,
   paginatorInfo,
   onPagination,
   onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
 
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
-    column: string | null;
+    column: any | null;
   }>({
     sort: SortOrder.Desc,
     column: null,
   });
 
-  const onHeaderClick = (column: string | null) => ({
+  const onHeaderClick = (column: any | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
@@ -86,9 +96,9 @@ const PatientList = ({
         <TitleWithSort
           title={t('table:table-item-title')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
           }
-          isActive={sortingObj.column === 'id'}
+          isActive={sortingObj.column === 'name'}
         />
       ),
       className: 'cursor-pointer',
@@ -97,6 +107,7 @@ const PatientList = ({
       align: alignLeft,
       width: 250,
       ellipsis: true,
+      onHeaderCell: () => onHeaderClick('name'),
       render: (name: string, record: Patient) => (
         <div className="flex items-center">
           <Avatar name={name} />
@@ -110,7 +121,15 @@ const PatientList = ({
       ),
     },
     {
-      title: t('table:table-item-gender'),
+       title: (
+        <TitleWithSort
+          title={t('table:table-item-gender')}
+          ascending={
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'gender'
+          }
+          isActive={sortingObj.column === 'gender'}
+        />
+      ),
       className: 'cursor-pointer',
       dataIndex: 'gender',
       key: 'gender',
