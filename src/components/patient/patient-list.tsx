@@ -1,14 +1,3 @@
-//components
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
-import Avatar from '@/components/common/avatar';
-import Badge from '@/components/ui/badge/badge';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { NoDataFound } from '@/components/icons/no-data-found';
-import TitleWithSort from '@/components/ui/title-with-sort';
-//types
-import { Patient, SortOrder, User } from '@/types';
-//plugind
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
@@ -17,10 +6,20 @@ import timezone from 'dayjs/plugin/timezone';
 //hooks
 import { useTranslation } from 'next-i18next';
 import { useState } from 'react';
+//components
+import Pagination from '@/components/ui/pagination';
+import { Table } from '@/components/ui/table';
+import TitleWithSort from '@/components/ui/title-with-sort';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import Avatar from '@/components/common/avatar';
+import Badge from '@/components/ui/badge/badge';
 
 //types
+import { Patient, SortOrder, User } from '@/types';
 import { MappedPaginatorInfo } from '@/types';
-//config
+
+//routes
 import { Routes } from '@/config/routes';
 
 //utils

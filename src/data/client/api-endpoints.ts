@@ -24,6 +24,7 @@ export const API_ENDPOINTS = {
   TAXES: 'taxes',
   SHIPPINGS: 'shippings',
   SETTINGS: 'settings',
+  APPOINTMENTS: 'appointments',
   CATEGORIES: 'categories',
   TAGS: 'tags',
   ROSTER_WEEKS: 'roster-weeks',

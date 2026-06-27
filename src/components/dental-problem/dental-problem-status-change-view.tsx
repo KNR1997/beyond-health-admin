@@ -1,12 +1,17 @@
+import { useTranslation } from 'next-i18next';
+import { CloseFillIcon } from '../icons/close-fill';
+
+//components
 import ConfirmationCard from '@/components/common/confirmation-card';
 import { CheckMarkCircle } from '@/components/icons/checkmark-circle';
 import {
   useModalAction,
   useModalState,
 } from '@/components/ui/modal/modal.context';
+
+//hooks
 import { useDentalProblemStatusChangeMutation } from '@/data/dental-problem';
-import { useTranslation } from 'next-i18next';
-import { CloseFillIcon } from '../icons/close-fill';
+
 
 const DentalProblemStatusChangeView = () => {
   const { t } = useTranslation();

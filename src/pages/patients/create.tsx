@@ -1,8 +1,12 @@
-import Layout from '@/components/layouts/admin';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { adminOnly } from '@/utils/auth-utils';
-import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
 import { useTranslation } from 'next-i18next';
+//components
+import Layout from '@/components/layouts/admin';
+import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
+
+//utils
+import { adminOnly } from '@/utils/auth-utils';
+
 
 export default function CreatePatientGeneralInfoPage() {
   const { t } = useTranslation();

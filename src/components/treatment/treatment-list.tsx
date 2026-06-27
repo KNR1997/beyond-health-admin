@@ -3,20 +3,26 @@ import { useState } from 'react';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
-import relativeTime from 'dayjs/plugin/relativeTime';
-// config
-import { Routes } from '@/config/routes';
-// utils
-import { useIsRTL } from '@/utils/locals';
-// types
-import { MappedPaginatorInfo, SortOrder, Treatment } from '@/types';
-// components
-import { Table } from '@/components/ui/table';
-import Badge from '@/components/ui/badge/badge';
+import { useState } from 'react';
+
+//components
 import Pagination from '@/components/ui/pagination';
+import { Table } from '@/components/ui/table';
 import TitleWithSort from '@/components/ui/title-with-sort';
-import { NoDataFound } from '@/components/icons/no-data-found';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import { SortOrder, Treatment } from '@/types';
+
+//types
+import { MappedPaginatorInfo } from '@/types';
+//routes
+import { Routes } from '@/config/routes';
+
+//utils
+import { useIsRTL } from '@/utils/locals';
+
+//ui
+import Badge from '../ui/badge/badge';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);

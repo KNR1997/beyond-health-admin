@@ -2,48 +2,41 @@ import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-
-//components
-import Card from '@/components/common/card';
-import Search from '@/components/common/search';
-import Layout from '@/components/layouts/admin';
-import Loader from '@/components/ui/loader/loader';
-import LinkButton from '@/components/ui/link-button';
-import ErrorMessage from '@/components/ui/error-message';
-import PageHeading from '@/components/common/page-heading';
-import TreatmentList from '@/components/treatment/treatment-list';
-import ErrorMessage from '@/components/ui/error-message';
-import LinkButton from '@/components/ui/link-button';
-import Loader from '@/components/ui/loader/loader';
-
-//configs
+// configs
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
-
-//hooks
-import { useTreatmentsQuery } from '@/data/treatment';
-
-//types
+// hooks
+import { useDentistsQuery } from '@/data/dentist';
+// types
 import { SortOrder } from '@/types';
-
-//utils
+// utils
 import { adminOnly } from '@/utils/auth-utils';
+// components
+import Card from '@/components/common/card';
+import PageHeading from '@/components/common/page-heading';
+import Search from '@/components/common/search';
+import Layout from '@/components/layouts/admin';
+import ErrorMessage from '@/components/ui/error-message';
+import LinkButton from '@/components/ui/link-button';
+import Loader from '@/components/ui/loader/loader';
+import { useAppointmentsQuery } from '@/data/appointment';
+import App from 'next/app';
+import AppointmentList from '@/components/appointment/appointment-list';
 
-
-export default function Treatments() {
+export default function Appointments() {
   const { t } = useTranslation();
   const { locale } = useRouter();
-  // states
-  const [page, setPage] = useState(1);
+  const [orderBy, setOrder] = useState('created_at');
+  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
   const [searchTerm, setSearchTerm] = useState('');
-  const [ordering, setOrdering] = useState('-created_at');
-  // query
-  const { treatments, loading, paginatorInfo, error } = useTreatmentsQuery({
+  const [page, setPage] = useState(1);
+  const { appointments, loading, paginatorInfo, error } = useAppointmentsQuery({
     language: locale,
     limit: 20,
     page,
     name: searchTerm,
-    ordering,
+    orderBy,
+    sortedBy,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -62,7 +55,7 @@ export default function Treatments() {
     <>
       <Card className="flex flex-col items-center mb-8 md:flex-row">
         <div className="mb-4 md:mb-0 md:w-1/4">
-          <PageHeading title={t('form:input-label-treatments')} />
+          <PageHeading title={t('form:input-label-appointments')} />
         </div>
 
         <div className="flex flex-col items-center w-full space-y-4 ms-auto md:w-3/4 md:flex-row md:space-y-0 xl:w-1/2">
@@ -73,29 +66,31 @@ export default function Treatments() {
 
           {locale === Config.defaultLanguage && (
             <LinkButton
-              href={Routes.treatment.create}
+              href={Routes.appointment.create}
               className="w-full h-12 md:w-auto md:ms-6"
             >
-              <span>+ {t('form:button-label-add-treatment')}</span>
+              <span>+ {t('form:button-label-add-appointment')}</span>
             </LinkButton>
           )}
         </div>
       </Card>
-      <TreatmentList
-        treatments={treatments}
+      <AppointmentList
+        appointments={appointments}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
-        onOrdering={setOrdering}
+        onOrder={setOrder}
+        onSort={setColumn}
       />
     </>
   );
 }
 
-Treatments.authenticate = {
+Appointments.authenticate = {
   permissions: adminOnly,
 };
 
-Treatments.Layout = Layout;
+Appointments.Layout = Layout;
+
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
     ...(await serverSideTranslations(locale, ['form', 'common', 'table'])),

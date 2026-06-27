@@ -6,56 +6,56 @@ import { useTranslation } from 'next-i18next';
 import { mapPaginatorData } from '@/utils/data-mappers';
 //types
 import {
-  DentistQueryOptions,
+  AppointmentQueryOptions,
   GetParams,
-  Dentist,
-  DentistPaginator,
+  Appointment,
+  AppointmentPaginator,
 } from '@/types';
 //configs
 import { Routes } from '@/config/routes';
 import { Config } from '@/config';
-import { dentistClient } from './client/dentist';
+import { appointmentClient } from './client/appointment';
 import { API_ENDPOINTS } from './client/api-endpoints';
 
-export const useDentistsQuery = (options: Partial<DentistQueryOptions>) => {
-  const { data, error, isLoading } = useQuery<DentistPaginator, Error>(
-    [API_ENDPOINTS.DENTISTS, options],
+export const useAppointmentsQuery = (options: Partial<AppointmentQueryOptions>) => {
+  const { data, error, isLoading } = useQuery<AppointmentPaginator, Error>(
+    [API_ENDPOINTS.APPOINTMENTS, options],
     ({ queryKey, pageParam }) =>
-      dentistClient.paginated(Object.assign({}, queryKey[1], pageParam)),
+      appointmentClient.paginated(Object.assign({}, queryKey[1], pageParam)),
     {
       keepPreviousData: true,
     },
   );
 
   return {
-    dentists: data?.data ?? [],
+    appointments: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,
   };
 };
 
-export const useDentistQuery = ({ slug }: GetParams) => {
-  const { data, error, isLoading } = useQuery<Dentist, Error>(
-    [API_ENDPOINTS.DENTISTS, { slug }],
-    () => dentistClient.get({ slug }),
+export const useAppointmentQuery = ({ slug }: GetParams) => {
+  const { data, error, isLoading } = useQuery<Appointment, Error>(
+    [API_ENDPOINTS.APPOINTMENTS, { slug }],
+    () => appointmentClient.get({ slug }),
   );
 
   return {
-    dentist: data,
+    appointment: data,
     error,
     loading: isLoading,
   };
 };
 
-export const useCreateDentistMutation = () => {
+export const useCreateAppointmentMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
   const router = useRouter();
 
-  return useMutation(dentistClient.create, {
-    onSuccess: async (data: Dentist) => {
-      const generateRedirectUrl = Routes.dentist.list;
+  return useMutation(appointmentClient.create, {
+    onSuccess: async (data: Appointment) => {
+      const generateRedirectUrl = Routes.appointment.list;
       await Router.push(generateRedirectUrl, undefined, {
         locale: Config.defaultLanguage,
       });
@@ -67,18 +67,18 @@ export const useCreateDentistMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.DENTISTS);
+      queryClient.invalidateQueries(API_ENDPOINTS.APPOINTMENTS);
     },
   });
 };
 
-export const useUpdateDentistMutation = () => {
+export const useUpdateAppointmentMutation = () => {
   const { t } = useTranslation();
   const queryClient = useQueryClient();
   const router = useRouter();
-  return useMutation(dentistClient.update, {
+  return useMutation(appointmentClient.update, {
     onSuccess: async (data) => {
-      await router.push(Routes.dentist.list, undefined, {
+      await router.push(Routes.appointment.list, undefined, {
         locale: Config.defaultLanguage,
       });
 
@@ -86,7 +86,7 @@ export const useUpdateDentistMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.DENTISTS);
+      queryClient.invalidateQueries(API_ENDPOINTS.APPOINTMENTS);
     },
     // onError: (error: any) => {
     //   toast.error(t(`common:${error?.response?.data.message}`));
@@ -94,32 +94,17 @@ export const useUpdateDentistMutation = () => {
   });
 };
 
-export const useDeleteDentistMutation = () => {
+export const useDeleteAppointmentMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
 
-  return useMutation(dentistClient.delete, {
+  return useMutation(appointmentClient.delete, {
     onSuccess: () => {
       toast.success(t('common:successfully-deleted'));
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.DENTISTS);
-    },
-  });
-};
-
-export const useDentistResetPasswordMutation = () => {
-  const queryClient = useQueryClient();
-  const { t } = useTranslation();
-
-  return useMutation(dentistClient.resetPassword, {
-    onSuccess: () => {
-      toast.success(t('common:successfully-updated'));
-    },
-    // Always refetch after error or success:
-    onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.DENTISTS);
+      queryClient.invalidateQueries(API_ENDPOINTS.APPOINTMENTS);
     },
   });
 };

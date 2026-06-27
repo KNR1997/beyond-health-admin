@@ -1,5 +1,5 @@
 // types
-import { Dentist, Patient, SortOrder, User } from '@/types';
+import { Appointment, Patient, SortOrder, User } from '@/types';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import utc from 'dayjs/plugin/utc';
@@ -23,16 +23,18 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 
 type IProps = {
-  dentists: Dentist[] | undefined;
+  appointments: Appointment[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
-  onOrdering: (current: any) => void;
+  onSort: (current: any) => void;
+  onOrder: (current: string) => void;
 };
-const DentistList = ({
-  dentists,
+const appointmentList = ({
+  appointments,
   paginatorInfo,
   onPagination,
-  onOrdering,
+  onSort,
+  onOrder,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
@@ -47,14 +49,16 @@ const DentistList = ({
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      const nextSort =
-        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
+      onSort((currentSortDirection: SortOrder) =>
+        currentSortDirection === SortOrder.Desc
+          ? SortOrder.Asc
+          : SortOrder.Desc,
+      );
+      onOrder(column!);
 
-      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
-
-      onOrdering(ordering);
       setSortingObj({
-        sort: nextSort,
+        sort:
+          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
         column: column,
       });
     },
@@ -66,9 +70,9 @@ const DentistList = ({
         <TitleWithSort
           title={t('table:table-item-title')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'user__first_name'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
           }
-          isActive={sortingObj.column === 'user__first_name'}
+          isActive={sortingObj.column === 'id'}
         />
       ),
       className: 'cursor-pointer',
@@ -77,58 +81,40 @@ const DentistList = ({
       align: alignLeft,
       width: 250,
       ellipsis: true,
-      onHeaderCell: () => onHeaderClick('user__first_name'),
-      render: (name: string, record: Dentist) => (
+      render: (name: string, record: Appointment) => (
         <div className="flex items-center">
           <Avatar name={name} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {record?.user?.first_name} {record?.user?.last_name}
+            {record?.doctor?.first_name} {record?.doctor?.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
-              {record?.user?.email}
+              {record?.doctor?.email}
             </span>
           </div>
         </div>
       ),
     },
-    
     {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-specialization')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'specialization'
-          }
-          isActive={sortingObj.column === 'specialization'}
-        />
-      ),
+      title: t('table:table-item-appointment-date'),
       className: 'cursor-pointer',
-      dataIndex: 'specialization',
-      key: 'specialization',
+      dataIndex: 'appointment_date',
+      key: 'appointment_date',
       align: 'center',
       width: 250,
-      onHeaderCell: () => onHeaderClick('specialization'),
-      render: (specialization: string) => (
-        <span className="whitespace-nowrap">{specialization}</span>
+      onHeaderCell: () => onHeaderClick('appointment_date'),
+      render: (appointment_date: string) => (
+        <span className="whitespace-nowrap">{appointment_date}</span>
       ),
     },
     {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-license-number')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'license_number'
-          }
-          isActive={sortingObj.column === 'license_number'}
-        />
-      ),
+      title: t('table:table-item-appointment-status'),
       className: 'cursor-pointer',
-      dataIndex: 'license_number',
-      key: 'license_number',
+      dataIndex: 'status',
+      key: 'status',
       align: 'center',
       width: 250,
-      onHeaderCell: () => onHeaderClick('license_number'),
-      render: (license_number: string) => (
-        <span className="whitespace-nowrap">{license_number}</span>
+      onHeaderCell: () => onHeaderClick('status'),
+      render: (status: string) => (
+        <span className="whitespace-nowrap">{status}</span>
       ),
     },
     {
@@ -137,14 +123,13 @@ const DentistList = ({
       key: 'actions',
       align: 'right',
       width: 260,
-      render: (id: string, record: Dentist) => (
+      render: (id: string, record: Appointment) => (
         <LanguageSwitcher
           slug={id}
           record={record}
           deleteModalView="DELETE_COUPON"
           deleteBySlug={record.id}
-          routes={Routes?.dentist}
-          showResetDentistPasswordButton={true}
+          routes={Routes?.appointment}
         />
       ),
     },
@@ -165,7 +150,7 @@ const DentistList = ({
               <p className="text-[13px]">{t('table:empty-table-sorry-text')}</p>
             </div>
           )}
-          data={dentists}
+          data={appointments}
           rowKey="id"
           scroll={{ x: 900 }}
         />
@@ -185,4 +170,4 @@ const DentistList = ({
   );
 };
 
-export default DentistList;
+export default appointmentList;

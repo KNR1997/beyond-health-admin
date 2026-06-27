@@ -1,8 +1,11 @@
+//components
 import ConfirmationCard from '@/components/common/confirmation-card';
 import {
   useModalAction,
   useModalState,
 } from '@/components/ui/modal/modal.context';
+
+//hooks
 import { useDeleteCouponMutation } from '@/data/coupon';
 
 const CouponDeleteView = () => {
