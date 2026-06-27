@@ -3,26 +3,21 @@ import { useState } from 'react';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
-
-//components
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
-import TitleWithSort from '@/components/ui/title-with-sort';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { NoDataFound } from '@/components/icons/no-data-found';
-import { SortOrder, Treatment } from '@/types';
-
-//types
-import { MappedPaginatorInfo } from '@/types';
-//routes
+import relativeTime from 'dayjs/plugin/relativeTime';
+// routes
 import { Routes } from '@/config/routes';
-
-//utils
+// utils
 import { useIsRTL } from '@/utils/locals';
-
-//ui
-import Badge from '../ui/badge/badge';
+// types
+import { MappedPaginatorInfo } from '@/types';
+import { SortOrder, Treatment } from '@/types';
+// components
+import { Table } from '@/components/ui/table';
+import Badge from '@/components/ui/badge/badge';
+import Pagination from '@/components/ui/pagination';
+import TitleWithSort from '@/components/ui/title-with-sort';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -72,8 +67,7 @@ const TreatmentList = ({
         <TitleWithSort
           title={t('table:table-item-name')}
           ascending={
-            sortingObj?.sort === SortOrder?.Asc &&
-            sortingObj?.column === 'name'
+            sortingObj?.sort === SortOrder?.Asc && sortingObj?.column === 'name'
           }
           isActive={sortingObj?.column === 'name'}
         />

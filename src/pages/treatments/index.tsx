@@ -1,9 +1,15 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-
-//components
+// configs
+import { Config } from '@/config';
+import { Routes } from '@/config/routes';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// hooks
+import { useTreatmentsQuery } from '@/data/treatment';
+// components
 import Card from '@/components/common/card';
 import Search from '@/components/common/search';
 import Layout from '@/components/layouts/admin';
@@ -12,23 +18,6 @@ import LinkButton from '@/components/ui/link-button';
 import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
 import TreatmentList from '@/components/treatment/treatment-list';
-import ErrorMessage from '@/components/ui/error-message';
-import LinkButton from '@/components/ui/link-button';
-import Loader from '@/components/ui/loader/loader';
-
-//configs
-import { Config } from '@/config';
-import { Routes } from '@/config/routes';
-
-//hooks
-import { useTreatmentsQuery } from '@/data/treatment';
-
-//types
-import { SortOrder } from '@/types';
-
-//utils
-import { adminOnly } from '@/utils/auth-utils';
-
 
 export default function Treatments() {
   const { t } = useTranslation();
