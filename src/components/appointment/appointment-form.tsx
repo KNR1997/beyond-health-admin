@@ -17,16 +17,20 @@ import DatePicker from '@/components/ui/date-picker';
 import Description from '@/components/ui/description';
 import SelectInput from '@/components/ui/select-input';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
+import register from '@/pages/patient-portal/register';
+import Input from '../ui/input';
+
 
 type FormValues = {
-  week_start_date: Date | string;
-  week_end_date: Date | string;
+  name: string;
+  description: string;
   status: { label: string; value: string };
 };
 
 const defaultValues = {
-  week_start_date: null,
-  week_end_date: null,
+  name: '',
+  status: '',
+  description: '',
 };
 
 type IProps = {
@@ -68,6 +72,8 @@ export default function CreateOrUpdateAppointmentForm({ initialValues }: IProps)
   const {
     handleSubmit,
     control,
+    register,
+    setError,
     formState: { errors },
   } = useForm<FormValues>({
     shouldUnregister: true,
@@ -92,6 +98,8 @@ export default function CreateOrUpdateAppointmentForm({ initialValues }: IProps)
 
   const onSubmit = async (values: FormValues) => {
     const input = {
+      name: values.name,
+      description: values.description,
       status: values.status.value,
     };
 
@@ -125,6 +133,16 @@ export default function CreateOrUpdateAppointmentForm({ initialValues }: IProps)
         />
 
         <Card className="w-full sm:w-8/12 md:w-2/3">
+        <Input
+            label={t('form:input-label-name')}
+            {...register('name')}
+            type="text"
+            variant="outline"
+            className="mb-4"
+            error={t(errors.name?.message!)}
+            required
+          />
+        
           <DatePicker
             required={true}
             control={control}
@@ -133,10 +151,10 @@ export default function CreateOrUpdateAppointmentForm({ initialValues }: IProps)
             // startDate={new Date(startDate)}
             placeholder="End Date"
             // toolTipText={t('form:input-tooltip-maintenance-end-time')}
-            label={t('form:input-label-week-start-date')}
+            label={t('form:input-label-week-appointment-date')}
             // error={t(errors.week_start_date?.message!)}
             dateFormat="yyyy MMMM d"
-            disabled
+            
           />
           <div className="mb-5">
             <SelectInput
@@ -176,3 +194,5 @@ export default function CreateOrUpdateAppointmentForm({ initialValues }: IProps)
     </form>
   );
 }
+
+

@@ -19,6 +19,10 @@ import { usePatientsQuery } from '@/data/patient';
 import { SortOrder } from '@/types';
 //utils
 import { adminOnly } from '@/utils/auth-utils';
+import { toast } from 'react-toastify';
+import { reportClient } from '@/data/client/report';
+import Button from '@/components/ui/button';
+import { DownloadIcon } from '@/components/icons/download-icon';
 
 
 export default function Patients() {
@@ -47,6 +51,56 @@ export default function Patients() {
     setPage(current);
   }
 
+  async function handleDownloadInvoice() {
+    try {
+      // Now this will return a Blob directly
+      const blob = await reportClient.patientRegistrationReportDownload();
+
+      // Verify it's a Blob
+      if (!(blob instanceof Blob)) {
+        console.error('Response is not a Blob:', blob);
+        throw new Error('Invalid response format');
+      }
+
+      // Check if blob has content
+      if (blob.size === 0) {
+        throw new Error('Downloaded file is empty');
+      }
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'patient-registration-report.pdf';
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success(t('common:report-downloaded-successfully'));
+    } catch (error: any) {
+      console.error('Error downloading report:', error);
+
+      // Check if error has response data (JSON error message)
+      if (error.response?.data) {
+        // Try to parse as JSON for error message
+        try {
+          const errorData = await error.response.data.text();
+          const parsedError = JSON.parse(errorData);
+          toast.error(
+            parsedError.detail || t('common:error-downloading-report'),
+          );
+        } catch {
+          toast.error(t('common:error-downloading-report'));
+        }
+      } else {
+        toast.error(error.message || t('common:error-downloading-report'));
+      }
+    }
+  }
+
   return (
     <>
       <Card className="flex flex-col items-center mb-8 md:flex-row">
@@ -68,6 +122,12 @@ export default function Patients() {
               <span>+ {t('form:button-label-add-patient')}</span>
             </LinkButton>
           )}
+
+          &nbsp; &nbsp;
+          <Button onClick={handleDownloadInvoice} className="bg-blue-500">
+            <DownloadIcon className="h-4 w-4 me-3" />
+            {t('common:Print')} 
+          </Button>
         </div>
       </Card>
       <PatientList

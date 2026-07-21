@@ -57,10 +57,13 @@ const TopRatedProducts = dynamic(
 export default function Dashboard() {
   const { t } = useTranslation();
   const { locale } = useRouter();
-  // const { data, isLoading: loading } = useAnalyticsQuery();
+  const { data, isLoading: loading } = useAnalyticsQuery();
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
+
+  console.log('data', data);
+
   // const [orderDataRange, setOrderDataRange] = useState(
   //   data?.todayTotalOrderByStatus,
   // );
@@ -165,15 +168,15 @@ export default function Dashboard() {
   //   }
   // });
 
-  // if (
-  //   loading ||
-  //   orderLoading ||
-  //   popularProductLoading ||
-  //   withdrawLoading ||
-  //   topRatedProductsLoading
-  // ) {
-  //   return <Loader text={t('common:text-loading')} />;
-  // }
+  if (
+    loading
+    // orderLoading ||
+    // popularProductLoading ||
+    // withdrawLoading ||
+    // topRatedProductsLoading
+  ) {
+    return <Loader text={t('common:text-loading')} />;
+  }
   // if (orderError || popularProductError || topRatedProductsError) {
   //   return (
   //     <ErrorMessage
@@ -195,39 +198,41 @@ export default function Dashboard() {
           </h3>
         </div>
 
-        {/* <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
           <StickerCard
             titleTransKey="sticker-card-title-rev"
             subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-8 w-8" />}
             color="#1EAE98"
-            price={total_revenue}
+            price={12}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-order"
-            subtitleTransKey="sticker-card-subtitle-order"
+            titleTransKey="sticker-card-title-dentist"
+            subtitleTransKey="sticker-card-subtitle-dentist"
             icon={<ShoppingIcon className="h-8 w-8" />}
             color="#865DFF"
-            price={data?.totalOrders}
+            price={data?.dentist_count}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-vendor"
+            titleTransKey="sticker-card-title-patient"
+            subtitleTransKey="sticker-card-subtitle-patient"
             icon={<ChecklistIcon className="h-8 w-8" />}
             color="#D74EFF"
-            price={data?.totalVendors}
+            price={data?.patient_count}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-total-shops"
+            titleTransKey="sticker-card-title-dental-problems"
+            subtitleTransKey="sticker-card-subtitle-dental-problems"
             icon={<BasketIcon className="h-8 w-8" />}
             color="#E157A0"
-            price={data?.totalShops}
+            price={data?.dental_problem_count}
           />
-        </div> */}
+        </div>
       </div>
 
-      {/* <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
+      <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
         <div className="mb-5 items-center justify-between sm:flex md:mb-7">
-          <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
+            <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
             {t('text-order-status')}
           </h3>
           <div className="mt-3.5 inline-flex rounded-full bg-gray-100/80 p-1.5 sm:mt-0">
@@ -254,7 +259,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <OrderStatusWidget
+        {/* <OrderStatusWidget
           order={orderDataRange}
           timeFrame={activeTimeFrame}
           allowedStatus={[
@@ -264,8 +269,8 @@ export default function Dashboard() {
             'cancel',
             // 'out-for-delivery',
           ]}
-        />
-      </div> */}
+        /> */}
+      </div>
 
       {/* <RecentOrders
         className="col-span-full"
@@ -282,9 +287,9 @@ export default function Dashboard() {
           />
         }
       /> */}
-      {/* <div className="lg:col-span-full 2xl:col-span-8">
+      <div className="lg:col-span-full 2xl:col-span-8">
         <ColumnChart
-          widgetTitle={t('common:sale-history')}
+          widgetTitle={t('common:Patient-Registrations')}
           colors={['#6073D4']}
           series={salesByYear}
           categories={[
@@ -302,7 +307,7 @@ export default function Dashboard() {
             t('common:december'),
           ]}
         />
-      </div> */}
+      </div>
 
       {/* <PopularProductList
         products={popularProductData}

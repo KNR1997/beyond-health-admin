@@ -4,6 +4,7 @@ export const API_ENDPOINTS = {
   ATTRIBUTES: 'attributes',
   ATTRIBUTE_VALUES: 'attribute-values',
   ORDER_STATUS: 'order-status',
+  REPORTS: 'reports',
   ORDERS: 'orders',
   USERS: 'users',
   REGISTER: 'register',

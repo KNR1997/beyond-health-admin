@@ -99,6 +99,14 @@ export class HttpClient {
     return response.data;
   }
 
+   static async download<T>(url: string, params?: unknown): Promise<Blob> {
+    const response = await Axios.get(url, {
+      params,
+      responseType: 'blob', // Important: this tells axios to return blob
+    });
+    return response.data;
+  }
+
   static async post<T>(url: string, data: unknown, options?: any) {
     const response = await Axios.post<T>(url, data, options);
     return response.data;

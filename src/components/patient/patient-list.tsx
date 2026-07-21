@@ -28,14 +28,12 @@ type IProps = {
   patients: Patient[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
-  onSort: (current: any) => void;
   onOrdering: (current: any) => void;
 };
 const PatientList = ({
   patients,
   paginatorInfo,
   onPagination,
-  onSort,
   onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
