@@ -1,36 +1,36 @@
+import { useState } from 'react';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-//components
-import Card from '@/components/common/card';
-import PageHeading from '@/components/common/page-heading';
-import Search from '@/components/common/search';
-import Layout from '@/components/layouts/admin';
-import PatientList from '@/components/patient/patient-list';
-import ErrorMessage from '@/components/ui/error-message';
-import LinkButton from '@/components/ui/link-button';
-import Loader from '@/components/ui/loader/loader';
-
 //configs
 import { Config } from '@/config';
-import { usePatientsQuery } from '@/data/patient';
-//types
-import { SortOrder } from '@/types';
 //utils
 import { adminOnly } from '@/utils/auth-utils';
-import { toast } from 'react-toastify';
+// clients
 import { reportClient } from '@/data/client/report';
+// hooks
+import { usePatientsQuery } from '@/data/patient';
+//components
+import Card from '@/components/common/card';
 import Button from '@/components/ui/button';
+import Search from '@/components/common/search';
+import Layout from '@/components/layouts/admin';
+import Loader from '@/components/ui/loader/loader';
+import LinkButton from '@/components/ui/link-button';
+import ErrorMessage from '@/components/ui/error-message';
+import PageHeading from '@/components/common/page-heading';
+import PatientList from '@/components/patient/patient-list';
 import { DownloadIcon } from '@/components/icons/download-icon';
-
 
 export default function Patients() {
   const { t } = useTranslation();
   const { locale } = useRouter();
-  const [ordering, setOrdering] = useState('-created_at');
-  const [searchTerm, setSearchTerm] = useState('');
+  // states
   const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [ordering, setOrdering] = useState('-created_at');
+  // query
   const { patients, loading, paginatorInfo, error } = usePatientsQuery({
     language: locale,
     limit: 20,
@@ -113,7 +113,6 @@ export default function Patients() {
             onSearch={handleSearch}
             placeholderText={t('form:input-placeholder-search-name')}
           />
-
           {locale === Config.defaultLanguage && (
             <LinkButton
               href="/patients/create"
@@ -122,11 +121,10 @@ export default function Patients() {
               <span>+ {t('form:button-label-add-patient')}</span>
             </LinkButton>
           )}
-
           &nbsp; &nbsp;
           <Button onClick={handleDownloadInvoice} className="bg-blue-500">
             <DownloadIcon className="h-4 w-4 me-3" />
-            {t('common:Print')} 
+            {t('common:Print')}
           </Button>
         </div>
       </Card>

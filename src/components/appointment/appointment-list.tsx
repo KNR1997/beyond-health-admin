@@ -1,22 +1,25 @@
-// types
-import { Appointment, Patient, SortOrder, User } from '@/types';
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import { useState } from 'react';
+import { format } from 'date-fns';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
-import { MappedPaginatorInfo } from '@/types';
+import relativeTime from 'dayjs/plugin/relativeTime';
+// config
 import { Routes } from '@/config/routes';
-// components
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
-import TitleWithSort from '@/components/ui/title-with-sort';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { NoDataFound } from '@/components/icons/no-data-found';
-import Avatar from '@/components/common/avatar';
 //utils
 import { useIsRTL } from '@/utils/locals';
+// types
+import { MappedPaginatorInfo } from '@/types';
+import { Appointment, SortOrder } from '@/types';
+// components
+import { Table } from '@/components/ui/table';
+import Avatar from '@/components/common/avatar';
+import Badge from '@/components/ui/badge/badge';
+import Pagination from '@/components/ui/pagination';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import StatusColor from '@/components/appointment/status-color';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -26,15 +29,13 @@ type IProps = {
   appointments: Appointment[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const appointmentList = ({
   appointments,
   paginatorInfo,
   onPagination,
-  onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
@@ -49,16 +50,14 @@ const appointmentList = ({
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
@@ -66,15 +65,16 @@ const appointmentList = ({
 
   const columns = [
     {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-title')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-          }
-          isActive={sortingObj.column === 'id'}
-        />
-      ),
+      title: 'Appointment No.',
+      className: 'cursor-pointer',
+      dataIndex: 'appointment_no',
+      key: 'appointment_no',
+      align: alignLeft,
+      width: 200,
+      onHeaderCell: () => onHeaderClick('appointment_no'),
+    },
+    {
+      title: t('table:table-item-patient'),
       className: 'cursor-pointer',
       dataIndex: 'name',
       key: 'name',
@@ -83,11 +83,32 @@ const appointmentList = ({
       ellipsis: true,
       render: (name: string, record: Appointment) => (
         <div className="flex items-center">
-          <Avatar name={name} />
+          <Avatar name={record?.patient?.name} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {record?.doctor?.first_name} {record?.doctor?.last_name}
+            {record?.patient?.name}
             <span className="text-[13px] font-normal text-gray-500/80">
-              {record?.doctor?.email}
+              {record?.patient?.mobile_number}
+            </span>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: 'Dentist',
+      className: 'cursor-pointer',
+      dataIndex: 'dentist',
+      key: 'dentist',
+      align: alignLeft,
+      width: 250,
+      ellipsis: true,
+      render: (name: string, record: Appointment) => (
+        <div className="flex items-center">
+          <Avatar name={record?.dentist?.user?.first_name} />
+          <div className="flex flex-col whitespace-nowrap font-medium ms-2">
+            {record?.dentist?.user?.first_name}{' '}
+            {record?.dentist?.user?.last_name}
+            <span className="text-[13px] font-normal text-gray-500/80">
+              {record?.dentist?.user?.email}
             </span>
           </div>
         </div>
@@ -102,19 +123,25 @@ const appointmentList = ({
       width: 250,
       onHeaderCell: () => onHeaderClick('appointment_date'),
       render: (appointment_date: string) => (
-        <span className="whitespace-nowrap">{appointment_date}</span>
+        <span className="whitespace-nowrap">
+          {format(new Date(appointment_date), 'yyyy-MM-dd')}
+        </span>
       ),
     },
     {
-      title: t('table:table-item-appointment-status'),
+      title: t('table:table-item-status'),
       className: 'cursor-pointer',
       dataIndex: 'status',
       key: 'status',
       align: 'center',
       width: 250,
       onHeaderCell: () => onHeaderClick('status'),
-      render: (status: string) => (
-        <span className="whitespace-nowrap">{status}</span>
+      render: (order_status: string) => (
+        <Badge
+          text={t(order_status)}
+          color={StatusColor(order_status)}
+          className="capitalize"
+        />
       ),
     },
     {
@@ -127,7 +154,7 @@ const appointmentList = ({
         <LanguageSwitcher
           slug={id}
           record={record}
-          deleteModalView="DELETE_COUPON"
+          deleteModalView="DELETE_APPOINTMENT"
           deleteBySlug={record.id}
           routes={Routes?.appointment}
         />

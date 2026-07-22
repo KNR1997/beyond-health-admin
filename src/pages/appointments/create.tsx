@@ -1,13 +1,10 @@
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-//components
-import Layout from '@/components/layouts/admin';
-import CreateOrUpdateDentistForm from '@/components/dentist/dentist-form';
-
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 //utils
 import { adminOnly } from '@/utils/auth-utils';
+//components
+import Layout from '@/components/layouts/admin';
 import CreateOrUpdateAppointmentForm from '@/components/appointment/appointment-form';
-
 
 export default function CreateAppointmentPage() {
   const { t } = useTranslation();
