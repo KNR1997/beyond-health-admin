@@ -293,6 +293,7 @@
   "error-name-required": "Name is required",
   "error-shift-required": "Shift is required",
   "error-dentist-required": "Dentist is required",
+  "error-date-required": "Date is required",
   "error-week-start-date-required": "Week start date is required",
   "error-week-end-date-required": "Week end date is required",
   "error-patient-required": "Patient is required",

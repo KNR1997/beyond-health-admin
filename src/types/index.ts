@@ -26,6 +26,12 @@ export enum AppointmentStatus {
   NO_SHOW = 'no_show',
 }
 
+export enum AppointmentType {
+  Checkup = 'Checkup',
+  Cleaning = 'Cleaning',
+  Filling = 'Filling',
+}
+
 export enum ProductType {
   Simple = 'simple',
   Variable = 'variable',
@@ -254,9 +260,11 @@ export interface Category {
 export interface Appointment {
   id: string;
   patient: Patient;
-  doctor: User;
+  dentist: Dentist;
   deliveryTime: any;
   status: AppointmentStatus;
+  appointment_date: string;
+  appointment_type: AppointmentType;
 }
 
 export interface Attribute {
@@ -540,7 +548,7 @@ export interface Coupon {
 export interface Dentist {
   id: string;
   gender: string;
-  user: User | null;
+  user: User;
   email: string;
   specialization: string;
 }
@@ -1982,6 +1990,9 @@ export interface CategoryQueryOptions extends QueryOptions {
 
 export interface AppointmentQueryOptions extends QueryOptions {
   name: string;
+  dentist: string;
+  patient: string;
+  status: string;
 }
 
 export interface ConversationQueryOptions extends QueryOptions {

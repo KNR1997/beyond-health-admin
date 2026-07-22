@@ -3,6 +3,7 @@ import Modal from '@/components/ui/modal/modal';
 import dynamic from 'next/dynamic';
 import { MODAL_VIEWS, useModalAction, useModalState } from './modal.context';
 import TreatmentStatusChangeView from '@/components/treatment/treatment-status-change-view';
+import AppointmentDeleteView from '@/components/appointment/appointment-delete-view';
 
 const DentalProblemStatusChangeView = dynamic(
   () => import('@/components/dental-problem/dental-problem-status-change-view'),
@@ -188,6 +189,8 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <CategoryDeleteView />;
     case 'DELETE_COUPON':
       return <CouponDeleteView />;
+    case 'DELETE_APPOINTMENT':
+      return <AppointmentDeleteView />;
     case 'DELETE_TAX':
       return <TaxDeleteView />;
     case 'DELETE_STORE_NOTICE':
