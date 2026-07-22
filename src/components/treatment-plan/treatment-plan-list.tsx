@@ -1,27 +1,23 @@
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import { useState } from 'react';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
-//components
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
-import TitleWithSort from '@/components/ui/title-with-sort';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { NoDataFound } from '@/components/icons/no-data-found';
-import Avatar from '@/components/common/avatar';
-
-//types
-import { SortOrder, TreatmentPlan } from '@/types';
-import { MappedPaginatorInfo } from '@/types';
-
+import relativeTime from 'dayjs/plugin/relativeTime';
 //routes
 import { Routes } from '@/config/routes';
-
 //utils
+import usePrice from '@/utils/use-price';
 import { useIsRTL } from '@/utils/locals';
-
+//types
+import { SortOrder, TreatmentPlan, MappedPaginatorInfo } from '@/types';
+//components
+import { Table } from '@/components/ui/table';
+import Avatar from '@/components/common/avatar';
+import Pagination from '@/components/ui/pagination';
+import TitleWithSort from '@/components/ui/title-with-sort';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 import Badge from '../ui/badge/badge';
 import StatusColor from './status-color';
@@ -119,7 +115,11 @@ const TreatmentPlanList = ({
       align: 'center',
       onHeaderCell: () => onHeaderClick('is_active'),
       render: (status: string) => (
-        <Badge text={t(status)} color={StatusColor(status)} />
+        <Badge
+          text={t(status)}
+          color={StatusColor(status)}
+          className="capitalize"
+        />
       ),
     },
     {
@@ -130,6 +130,16 @@ const TreatmentPlanList = ({
       width: 120,
       align: 'center',
       onHeaderCell: () => onHeaderClick('total_cost'),
+      render: function Render(value: number, record: TreatmentPlan) {
+        const { price } = usePrice({
+          amount: Number(value),
+        });
+        return (
+          <span className="whitespace-nowrap" title={price}>
+            {price}
+          </span>
+        );
+      },
     },
     {
       title: t('table:table-item-actions'),

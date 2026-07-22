@@ -1,8 +1,8 @@
-import { handleTokenRefresh } from '@/lib/refresh-manager';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Router from 'next/router';
 import invariant from 'tiny-invariant';
+import { handleTokenRefresh } from '@/lib/refresh-manager';
 
 invariant(
   process.env.NEXT_PUBLIC_REST_API_ENDPOINT,

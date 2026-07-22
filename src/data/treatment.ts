@@ -1,11 +1,9 @@
-import Router, { useRouter } from 'next/router';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
-
+import Router, { useRouter } from 'next/router';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 //utils
 import { mapPaginatorData } from '@/utils/data-mappers';
-
 //types
 import {
   Treatment,

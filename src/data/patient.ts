@@ -1,25 +1,21 @@
-import Router, { useRouter } from 'next/router';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { useTranslation } from 'next-i18next';
-
-//utils
+import Router, { useRouter } from 'next/router';
 import { mapPaginatorData } from '@/utils/data-mappers';
-
-//types
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+// configs
+import { Config } from '@/config';
+import { Routes } from '@/config/routes';
+// clients
+import { patientClient } from './client/patient';
+import { API_ENDPOINTS } from './client/api-endpoints';
+// types
 import {
   GetParams,
   Patient,
   PatientPaginator,
   PatientQueryOptions,
 } from '@/types';
-
-//configs
-import { Routes } from '@/config/routes';
-import { Config } from '@/config';
-
-import { API_ENDPOINTS } from './client/api-endpoints';
-import { patientClient } from './client/patient';
 
 export const useCreatePatientMutation = () => {
   const queryClient = useQueryClient();
@@ -28,21 +24,21 @@ export const useCreatePatientMutation = () => {
 
   return useMutation(patientClient.create, {
     onSuccess: async (data: Patient) => {
-      // const generateRedirectUrl = data.id
-      //   ? Routes.patient.diseases(data.id)
-      //   : Routes.patient.list;
       await Router.push(Routes.patient.list, undefined, {
         locale: Config.defaultLanguage,
       });
       toast.success(t('common:successfully-created'));
     },
-    onError: (error: any) => {
-      // toast.error(t(`comon:${error?.response?.data.error}`));
-      toast.error(error?.response?.data.error);
-    },
     // Always refetch after error or success:
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.PATIENTS);
+    },
+    onError: (error: any) => {
+      if (error?.status == 400) {
+        toast.error(t('common:PICKBAZAR_ERROR.BAD_REQUEST'));
+      } else {
+        toast.error(t(`common:${error?.response?.data.message}`));
+      }
     },
   });
 };
@@ -68,13 +64,9 @@ export const useUpdatePatientMutation = () => {
   const router = useRouter();
   return useMutation(patientClient.update, {
     onSuccess: async (data) => {
-      // const generateRedirectUrl = data.id
-      //   ? Routes.patient.diseases(data.id)
-      //   : Routes.patient.list;
       await router.push(Routes.patient.list, undefined, {
         locale: Config.defaultLanguage,
       });
-
       toast.success(t('common:successfully-updated'));
     },
     // Always refetch after error or success:
@@ -82,7 +74,11 @@ export const useUpdatePatientMutation = () => {
       queryClient.invalidateQueries(API_ENDPOINTS.PATIENTS);
     },
     onError: (error: any) => {
-      toast.error(t(`common:${error?.response?.data.message}`));
+      if (error?.status == 400) {
+        toast.error(t('common:PICKBAZAR_ERROR.BAD_REQUEST'));
+      } else {
+        toast.error(t(`common:${error?.response?.data.message}`));
+      }
     },
   });
 };
