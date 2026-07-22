@@ -551,6 +551,7 @@ export interface Patient {
   email: string;
   mobile_number: string;
   gender: string;
+  image?: string;
   user: User | null;
 }
 
