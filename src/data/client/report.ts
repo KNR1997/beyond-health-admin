@@ -8,5 +8,14 @@ export const reportClient = {
   dentistReportDownload: () => {
     return HttpClient.download(`${API_ENDPOINTS.REPORTS}/dentist/`);
   },
+  treatmentReportDownload: () => {
+    return HttpClient.download(`${API_ENDPOINTS.REPORTS}/treatment/`);
+  },
+
+  dentalProblemReportDownload: () => {
+    return HttpClient.download(`${API_ENDPOINTS.REPORTS}/dental-problem/`);
+  }
+
+ 
 };
 

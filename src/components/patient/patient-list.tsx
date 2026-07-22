@@ -100,7 +100,10 @@ const PatientList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: string, record: Patient) => (
         <div className="flex items-center">
-          <Avatar name={name} />
+          <Avatar
+           name={name}
+           src={record?.image}
+          />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
             {name}
             <span className="text-[13px] font-normal text-gray-500/80">
