@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 import { useTranslation } from 'next-i18next';
@@ -12,6 +13,8 @@ import { Routes } from '@/config/routes';
 import { useAppointmentsQuery } from '@/data/appointment';
 // utils
 import { adminOnly } from '@/utils/auth-utils';
+// client
+import { reportClient } from '@/data/client/report';
 // types
 import { Dentist, Patient } from '@/types';
 // components
@@ -28,9 +31,6 @@ import PageHeading from '@/components/common/page-heading';
 import { DownloadIcon } from '@/components/icons/download-icon';
 import AppointmentList from '@/components/appointment/appointment-list';
 import AppointmentFilter from '@/components/appointment/appointment-filter';
-import Button from '@/components/ui/button';
-import { reportClient } from '@/data/client/report';
-import { toast } from 'react-toastify';
 
 export default function Appointments() {
   const { t } = useTranslation();
@@ -72,54 +72,54 @@ export default function Appointments() {
   }
 
   async function handleExportOrder() {
-     try {
-            // Now this will return a Blob directly
-            const blob = await reportClient.appointmentReportDownload();
-      
-            // Verify it's a Blob
-            if (!(blob instanceof Blob)) {
-              console.error('Response is not a Blob:', blob);
-              throw new Error('Invalid response format');
-            }
-      
-            // Check if blob has content
-            if (blob.size === 0) {
-              throw new Error('Downloaded file is empty');
-            }
-      
-            // Create download link
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = 'appointment.pdf';
-            document.body.appendChild(link);
-            link.click();
-      
-            // Clean up
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-      
-            toast.success(t('common:report-downloaded-successfully'));
-          } catch (error: any) {
-            console.error('Error downloading report:', error);
-      
-            // Check if error has response data (JSON error message)
-            if (error.response?.data) {
-              // Try to parse as JSON for error message
-              try {
-                const errorData = await error.response.data.text();
-                const parsedError = JSON.parse(errorData);
-                toast.error(
-                  parsedError.detail || t('common:error-downloading-report'),
-                );
-              } catch {
-                toast.error(t('common:error-downloading-report'));
-              }
-            } else {
-              toast.error(error.message || t('common:error-downloading-report'));
-            }
-          }
-   }
+    try {
+      // Now this will return a Blob directly
+      const blob = await reportClient.appointmentReportDownload();
+
+      // Verify it's a Blob
+      if (!(blob instanceof Blob)) {
+        console.error('Response is not a Blob:', blob);
+        throw new Error('Invalid response format');
+      }
+
+      // Check if blob has content
+      if (blob.size === 0) {
+        throw new Error('Downloaded file is empty');
+      }
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'appointment.pdf';
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success(t('common:report-downloaded-successfully'));
+    } catch (error: any) {
+      console.error('Error downloading report:', error);
+
+      // Check if error has response data (JSON error message)
+      if (error.response?.data) {
+        // Try to parse as JSON for error message
+        try {
+          const errorData = await error.response.data.text();
+          const parsedError = JSON.parse(errorData);
+          toast.error(
+            parsedError.detail || t('common:error-downloading-report'),
+          );
+        } catch {
+          toast.error(t('common:error-downloading-report'));
+        }
+      } else {
+        toast.error(error.message || t('common:error-downloading-report'));
+      }
+    }
+  }
 
   return (
     <>
@@ -183,12 +183,6 @@ export default function Appointments() {
                 <span>+ {t('form:button-label-add-appointment')}</span>
               </LinkButton>
             )}
-
-            &nbsp; &nbsp;
-            <Button onClick={handleExportOrder} className="bg-blue-500">
-              <DownloadIcon className="h-4 w-4 me-3" />
-              {t('common:Print')}
-            </Button>
           </div>
 
           <button
