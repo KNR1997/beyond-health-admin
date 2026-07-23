@@ -120,7 +120,7 @@ const appointmentList = ({
       dataIndex: 'appointment_date',
       key: 'appointment_date',
       align: 'center',
-      width: 250,
+      width: 150,
       onHeaderCell: () => onHeaderClick('appointment_date'),
       render: (appointment_date: string) => (
         <span className="whitespace-nowrap">
@@ -134,7 +134,7 @@ const appointmentList = ({
       dataIndex: 'status',
       key: 'status',
       align: 'center',
-      width: 250,
+      width: 120,
       onHeaderCell: () => onHeaderClick('status'),
       render: (order_status: string) => (
         <Badge
@@ -149,7 +149,7 @@ const appointmentList = ({
       dataIndex: 'id',
       key: 'actions',
       align: 'right',
-      width: 260,
+      // width: 260,
       render: (id: string, record: Appointment) => (
         <LanguageSwitcher
           slug={id}
