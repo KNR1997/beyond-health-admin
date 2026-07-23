@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
+// utils
+import { handleMutationError } from '@/utils/handle-mutation-error';
 // form-validations
 import { patientValidationSchema } from './patient-validation-schema';
 // hooks
@@ -20,10 +22,8 @@ import Card from '@/components/common/card';
 import Button from '@/components/ui/button';
 import Description from '@/components/ui/description';
 import SelectInput from '@/components/ui/select-input';
-import PhoneNumberInput from '@/components/ui/phone-input';
 import ValidationError from '@/components/ui/form-validation-error';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
-import { handleMutationError } from '@/utils/handle-mutation-error';
 
 type FormValues = {
   name: string;
@@ -165,14 +165,14 @@ export default function CreateOrUpdatePatientForm({ initialValues }: IProps) {
               error={t(errors.nic?.message!)}
               required
             />
-            <PhoneNumberInput
+            <Input
               label={t('form:input-label-contact')}
               {...register('mobile_number')}
-              control={control}
               error={t(errors.mobile_number?.message!)}
+              variant="outline"
               required
             />
-            <div className="mb-5">
+            <div className="my-5">
               <SelectInput
                 label={t('form:input-label-select-gender')}
                 name="gender"

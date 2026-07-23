@@ -9,8 +9,8 @@ export const patientValidationSchema = yup.object().shape({
     .required('form:error-dob-required'),
   mobile_number: yup
     .string()
-    .required('form:error-contact-number-required')
-    .max(19, 'maximum 19 digit'),
+    .matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits')
+    .required('form:error-contact-number-required'),
   nic: yup
     .string()
     .required('form:error-nic-required')
