@@ -49,6 +49,7 @@ function SelectDentist({
         }
         // @ts-ignore
         getOptionValue={(option: Dentist) => option.id}
+        placeholder='Select Dentist'
         options={dentists!}
         isLoading={loading}
       />
@@ -68,11 +69,10 @@ function SelectShift({
   const { shifts, loading, error } = useShiftsQuery({
     limit: 20,
   });
-  console.log('shifts----------: ', shifts);
   return (
     <div className="mb-5">
       <SelectInput
-        label={t('form:input-label-dentist')}
+        label={t('form:input-label-shift')}
         required
         name="shift"
         control={control}
@@ -81,6 +81,7 @@ function SelectShift({
         getOptionLabel={(option: Shift) => option.code}
         // @ts-ignore
         getOptionValue={(option: Shift) => option.id}
+        placeholder='Select Shift'
         options={shifts!}
         isLoading={loading}
       />
@@ -146,7 +147,6 @@ export default function CreateOrUpdateRosterAssignmentForm({
     useUpdateRosterMutation();
 
   const onSubmit = async (values: FormValues) => {
-    console.log('values---------: ', values);
     const input = {
       roster_week: rosterWeekId,
       date: format(new Date(values.date), 'yyyy-MM-dd'),

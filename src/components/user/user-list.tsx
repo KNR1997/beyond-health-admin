@@ -125,7 +125,7 @@ const UserList = ({
       align: 'center',
        onHeaderCell: () => onHeaderClick('role'),
       render: (role_name: string) => (
-        <Badge text={t(role_name)} color={RoleColor(role_name)} />
+        <Badge text={t(role_name)} color={RoleColor(role_name)} className='capitalize' />
       ),
     },
     // {

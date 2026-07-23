@@ -18,17 +18,15 @@ import LanguageSwitcher from '@/components/ui/lang-action/action';
 export type IProps = {
   rosters: Roster[] | undefined | null;
   onPagination: (key: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
   paginatorInfo: MappedPaginatorInfo | null;
 };
 
 const RosterList = ({
   rosters,
   onPagination,
-  onSort,
-  onOrder,
   paginatorInfo,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft, alignRight } = useIsRTL();
@@ -43,20 +41,19 @@ const RosterList = ({
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
   });
+
 
   const columns = [
     {
@@ -64,9 +61,9 @@ const RosterList = ({
         <TitleWithSort
           title={t('table:table-item-week-start')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'name'
+            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'week_start_date'
           }
-          isActive={sortingObj.column === 'name'}
+          isActive={sortingObj.column === 'week_start_date'}
         />
       ),
       className: 'cursor-pointer',

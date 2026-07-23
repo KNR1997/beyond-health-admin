@@ -23,7 +23,6 @@ import { Config } from '@/config';
 import { API_ENDPOINTS } from './client/api-endpoints';
 import { treatmentPlanClient } from './client/treatment-plan';
 
-
 export const useTreatmentPlansQuery = (
   options: Partial<TreatmentPlanQueryOptions>,
 ) => {
@@ -60,13 +59,15 @@ export const useTreatmentPlanQuery = ({ slug, language }: GetParams) => {
 export const useCreateTreatmentPlanMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const router = useRouter();
 
   return useMutation(treatmentPlanClient.create, {
-    onSuccess: async () => {
-      const generateRedirectUrl = Routes.treatmentPlan.list;
-      await Router.push(generateRedirectUrl, undefined, {
-        locale: Config.defaultLanguage,
-      });
+    onSuccess: async (data: TreatmentPlan) => {
+      if (data?.id) {
+        router.push(Routes.treatmentPlan.items(data.id));
+      } else {
+        router.push(Routes.treatmentPlan.list);
+      }
       toast.success(t('common:successfully-created'));
     },
     onError: (error: any) => {
