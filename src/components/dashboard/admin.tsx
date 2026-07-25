@@ -204,7 +204,7 @@ export default function Dashboard() {
             subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-8 w-8" />}
             color="#1EAE98"
-            price={5000.00}
+            price={`$${data?.total_revenue?.total_cost}`}
           />
           <StickerCard
             titleTransKey="sticker-card-title-dentist"

@@ -8,9 +8,11 @@ import { ChecklistIcon } from '@/components/icons/summary/checklist';
 // components
 import PageHeading from '@/components/common/page-heading';
 import StickerCard from '@/components/widgets/sticker-card';
+import { useAnalyticsQuery } from '@/data/dashboard';
 
 const StaffLayout = () => {
   const { t } = useTranslation();
+  const { data, isLoading: loading } = useAnalyticsQuery();
 
   return (
     <>
@@ -19,32 +21,34 @@ const StaffLayout = () => {
           <PageHeading title={t('text-summary')} />
         </div>
         <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          <StickerCard
-            titleTransKey="sticker-card-title-rev"
-            // subtitleTransKey="sticker-card-subtitle-rev"
-            icon={<EaringIcon className="h-8 w-8" />}
-            color="#047857"
-            price={12}
-          />
-          <StickerCard
-            titleTransKey="sticker-card-title-today-refunds"
-            // subtitleTransKey="sticker-card-subtitle-order"
-            icon={<ShoppingIcon className="h-8 w-8" />}
-            color="#865DFF"
-            price={12}
-          />
-          <StickerCard
-            titleTransKey="sticker-card-title-total-shops"
-            icon={<BasketIcon className="h-8 w-8" />}
-            color="#E157A0"
-            price={12}
-          />
+
           <StickerCard
             titleTransKey="sticker-card-title-today-rev"
             icon={<ChecklistIcon className="h-8 w-8" />}
             color="#D74EFF"
-            price={12}
+            price={`$${data?.total_revenue?.total_cost}`}
           />
+          <StickerCard
+            titleTransKey="sticker-card-title-today-patients"
+            // subtitleTransKey="sticker-card-subtitle-rev"
+            icon={<EaringIcon className="h-8 w-8" />}
+            color="#047857"
+            price={data?.patient_count}
+          />
+          <StickerCard
+            titleTransKey="sticker-card-title-today-appointments"
+            // subtitleTransKey="sticker-card-subtitle-order"
+            icon={<ShoppingIcon className="h-8 w-8" />}
+            color="#865DFF"
+            price={data?.appointments_by_month?.length}
+          />
+          <StickerCard
+            titleTransKey="sticker-card-title-today-dentists"
+            icon={<BasketIcon className="h-8 w-8" />}
+            color="#E157A0"
+            price={data?.dentist_count}
+          />
+        
         </div>
       </div>
     </>

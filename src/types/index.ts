@@ -363,7 +363,7 @@ export interface VariationProductPivot {
 }
 
 export interface AnalyticsResponse {
-  total_revenue: number;
+  total_revenue: {total_cost: number};
   dentist_count: number;
   patient_count: number;
   dental_problem_count: number;
