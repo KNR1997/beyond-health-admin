@@ -124,12 +124,12 @@ export default function Dashboard() {
   //   limit: 10,
   // });
 
-  let salesByYear: number[] = Array.from({ length: 12 }, (_) => 0);
-  // if (!!data?.totalYearSaleByMonth?.length) {
-  //   salesByYear = data.totalYearSaleByMonth.map((item: any) =>
-  //     item.total.toFixed(2),
-  //   );
-  // }
+  let appointmentsByYear: number[] = Array.from({ length: 12 }, (_) => 0);
+  if (!!data?.appointments_by_month?.length) {
+    appointmentsByYear = data.appointments_by_month.map((item: any) =>
+      item.total.toFixed(2),
+    );
+  }
 
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
@@ -239,7 +239,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
+      {/* <div className="col-span-full rounded-lg bg-light p-6 md:p-7">
         <div className="mb-5 items-center justify-between sm:flex md:mb-7">
             <h3 className="before:content-'' relative mt-1 bg-light text-lg font-semibold text-heading before:absolute before:-top-px before:h-7 before:w-1 before:rounded-tr-md before:rounded-br-md before:bg-accent ltr:before:-left-6 rtl:before:-right-6 md:before:-top-0.5 md:ltr:before:-left-7 md:rtl:before:-right-7 lg:before:h-8">
             {t('text-order-status')}
@@ -268,7 +268,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        {/* <OrderStatusWidget
+        <OrderStatusWidget
           order={orderDataRange}
           timeFrame={activeTimeFrame}
           allowedStatus={[
@@ -278,8 +278,8 @@ export default function Dashboard() {
             'cancel',
             // 'out-for-delivery',
           ]}
-        /> */}
-      </div>
+        />
+      </div> */}
 
       {/* <RecentOrders
         className="col-span-full"
@@ -298,9 +298,9 @@ export default function Dashboard() {
       /> */}
       <div className="lg:col-span-full 2xl:col-span-8">
         <ColumnChart
-          widgetTitle={t('common:Patient-Registrations')}
+          widgetTitle="Patient Appointments"
           colors={['#6073D4']}
-          series={salesByYear}
+          series={appointmentsByYear}
           categories={[
             t('common:january'),
             t('common:february'),

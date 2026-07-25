@@ -3,7 +3,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // hooks
 import { useMeQuery } from '@/data/user';
 // utils
-import { adminAndDentistOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
+import { adminDentistAndStaffOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
 // components
 import AppLayout from '@/components/layouts/app';
 import Loader from '@/components/ui/loader/loader';
@@ -15,7 +15,7 @@ import ChangePasswordForm from '@/components/auth/change-password-from';
 export default function ProfilePage() {
   const { t } = useTranslation();
   const { permissions } = getAuthCredentials();
-  const hasPermission = hasAccess(adminAndDentistOnly, permissions);
+  const hasPermission = hasAccess(adminDentistAndStaffOnly, permissions);
   // query
   const { data, isLoading: loading, error } = useMeQuery();
 
@@ -31,14 +31,7 @@ export default function ProfilePage() {
       </div>
 
       <EmailUpdateForm me={data} hasPermission={hasPermission} />
-
       <ProfileUpdateFrom me={data} hasPermission={hasPermission} />
-
-      <EmailUpdateForm me={data} hasPermission={hasPermission} />
-
-      <ProfileUpdateFrom me={data} hasPermission={hasPermission} />
-
-      <ChangePasswordForm hasPermission={hasPermission} />
       <ChangePasswordForm hasPermission={hasPermission} />
     </>
   );

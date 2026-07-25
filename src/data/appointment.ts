@@ -88,9 +88,10 @@ export const useUpdateAppointmentMutation = () => {
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.APPOINTMENTS);
     },
-    // onError: (error: any) => {
-    //   toast.error(t(`common:${error?.response?.data.message}`));
-    // },
+    onError: (error: any) => {
+      // toast.error(t(`comon:${error?.response?.data.error}`));
+      toast.error(error?.response?.data.error);
+    }
   });
 };
 

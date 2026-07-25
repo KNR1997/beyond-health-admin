@@ -1,6 +1,7 @@
-import { Fragment, useState } from 'react';
-import { useRouter } from 'next/router';
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
+import { Fragment, useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { Menu, Transition } from '@headlessui/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -8,23 +9,22 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
 // utils
-import { adminOnly } from '@/utils/auth-utils';
+import { adminAndStaffOnly } from '@/utils/auth-utils';
+// client
+import { reportClient } from '@/data/client/report';
 // hooks
 import { useTreatmentsQuery } from '@/data/treatment';
 // components
 import Card from '@/components/common/card';
 import Search from '@/components/common/search';
-import Layout from '@/components/layouts/admin';
+import Layout from '@/components/layouts/app';
 import Loader from '@/components/ui/loader/loader';
 import LinkButton from '@/components/ui/link-button';
+import { MoreIcon } from '@/components/icons/more-icon';
 import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
-import TreatmentList from '@/components/treatment/treatment-list';
-import { MoreIcon } from '@/components/icons/more-icon';
-import Button from '@/components/ui/button';
 import { DownloadIcon } from '@/components/icons/download-icon';
-import { toast } from 'react-toastify';
-import { reportClient } from '@/data/client/report';
+import TreatmentList from '@/components/treatment/treatment-list';
 
 export default function Treatments() {
   const { t } = useTranslation();
@@ -184,10 +184,10 @@ export default function Treatments() {
 }
 
 Treatments.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndStaffOnly,
 };
-
 Treatments.Layout = Layout;
+
 export const getStaticProps = async ({ locale }: any) => ({
   props: {
     ...(await serverSideTranslations(locale, ['form', 'common', 'table'])),

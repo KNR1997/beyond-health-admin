@@ -308,6 +308,14 @@ export interface VariationProductPivot {
   price?: number;
 }
 
+export interface AnalyticsResponse {
+  total_revenue: number;
+  dentist_count: number;
+  patient_count: number;
+  dental_problem_count: number;
+  appointments_by_month: {month: string, total: number}[]
+}
+
 export interface AttributeValue {
   id: string;
   value?: string;
@@ -1728,10 +1736,9 @@ export interface ContactDetailsInput {
 
 export interface RegisterInput {
   email: string;
+  first_name: string;
+  last_name: string;
   password: string;
-  name: string;
-  shop_id?: number;
-  // permission: Permission;
 }
 
 export interface PatientDentalProblemInput {

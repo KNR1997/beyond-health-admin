@@ -1,9 +1,9 @@
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-//utils
-import { adminOnly } from '@/utils/auth-utils';
-//components
-import Layout from '@/components/layouts/admin';
+// utils
+import { adminAndStaffOnly } from '@/utils/auth-utils';
+// components
+import Layout from '@/components/layouts/app';
 import CreateOrUpdateAppointmentForm from '@/components/appointment/appointment-form';
 
 export default function CreateAppointmentPage() {
@@ -20,8 +20,9 @@ export default function CreateAppointmentPage() {
     </>
   );
 }
+
 CreateAppointmentPage.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndStaffOnly,
 };
 CreateAppointmentPage.Layout = Layout;
 

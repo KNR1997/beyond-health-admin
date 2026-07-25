@@ -16,6 +16,7 @@ import Pagination from '@/components/ui/pagination';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import ActionButtons from '@/components/common/action-buttons';
 import { NoDataFound } from '@/components/icons/no-data-found';
+import { Routes } from '@/config/routes';
 
 type IProps = {
   customers: User[] | undefined;
@@ -150,6 +151,7 @@ const UserList = ({
                 id={id}
                 userStatus={true}
                 isUserActive={is_active}
+                editUrl={`${Routes.user.list}/${id}/edit`}
                 // showMakeAdminButton={true}
                 resetPasswordButton={true}
               />

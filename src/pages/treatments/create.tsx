@@ -1,13 +1,10 @@
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-//components
-import Layout from '@/components/layouts/admin';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// utils
+import { adminAndStaffOnly } from '@/utils/auth-utils';
+// components
+import Layout from '@/components/layouts/app';
 import CreateOrUpdateTreatmentForm from '@/components/treatment/treatment-form';
-
-//utils
-import { adminOnly } from '@/utils/auth-utils';
-
-
 
 export default function CreateTreatmentPage() {
   const { t } = useTranslation();
@@ -23,8 +20,9 @@ export default function CreateTreatmentPage() {
     </>
   );
 }
+
 CreateTreatmentPage.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndStaffOnly,
 };
 CreateTreatmentPage.Layout = Layout;
 

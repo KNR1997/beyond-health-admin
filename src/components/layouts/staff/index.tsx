@@ -1,6 +1,6 @@
-import { useRouter } from 'next/router';
-import { useAtom } from 'jotai';
 import cn from 'classnames';
+import { useAtom } from 'jotai';
+import { useRouter } from 'next/router';
 // utils
 import {
   checkIsMaintenanceModeComing,
@@ -9,25 +9,25 @@ import {
 import { RESPONSIVE_WIDTH } from '@/utils/constants';
 import { useWindowSize } from '@/utils/use-window-size';
 import { miniSidebarInitialValue } from '@/utils/constants';
-import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
+import { staffOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
 // components
 import Scrollbar from '@/components/ui/scrollbar';
+import SideBarMenu from '@/components/layouts/staff/menu';
 import Footer from '@/components/layouts/footer/footer-bar';
-import SideBarMenu from '@/components/layouts/dentist/menu';
 import OwnerInformation from '@/components/user/user-details';
 import Navbar from '@/components/layouts/navigation/top-navbar';
 import MobileNavigation from '@/components/layouts/navigation/mobile-navigation';
 
-const DentistLayout: React.FC<{ children?: React.ReactNode }> = ({
+const StaffLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
 }) => {
-  const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
-  const { locale } = useRouter();
   const router = useRouter();
-  const dir = locale === 'ar' || locale === 'he' ? 'rtl' : 'ltr';
+  const { locale } = useRouter();
   const { width } = useWindowSize();
   const { permissions } = getAuthCredentials();
-  let permission = hasAccess(adminOnly, permissions);
+  let permission = hasAccess(staffOnly, permissions);
+  const dir = locale === 'ar' || locale === 'he' ? 'rtl' : 'ltr';
+  const [miniSidebar, _] = useAtom(miniSidebarInitialValue);
   const [underMaintenance] = useAtom(checkIsMaintenanceModeComing);
   const [underMaintenanceStart] = useAtom(checkIsMaintenanceModeStart);
 
@@ -39,7 +39,7 @@ const DentistLayout: React.FC<{ children?: React.ReactNode }> = ({
       <Navbar />
       <MobileNavigation>
         <OwnerInformation />
-        {!permission ? <SideBarMenu /> : null}
+        <SideBarMenu />
       </MobileNavigation>
 
       <div className="flex flex-1">
@@ -66,7 +66,7 @@ const DentistLayout: React.FC<{ children?: React.ReactNode }> = ({
               }}
             >
               <OwnerInformation />
-              {!permission ? <SideBarMenu /> : null}
+              <SideBarMenu />
             </Scrollbar>
           </div>
         </aside>
@@ -89,4 +89,4 @@ const DentistLayout: React.FC<{ children?: React.ReactNode }> = ({
     </div>
   );
 };
-export default DentistLayout;
+export default StaffLayout;

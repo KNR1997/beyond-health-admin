@@ -185,7 +185,7 @@ const PatientList = ({
           deleteModalView={hasDeletePermission ? 'DELETE_PATIENT' : undefined}
           deleteBySlug={hasDeletePermission ? record.id : undefined}
           detailsUrl={
-            hasViewPermission ? Routes.patient.details(record.id) : undefined
+            hasViewPermission ? `${Routes.patient.list}/${id}/details` : undefined
           }
         />
       ),

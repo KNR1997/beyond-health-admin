@@ -1,24 +1,27 @@
-import { AdminIcon } from '@/components/icons/admin-icon';
-import { BanUser } from '@/components/icons/ban-user';
-import { EyeIcon } from '@/components/icons/category/eyes-icon';
-import { CheckMarkCircle } from '@/components/icons/checkmark-circle';
-import { CloseFillIcon } from '@/components/icons/close-fill';
-import { EditIcon } from '@/components/icons/edit';
-import { Eye } from '@/components/icons/eye-icon';
-import { TrashIcon } from '@/components/icons/trash';
-import { WalletPointsIcon } from '@/components/icons/wallet-point';
-import Link from '@/components/ui/link';
-import { useModalAction } from '@/components/ui/modal/modal.context';
-import { getAuthCredentials } from '@/utils/auth-utils';
-import { STAFF, SUPER_ADMIN } from '@/utils/constants';
-import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
-import { Routes } from '@/config/routes';
-import { approveModalInitialValues } from '@/utils/constants';
 import { useAtom } from 'jotai';
-import { ExternalLinkIcon } from '@/components/icons/external-link';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
+// utils
+import { STAFF, SUPER_ADMIN } from '@/utils/constants';
+import { getAuthCredentials } from '@/utils/auth-utils';
+import { approveModalInitialValues } from '@/utils/constants';
+// config
+import { Routes } from '@/config/routes';
+// components
+import Link from '@/components/ui/link';
 import { Tooltip } from '@/components/ui/tooltip';
+import { Eye } from '@/components/icons/eye-icon';
+import { EditIcon } from '@/components/icons/edit';
+import { TrashIcon } from '@/components/icons/trash';
 import { ResetIcon } from '@/components/icons/reset';
+import { BanUser } from '@/components/icons/ban-user';
+import { AdminIcon } from '@/components/icons/admin-icon';
+import { CloseFillIcon } from '@/components/icons/close-fill';
+import { EyeIcon } from '@/components/icons/category/eyes-icon';
+import { WalletPointsIcon } from '@/components/icons/wallet-point';
+import { ExternalLinkIcon } from '@/components/icons/external-link';
+import { useModalAction } from '@/components/ui/modal/modal.context';
+import { CheckMarkCircle } from '@/components/icons/checkmark-circle';
 
 type Props = {
   id: string;
@@ -156,7 +159,7 @@ const ActionButtons = ({
     }
   }
 
-    function handleResetPassword() {
+  function handleResetPassword() {
     openModal('RESET_PASSWORD', id);
   }
 
@@ -309,6 +312,15 @@ const ActionButtons = ({
             <CloseFillIcon width={17} />
           </button>
         ))}
+      {editUrl && (
+        <Link
+          href={editUrl}
+          className="text-base transition duration-200 hover:text-heading"
+          title={t('common:text-edit')}
+        >
+          <EditIcon width={15} />
+        </Link>
+      )}
       {userStatus && (
         <>
           {isUserActive ? (
@@ -329,15 +341,6 @@ const ActionButtons = ({
             </button>
           )}
         </>
-      )}
-      {editUrl && (
-        <Link
-          href={editUrl}
-          className="text-base transition duration-200 hover:text-heading"
-          title={t('common:text-edit')}
-        >
-          <EditIcon width={15} />
-        </Link>
       )}
       {enablePreviewMode && (
         <>
@@ -364,8 +367,8 @@ const ActionButtons = ({
         </Link>
       )}
 
-      {dentalProblemActiveButton && (
-        !isDentalProblemActive ? (
+      {dentalProblemActiveButton &&
+        (!isDentalProblemActive ? (
           <button
             onClick={() => handleDentalProblemStatus(true)}
             className="transition duration-200 text-accent hover:text-accent-hover focus:outline-none"
@@ -383,8 +386,8 @@ const ActionButtons = ({
           </button>
         ))}
 
-      {treatmentActiveButton && (
-        !isTreatmentActive ? (
+      {treatmentActiveButton &&
+        (!isTreatmentActive ? (
           <button
             onClick={() => handleTreatmentStatus(true)}
             className="transition duration-200 text-accent hover:text-accent-hover focus:outline-none"

@@ -11,5 +11,6 @@ export const activeInactiveStatusOptions = [
 
 export const roleOptions = [
   { value: '20', label: 'Admin' },
-  { value: '15', label: 'DENTIST' },
+  { value: '15', label: 'Dentist' },
+  { value: '8', label: 'Staff' },
 ];

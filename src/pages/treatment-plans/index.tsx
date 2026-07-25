@@ -10,7 +10,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
 // utils
-import { adminOnly } from '@/utils/auth-utils';
+import { adminAndStaffOnly } from '@/utils/auth-utils';
 // hooks
 import { useTreatmentPlansQuery } from '@/data/treatment-plan';
 // client
@@ -19,16 +19,16 @@ import { reportClient } from '@/data/client/report';
 import { Dentist, Patient, SortOrder } from '@/types';
 // components
 import Card from '@/components/common/card';
+import Layout from '@/components/layouts/app';
 import Search from '@/components/common/search';
-import Layout from '@/components/layouts/admin';
 import Loader from '@/components/ui/loader/loader';
 import LinkButton from '@/components/ui/link-button';
 import { ArrowUp } from '@/components/icons/arrow-up';
 import { MoreIcon } from '@/components/icons/more-icon';
-import { DownloadIcon } from '@/components/icons/download-icon';
-import { ArrowDown } from '@/components/icons/arrow-down';
 import ErrorMessage from '@/components/ui/error-message';
+import { ArrowDown } from '@/components/icons/arrow-down';
 import PageHeading from '@/components/common/page-heading';
+import { DownloadIcon } from '@/components/icons/download-icon';
 import TreatmentPlanList from '@/components/treatment-plan/treatment-plan-list';
 import TreatmentPlanFilter from '@/components/treatment-plan/treatment-plan-filter';
 
@@ -240,9 +240,8 @@ export default function TreatmentPlans() {
 }
 
 TreatmentPlans.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndStaffOnly,
 };
-
 TreatmentPlans.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({

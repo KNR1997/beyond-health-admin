@@ -18,13 +18,8 @@ export const dentistValidationSchema = yup.object().shape({
   ),
   mobile_number: yup
     .string()
-    .required('form:error-contact-number-required')
-    .max(19, 'maximum 19 digit'
-    // .matches(
-    //     /^(?:\+94|0)7[01245678]\d{7}$/,
-    //     'Contact number must be in the format +94712345678 or 0712345678'
-    //   )
-    ),
+    .matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits')
+    .required('form:error-contact-number-required'),
   license_number: yup
   .string()
   .required('form:error-license-number-required')

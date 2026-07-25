@@ -1,17 +1,14 @@
-import LoginForm from '@/components/auth/login-form';
-import { useTranslation } from 'next-i18next';
-import type { GetStaticProps } from 'next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { getAuthCredentials, isAuthenticated } from '@/utils/auth-utils';
 import { useRouter } from 'next/router';
-import AuthPageLayout from '@/components/layouts/auth-layout';
+import type { GetStaticProps } from 'next';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// config
 import { Routes } from '@/config/routes';
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale!, ['common', 'form'])),
-  },
-});
+// utils
+import { getAuthCredentials, isAuthenticated } from '@/utils/auth-utils';
+// components
+import LoginForm from '@/components/auth/login-form';
+import AuthPageLayout from '@/components/layouts/auth-layout';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -30,3 +27,9 @@ export default function LoginPage() {
     </AuthPageLayout>
   );
 }
+
+export const getStaticProps: GetStaticProps = async ({ locale }) => ({
+  props: {
+    ...(await serverSideTranslations(locale!, ['common', 'form'])),
+  },
+});

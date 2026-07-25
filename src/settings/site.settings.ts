@@ -6,6 +6,7 @@ import {
   dentistOnly,
   ownerAndStaffOnly,
   patientOnly,
+  staffOnly,
 } from '@/utils/auth-utils';
 import { Routes } from '@/config/routes';
 import { Portal } from '@headlessui/react';
@@ -695,6 +696,45 @@ export const siteSettings = {
         label: 'common:sidebar-nav-item-my-appointments',
         icon: 'CalendarScheduleIcon',
         permissions: dentistOnly,
+      },
+    ],
+
+    staffDashboard: [
+      {
+        href: Routes?.profileUpdate,
+        label: 'Profile',
+        icon: 'UserIconSimple',
+        permissions: staffOnly,
+      },
+      {
+        href: Routes.patient.list,
+        label: 'text-all-patients',
+        icon: 'WheelChairDisabledIcon',
+        permissions: staffOnly,
+      },
+      {
+        href: Routes.treatment.list,
+        label: 'text-all-treatments',
+        icon: 'InjectionVaccineIcon',
+        permissions: staffOnly,
+      },
+      {
+        href: Routes.dentalProblem.list,
+        label: 'text-all-dental-problems',
+        icon: 'DentalDrillIcon',
+        permissions: staffOnly,
+      },
+      {
+        href: Routes.appointment.list,
+        label: 'text-all-appointments',
+        icon: 'CalendarScheduleIcon',
+        permissions: staffOnly,
+      },
+      {
+        href: Routes.treatmentPlan.list,
+        label: 'text-all-patient-treatments',
+        icon: 'HospitalFileIcon',
+        permissions: staffOnly,
       },
     ],
 

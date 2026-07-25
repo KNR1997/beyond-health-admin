@@ -9,7 +9,7 @@ import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import PageHeading from '@/components/common/page-heading';
 import StickerCard from '@/components/widgets/sticker-card';
 
-const DentistLayout = () => {
+const StaffLayout = () => {
   const { t } = useTranslation();
 
   return (
@@ -51,8 +51,8 @@ const DentistLayout = () => {
   );
 };
 
-const DentistDashboard = () => {
-  return <DentistLayout />;
+const StaffDashboard = () => {
+  return <StaffLayout />;
 };
 
-export default DentistDashboard;
+export default StaffDashboard;

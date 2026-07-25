@@ -1,20 +1,14 @@
-import { useRouter } from 'next/router';
-import { siteSettings } from '@/settings/site.settings';
 import cn from 'classnames';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
-
-//components
-import Link from '@/components/ui/link';
-
-//utils
+// utils
 import { useScrollableSlider } from '@/utils/use-scrollable-slider';
-
-//icons
-import { ChevronRight } from '../icons/chevron-right';
-import { ChevronLeft } from '../icons/chevron-left';
-
 //routes
 import { Routes } from '@/config/routes';
+//components
+import Link from '@/components/ui/link';
+import { ChevronLeft } from '@/components/icons/chevron-left';
+import { ChevronRight } from '@/components/icons/chevron-right';
 
 export default function PatientPageHeader({
   pageTitle,

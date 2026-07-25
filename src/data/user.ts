@@ -2,7 +2,7 @@ import { AUTH_CRED } from '@/utils/constants';
 import { Routes } from '@/config/routes';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'next-i18next';
-import { useRouter } from 'next/router';
+import { Router, useRouter } from 'next/router';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { toast } from 'react-toastify';
 import { API_ENDPOINTS } from './client/api-endpoints';
@@ -78,9 +78,11 @@ export const useLogoutMutation = () => {
 export const useRegisterMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const router = useRouter();
 
   return useMutation(userClient.register, {
-    onSuccess: () => {
+    onSuccess: async () => {
+      await router.push(Routes.user.list);
       toast.success(t('common:successfully-register'), {
         toastId: 'successRegister',
       });
@@ -132,7 +134,6 @@ export const useChangePasswordMutation = () => {
   return useMutation(userClient.changePassword);
 };
 
-
 export const useForgetPasswordMutation = () => {
   return useMutation(userClient.forgetPassword);
 };
@@ -172,8 +173,6 @@ export const useVerifyForgetPasswordTokenMutation = () => {
 export const useResetPasswordMutation = () => {
   return useMutation(userClient.resetPassword);
 };
-
-
 
 export const useMakeOrRevokeAdminMutation = () => {
   const queryClient = useQueryClient();
@@ -248,7 +247,7 @@ export const useUserQuery = ({ id }: { id: string }) => {
     () => userClient.fetchUser({ id }),
     {
       enabled: Boolean(id),
-    }
+    },
   );
 };
 
@@ -258,7 +257,7 @@ export const useUsersQuery = (params: Partial<UserQueryOptions>) => {
     () => userClient.fetchUsers(params),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
@@ -278,7 +277,7 @@ export const useResetUserPasswordMutation = () => {
     },
     onError: () => {
       toast.error(t('common:PICKBAZAR_MESSAGE.SOMETHING_WENT_WRONG'));
-    }
+    },
   });
 };
 
@@ -288,7 +287,7 @@ export const useAdminsQuery = (params: Partial<QueryOptionsType>) => {
     () => userClient.fetchAdmins(params),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
@@ -305,7 +304,7 @@ export const useVendorsQuery = (params: Partial<UserQueryOptions>) => {
     () => userClient.fetchVendors(params),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
@@ -322,7 +321,7 @@ export const useCustomersQuery = (params: Partial<UserQueryOptions>) => {
     () => userClient.fetchCustomers(params),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
@@ -333,14 +332,15 @@ export const useCustomersQuery = (params: Partial<UserQueryOptions>) => {
   };
 };
 
-
-export const useMyStaffsQuery = (params: Partial<UserQueryOptions & { shop_id: string }>) => {
+export const useMyStaffsQuery = (
+  params: Partial<UserQueryOptions & { shop_id: string }>,
+) => {
   const { data, isLoading, error } = useQuery<UserPaginator, Error>(
     [API_ENDPOINTS.MY_STAFFS, params],
     () => userClient.getMyStaffs(params),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
@@ -351,14 +351,13 @@ export const useMyStaffsQuery = (params: Partial<UserQueryOptions & { shop_id: s
   };
 };
 
-
 export const useAllStaffsQuery = (params: Partial<UserQueryOptions>) => {
   const { data, isLoading, error } = useQuery<UserPaginator, Error>(
     [API_ENDPOINTS.ALL_STAFFS, params],
     () => userClient.getAllStaffs(params),
     {
       keepPreviousData: true,
-    }
+    },
   );
 
   return {
@@ -368,4 +367,3 @@ export const useAllStaffsQuery = (params: Partial<UserQueryOptions>) => {
     error,
   };
 };
-

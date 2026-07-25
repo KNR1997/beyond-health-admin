@@ -1,12 +1,10 @@
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useTranslation } from 'next-i18next';
-//components
-import Layout from '@/components/layouts/admin';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// utils
+import { adminAndStaffOnly } from '@/utils/auth-utils';
+// components
+import Layout from '@/components/layouts/app';
 import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
-
-//utils
-import { adminOnly } from '@/utils/auth-utils';
-
 
 export default function CreatePatientGeneralInfoPage() {
   const { t } = useTranslation();
@@ -22,8 +20,9 @@ export default function CreatePatientGeneralInfoPage() {
     </>
   );
 }
+
 CreatePatientGeneralInfoPage.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndStaffOnly,
 };
 CreatePatientGeneralInfoPage.Layout = Layout;
 

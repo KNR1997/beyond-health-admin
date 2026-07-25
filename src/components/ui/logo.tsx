@@ -41,7 +41,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
             //   settings?.options?.collapseLogo?.original ??
             //   siteSettings.collapseLogo.url
             // }
-            src="/logo-new.png"
+            src="/logo_new.png"
             alt={settings?.options?.siteTitle ?? siteSettings.collapseLogo.alt}
             fill
             sizes="(max-width: 768px) 100vw"
@@ -59,7 +59,7 @@ const Logo: React.FC<React.AnchorHTMLAttributes<{}>> = ({
         >
           <Image
             // src={settings?.options?.logo?.original ?? siteSettings.logo.url}
-            src="/logo-new.png"
+            src="/logo_new.png"
             alt={settings?.options?.siteTitle ?? siteSettings.logo.alt}
             fill
             sizes="(max-width: 768px) 100vw"

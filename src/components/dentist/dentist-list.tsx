@@ -144,7 +144,7 @@ const DentistList = ({
           deleteModalView="DELETE_COUPON"
           deleteBySlug={record.id}
           routes={Routes?.dentist}
-          showResetDentistPasswordButton={true}
+          // showResetDentistPasswordButton={true}
         />
       ),
     },

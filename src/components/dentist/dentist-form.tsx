@@ -93,14 +93,14 @@ export default function CreateOrUpdateDentistForm({ initialValues }: IProps) {
     // @ts-ignore
     defaultValues: initialValues
       ? {
-        ...initialValues,
-        ...initialValues.user,
-        specialization: specializationOptions.find(
-          (genderOption) =>
-            genderOption.value == initialValues.specialization,
-        ),
-        // ...initialValues,
-      }
+          ...initialValues,
+          ...initialValues.user,
+          specialization: specializationOptions.find(
+            (genderOption) =>
+              genderOption.value == initialValues.specialization,
+          ),
+          // ...initialValues,
+        }
       : defaultValues,
     //@ts-ignore
     resolver: yupResolver(dentistValidationSchema),
@@ -153,10 +153,11 @@ export default function CreateOrUpdateDentistForm({ initialValues }: IProps) {
         <div className="flex flex-wrap my-5 sm:my-8">
           <Description
             title={t('form:input-label-description')}
-            details={`${initialValues
-              ? t('form:item-description-edit')
-              : t('form:item-description-add')
-              } ${t('form:dentist-form-info-help-text')}`}
+            details={`${
+              initialValues
+                ? t('form:item-description-edit')
+                : t('form:item-description-add')
+            } ${t('form:dentist-form-info-help-text')}`}
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
           />
 
@@ -197,14 +198,21 @@ export default function CreateOrUpdateDentistForm({ initialValues }: IProps) {
               error={t(errors.email?.message!)}
               required
             />
-            <PhoneNumberInput
+            <Input
+              label={t('form:input-label-contact')}
+              {...register('mobile_number')}
+              error={t(errors.mobile_number?.message!)}
+              variant="outline"
+              required
+            />
+            {/* <PhoneNumberInput
               label={t('form:input-label-contact')}
               {...register('mobile_number')}
               control={control}
               error={t(errors.mobile_number?.message!)}
               required
-            />
-            <div className="mb-5">
+            /> */}
+            <div className="my-5">
               <SelectInput
                 required
                 label={t('form:input-label-select-specification')}

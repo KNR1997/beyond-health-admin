@@ -12,14 +12,14 @@ import { Routes } from '@/config/routes';
 // hooks
 import { useAppointmentsQuery } from '@/data/appointment';
 // utils
-import { adminOnly } from '@/utils/auth-utils';
+import { adminAndStaffOnly } from '@/utils/auth-utils';
 // client
 import { reportClient } from '@/data/client/report';
 // types
 import { Dentist, Patient } from '@/types';
 // components
 import Card from '@/components/common/card';
-import Layout from '@/components/layouts/admin';
+import Layout from '@/components/layouts/app';
 import Search from '@/components/common/search';
 import LinkButton from '@/components/ui/link-button';
 import Loader from '@/components/ui/loader/loader';
@@ -124,7 +124,7 @@ export default function Appointments() {
   return (
     <>
       <Card className="mb-8 flex flex-col">
-        <div className="flex w-full flex-col items-center md:flex-row">
+        <div className="flex flex-col items-center mb-8 md:flex-row">
           <div className="mb-4 md:mb-0 md:w-1/4">
             <PageHeading title={t('form:input-label-appointments')} />
           </div>
@@ -238,9 +238,8 @@ export default function Appointments() {
 }
 
 Appointments.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndStaffOnly,
 };
-
 Appointments.Layout = Layout;
 
 export const getStaticProps = async ({ locale }: any) => ({

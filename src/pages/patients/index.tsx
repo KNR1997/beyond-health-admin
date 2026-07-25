@@ -7,7 +7,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 //utils
 import {
-  adminAndDentistOnly,
+  adminDentistAndStaffOnly,
   adminAndStaffOnly,
   dentistOnly,
   getAuthCredentials,
@@ -187,7 +187,7 @@ export default function Patients() {
 }
 
 Patients.authenticate = {
-  permissions: adminAndDentistOnly,
+  permissions: adminDentistAndStaffOnly,
 };
 
 Patients.Layout = Layout;

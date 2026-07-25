@@ -1,18 +1,18 @@
-import { useTranslation } from 'next-i18next';
 import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // utils
-import { adminOnly } from '@/utils/auth-utils';
+import { dentistOnly } from '@/utils/auth-utils';
 // hooks
 import { usePatientQuery } from '@/data/patient';
 // components
-import Layout from '@/components/layouts/admin';
+import Layout from '@/components/layouts/app';
 import Loader from '@/components/ui/loader/loader';
 import ErrorMessage from '@/components/ui/error-message';
+import PatientDetails from '@/components/patient/patient-details';
 import PatientPageHeader from '@/components/patient/patient-page-header';
-import CreateOrUpdatePatientForm from '@/components/patient/patient-form';
 
-export default function UpdatePatientPage() {
+export default function PatientDetailsPage() {
   const { query } = useRouter();
   const { t } = useTranslation();
   const { patient, loading, error } = usePatientQuery({
@@ -21,20 +21,23 @@ export default function UpdatePatientPage() {
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
+
   return (
     <>
-      <PatientPageHeader
-        pageTitle="form:button-label-add-patient"
-        patientId={query.id as string}
-      />
-      <CreateOrUpdatePatientForm initialValues={patient} />
+      <div className="flex border-b border-dashed border-border-base pb-5 md:pb-7">
+        <h1 className="text-lg font-semibold text-heading">
+          Patient Details
+        </h1>
+      </div>
+      {patient && <PatientDetails patient={patient} />}
     </>
   );
 }
-UpdatePatientPage.authenticate = {
-  permissions: adminOnly,
+
+PatientDetailsPage.authenticate = {
+  permissions: dentistOnly,
 };
-UpdatePatientPage.Layout = Layout;
+PatientDetailsPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({
   props: {
