@@ -1,8 +1,9 @@
+import cn from 'classnames';
 import { useState } from 'react';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // types
-import { SortOrder } from '@/types';
+import { Dentist, Patient, SortOrder } from '@/types';
 import { useRouter } from 'next/router';
 // utils
 import { adminOnly } from '@/utils/auth-utils';
@@ -20,12 +21,19 @@ import LinkButton from '@/components/ui/link-button';
 import ErrorMessage from '@/components/ui/error-message';
 import RosterList from '@/components/roster/roster-list';
 import PageHeading from '@/components/common/page-heading';
+import AppointmentFilter from '@/components/appointment/appointment-filter';
+import { ArrowUp } from '@/components/icons/arrow-up';
+import { ArrowDown } from '@/components/icons/arrow-down';
 
 export default function RosterWeeks() {
   const { t } = useTranslation();
   const { locale } = useRouter();
   // states
   const [page, setPage] = useState(1);
+  const [visible, setVisible] = useState(true);
+  const [dentist, setDentist] = useState('');
+  const [patient, setPatient] = useState('');
+  const [status, setStatus] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
@@ -47,6 +55,10 @@ export default function RosterWeeks() {
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
 
+  const toggleVisible = () => {
+    setVisible((v) => !v);
+  };
+
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
   }
@@ -57,7 +69,8 @@ export default function RosterWeeks() {
 
   return (
     <>
-      <Card className="mb-8 flex flex-col items-center md:flex-row">
+      <Card className="mb-8 flex flex-col">
+      <div className="mb-8 flex flex-col items-center md:flex-row">
         <div className="mb-4 md:mb-0 md:w-1/4">
           <PageHeading title={t('common:sidebar-nav-item-rosters')} />
         </div>
@@ -80,8 +93,16 @@ export default function RosterWeeks() {
                 + {t('form:button-label-add')}
               </span>
             </LinkButton>
+
           )}
         </div>
+
+        
+
+      </div>
+          
+          
+        
       </Card>
 
       <RosterList

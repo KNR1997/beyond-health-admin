@@ -7,7 +7,7 @@ import Description from '@/components/ui/description';
 import { useRegisterMutation } from '@/data/user';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { customerValidationSchema } from './user-validation-schema';
+import { userValidationSchema } from './user-validation-schema';
 import { Permission } from '@/types';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import { useRouter } from 'next/router';
@@ -26,7 +26,7 @@ const defaultValues = {
   password: '',
 };
 
-const CustomerCreateForm = () => {
+const UserCreateForm = () => {
   const { t } = useTranslation();
   const router = useRouter();
   const { mutate: registerUser, isLoading: loading } = useRegisterMutation();
@@ -39,7 +39,7 @@ const CustomerCreateForm = () => {
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues,
-    resolver: yupResolver(customerValidationSchema),
+    resolver: yupResolver(userValidationSchema),
   });
 
   async function onSubmit({ name, email, password }: FormValues) {
@@ -73,7 +73,7 @@ const CustomerCreateForm = () => {
       <div className="my-5 flex flex-wrap sm:my-8">
         <Description
           title={t('form:form-title-information')}
-          details={t('form:customer-form-info-help-text')}
+          details={t('form:user-form-info-help-text')}
           className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
         />
 
@@ -109,7 +109,7 @@ const CustomerCreateForm = () => {
       <StickyFooterPanel className="z-0">
         <div className="mb-4 text-end">
           <Button loading={loading} disabled={loading}>
-            {t('form:button-label-create-customer')}
+            {t('form:button-label-create-user')}
           </Button>
         </div>
       </StickyFooterPanel>
@@ -117,4 +117,4 @@ const CustomerCreateForm = () => {
   );
 };
 
-export default CustomerCreateForm;
+export default UserCreateForm;

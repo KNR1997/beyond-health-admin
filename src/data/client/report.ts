@@ -18,8 +18,11 @@ export const reportClient = {
 
   appointmentReportDownload: () => {
     return HttpClient.download(`${API_ENDPOINTS.REPORTS}/appointment/`);
-  }
+  },
 
+  treatmentPlanReportDownload: () => {
+    return HttpClient.download(`${API_ENDPOINTS.REPORTS}/treatment-plan/`);
+  }
  
 };
 

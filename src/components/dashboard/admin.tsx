@@ -227,6 +227,14 @@ export default function Dashboard() {
             color="#E157A0"
             price={data?.dental_problem_count}
           />
+
+           {/* <StickerCard
+            titleTransKey="sticker-card-title-schedule-appointments"
+            subtitleTransKey="sticker-card-subtitle-schedule-appointments"
+            icon={<BasketIcon className="h-8 w-8" />}
+            color="#E157A0"
+            price={data?.schedule_appointment_count}
+          /> */}
           
         </div>
       </div>

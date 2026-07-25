@@ -1,7 +1,9 @@
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import classNames from 'classnames';
+import { Fragment,useState } from 'react';
+import { Menu, Transition } from '@headlessui/react';
 //components
 import Card from '@/components/common/card';
 import PageHeading from '@/components/common/page-heading';
@@ -11,6 +13,7 @@ import Layout from '@/components/layouts/admin';
 import ErrorMessage from '@/components/ui/error-message';
 import LinkButton from '@/components/ui/link-button';
 import Loader from '@/components/ui/loader/loader';
+import { MoreIcon } from '@/components/icons/more-icon';
 
 //configs
 import { Config } from '@/config';
@@ -56,7 +59,7 @@ export default function DentalProblems() {
     setPage(current);
   }
 
-  async function handleDownloadInvoice() {
+  async function handleDownload() {
         try {
           // Now this will return a Blob directly
           const blob = await reportClient.dentalProblemReportDownload();
@@ -120,6 +123,48 @@ export default function DentalProblems() {
             placeholderText={t('form:input-placeholder-search-name')}
           />
 
+          <Menu
+                      as="div"
+                      className="relative inline-block ltr:text-left rtl:text-right"
+                    >
+                      <Menu.Button className="group p-2">
+                        <MoreIcon className="w-3.5 text-body" />
+                      </Menu.Button>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items
+                          as="ul"
+                          className={classNames(
+                            'shadow-700 absolute z-50 mt-2 w-52 overflow-hidden rounded border border-border-200 bg-light py-2 focus:outline-none ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-left',
+                          )}
+                        >
+                          <Menu.Item>
+                            {({ active }) => (
+                              <button
+                                onClick={handleDownload}
+                                className={classNames(
+                                  'flex w-full items-center space-x-3 px-5 py-2.5 text-sm font-semibold capitalize transition duration-200 hover:text-accent focus:outline-none rtl:space-x-reverse',
+                                  active ? 'text-accent' : 'text-body',
+                                )}
+                              >
+                                <DownloadIcon className="w-5 shrink-0" />
+                                <span className="whitespace-nowrap">
+                                  Export Dental Problems
+                                </span>
+                              </button>
+                            )}
+                          </Menu.Item>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+
           {locale === Config.defaultLanguage && (
             <LinkButton
               href={`${Routes.dentalProblem.create}`}
@@ -130,11 +175,11 @@ export default function DentalProblems() {
             
           )}
           
-          &nbsp; &nbsp;
-          <Button onClick={handleDownloadInvoice} className="bg-blue-500">
+          
+          {/* <Button onClick={handleDownloadInvoice} className="bg-blue-500">
                       <DownloadIcon className="h-4 w-4 me-3" />
                       {t('common:Print')} 
-                    </Button>
+                    </Button> */}
         </div>
       </Card>
       <DentalProblemList

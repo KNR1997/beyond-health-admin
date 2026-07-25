@@ -17,6 +17,14 @@ export enum CouponType {
   FREE_SHIPPING = 'free_shipping',
 }
 
+export enum TreatmentPlanStatus {
+  PROPOSED = 'proposed',
+  ACCEPTED = 'accepted',
+  IN_PROGRESS = 'in_progress',
+  COMPLETED = 'completed',
+  CANCELLED = 'cancelled',
+}
+
 export enum AppointmentStatus {
   SCHEDULED = 'scheduled',
   CONFIRMED = 'confirmed',
