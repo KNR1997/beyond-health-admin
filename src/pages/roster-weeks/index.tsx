@@ -1,5 +1,6 @@
 import cn from 'classnames';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // types
@@ -35,8 +36,7 @@ export default function RosterWeeks() {
   const [patient, setPatient] = useState('');
   const [status, setStatus] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [orderBy, setOrder] = useState('created_at');
-  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const [ordering, setOrdering] = useState('-created_at');
   // query
   const {
     rosters,
@@ -44,12 +44,11 @@ export default function RosterWeeks() {
     paginatorInfo,
     error,
   } = useRosterWeeksQuery({
-    limit: 10,
-    orderBy,
-    sortedBy,
-    name: searchTerm,
-    page,
     language: locale,
+    limit: 10,
+    page,
+    name: searchTerm,
+    ordering,
   });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -108,8 +107,7 @@ export default function RosterWeeks() {
       <RosterList
         rosters={rosters}
         onPagination={handlePagination}
-        onOrder={setOrder}
-        onSort={setColumn}
+        onOrdering={setOrdering}
         paginatorInfo={paginatorInfo}
       />
     </>

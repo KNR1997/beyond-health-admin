@@ -59,12 +59,11 @@ export const useRosterQuery = ({ slug, language }: GetParams) => {
 export const useCreateRosterMutation = () => {
   const queryClient = useQueryClient();
   const { t } = useTranslation();
+  const router = useRouter();
 
   return useMutation(rosterClient.create, {
-    onSuccess: () => {
-      Router.push(Routes.roster.list, undefined, {
-        locale: Config.defaultLanguage,
-      });
+    onSuccess: (data: Roster) => {
+      router.push(Routes.roster.assignments(data.id))
       toast.success(t('common:successfully-created'));
     },
     // Always refetch after error or success:

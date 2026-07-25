@@ -1,46 +1,40 @@
-import Input from '@/components/ui/input';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'next-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+// validations
+import { profileValidationSchema } from './profile-validation-schema';
+// utils
+import { handleMutationError } from '@/utils/handle-mutation-error';
+import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
+// hooks
+import { useUpdateUserMutation } from '@/data/user';
+// components
+import Input from '@/components/ui/input';
+import Alert from '@/components/ui/alert';
+import Card from '@/components/common/card';
 import Button from '@/components/ui/button';
 import Description from '@/components/ui/description';
-import Card from '@/components/common/card';
-import { useUpdateUserMutation } from '@/data/user';
-import TextArea from '@/components/ui/text-area';
-import { useTranslation } from 'next-i18next';
-import FileInput from '@/components/ui/file-input';
-import pick from 'lodash/pick';
-import SwitchInput from '@/components/ui/switch-input';
-import Label from '@/components/ui/label';
-import { adminOnly, getAuthCredentials, hasAccess } from '@/utils/auth-utils';
-import { yupResolver } from '@hookform/resolvers/yup';
-import { profileValidationSchema } from './profile-validation-schema';
 import PhoneNumberInput from '@/components/ui/phone-input';
 
 type FormValues = {
   display_name: string;
+  first_name: string;
+  last_name: string;
   mobile_number: string;
-  // profile: {
-  //   id: string;
-  //   bio: string;
-  //   contact: string;
-  //   avatar: {
-  //     thumbnail: string;
-  //     original: string;
-  //     id: string;
-  //   };
-  //   notifications: {
-  //     email: string;
-  //     enable: boolean;
-  //   };
-  // };
 };
 
 export default function ProfileUpdate({ me }: any) {
   const { t } = useTranslation();
-  const { mutate: updateUser, isLoading: loading } = useUpdateUserMutation();
   const { permissions } = getAuthCredentials();
   let permission = hasAccess(adminOnly, permissions);
+  // states
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  // mutations
+  const { mutate: updateUser, isLoading: loading } = useUpdateUserMutation();
   const {
     register,
+    setError,
     handleSubmit,
     control,
     formState: { errors },
@@ -48,48 +42,40 @@ export default function ProfileUpdate({ me }: any) {
     //@ts-ignore
     resolver: yupResolver(profileValidationSchema),
     defaultValues: {
-      ...me
-      // ...(me &&
-      //   pick(me, [
-      //     'name',
-      //     'profile.bio',
-      //     'profile.contact',
-      //     'profile.avatar',
-      //     'profile.notifications.email',
-      //     'profile.notifications.enable',
-      //   ])),
+      ...me,
     },
   });
 
   async function onSubmit(values: FormValues) {
-    const { display_name } = values;
-    // const { notifications } = profile;
     const input = {
       id: me?.id,
       input: {
         display_name: values.display_name,
+        first_name: values.first_name,
+        last_name: values.last_name,
         mobile_number: values.mobile_number,
-        // profile: {
-        //   id: me?.profile?.id,
-        //   bio: profile?.bio,
-        //   contact: profile?.contact,
-        //   avatar: {
-        //     thumbnail: profile?.avatar?.thumbnail,
-        //     original: profile?.avatar?.original,
-        //     id: profile?.avatar?.id,
-        //   },
-        //   notifications: {
-        //     ...notifications,
-        //   },
-        // },
       },
     };
-    updateUser({ ...input });
+    const mutationOptions = {
+      onError: (error: any) =>
+        handleMutationError(error, setError, setErrorMessage),
+    };
+    updateUser({ ...input }, mutationOptions);
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+    <>
+      {errorMessage ? (
+        <Alert
+          message={t(`common:${errorMessage}`)}
+          variant="error"
+          closeable={true}
+          className="mt-5"
+          onClose={() => setErrorMessage(null)}
+        />
+      ) : null}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {/* <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
         <Description
           title={t('form:input-label-avatar')}
           details={t('form:avatar-help-text')}
@@ -99,73 +85,70 @@ export default function ProfileUpdate({ me }: any) {
         <Card className="w-full sm:w-8/12 md:w-2/3">
           <FileInput name="profile.avatar" control={control} multiple={false} />
         </Card>
-      </div>
-      {permission ? (
+      </div> */}
+        {permission && (
+          <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
+            <Description
+              title={t('form:form-notification-title')}
+              details={t('form:form-notification-description')}
+              className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
+            />
+          </div>
+        )}
         <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
           <Description
-            title={t('form:form-notification-title')}
-            details={t('form:form-notification-description')}
+            title={t('form:form-title-information')}
+            details={t('form:profile-info-help-text')}
             className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
           />
 
-          {/* <Card className="w-full mb-5 sm:w-8/12 md:w-2/3">
+          <Card className="w-full mb-5 sm:w-8/12 md:w-2/3">
             <Input
-              label={t('form:input-notification-email')}
-              {...register('profile.notifications.email')}
-              error={t(errors?.profile?.notifications?.email?.message!)}
+              label={t('form:input-label-display-name')}
+              {...register('display_name')}
+              error={t(errors.display_name?.message!)}
               variant="outline"
               className="mb-5"
-              type="email"
+              required
             />
-            <div className="flex items-center gap-x-4">
-              <SwitchInput
-                name="profile.notifications.enable"
-                control={control}
-              />
-              <Label className="!mb-0.5">
-                {t('form:input-enable-notification')}
-              </Label>
-            </div>
-          </Card> */}
+            <Input
+              label={t('form:input-label-first-name')}
+              {...register('first_name')}
+              error={t(errors.first_name?.message!)}
+              variant="outline"
+              className="mb-5"
+              required
+            />
+            <Input
+              label={t('form:input-label-last-name')}
+              {...register('last_name')}
+              error={t(errors.last_name?.message!)}
+              variant="outline"
+              className="mb-5"
+              required
+            />
+            {/* <PhoneNumberInput
+              label={t('form:input-label-contact')}
+              {...register('mobile_number')}
+              control={control}
+              error={t(errors.mobile_number?.message!)}
+            /> */}
+            <Input
+              label={t('form:input-label-contact')}
+              {...register('mobile_number')}
+              error={t(errors.mobile_number?.message!)}
+              variant="outline"
+              //dimension="small"
+              required
+            />
+          </Card>
+          <div className="w-full text-end">
+            <Button loading={loading} disabled={loading}>
+              {t('form:button-label-save')}
+            </Button>
+          </div>
         </div>
-      ) : (
-        ''
-      )}
-      <div className="flex flex-wrap pb-8 my-5 border-b border-dashed border-border-base sm:my-8">
-        <Description
-          title={t('form:form-title-information')}
-          details={t('form:profile-info-help-text')}
-          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5"
-        />
-
-        <Card className="w-full mb-5 sm:w-8/12 md:w-2/3">
-          <Input
-            label={t('form:input-label-name')}
-            {...register('display_name')}
-            error={t(errors.display_name?.message!)}
-            variant="outline"
-            className="mb-5"
-          />
-          {/* <TextArea
-            label={t('form:input-label-bio')}
-            {...register('profile.bio')}
-            error={t(errors.profile?.bio?.message!)}
-            variant="outline"
-            className="mb-6"
-          /> */}
-          <PhoneNumberInput
-            label={t('form:input-label-contact')}
-            {...register('mobile_number')}
-            control={control}
-            error={t(errors.mobile_number?.message!)}
-          />
-        </Card>
-        <div className="w-full text-end">
-          <Button loading={loading} disabled={loading}>
-            {t('form:button-label-save')}
-          </Button>
-        </div>
-      </div>
-    </form>
+      </form>
+    </>
   );
 }
