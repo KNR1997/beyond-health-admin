@@ -1123,7 +1123,8 @@ export interface CreateRosterInput {
 
 export interface CreateRosterAssignmentInput {
   roster_week: string;
-  user: string;
+  dentist: string | null;
+  staff: string | null;
   shift: string;
 }
 
