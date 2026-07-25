@@ -59,7 +59,7 @@ const categoryOptions = [
   },
   {
     label: 'Orthodontics',
-    value: 'ortho',
+    value: 'orthodontic',
   },
   {
     label: 'Surgical',
