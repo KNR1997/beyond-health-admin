@@ -9,11 +9,14 @@ import { ChecklistIcon } from '@/components/icons/summary/checklist';
 import PageHeading from '@/components/common/page-heading';
 import StickerCard from '@/components/widgets/sticker-card';
 import { useAnalyticsQuery } from '@/data/dashboard';
+import usePrice from '@/utils/use-price';
 
 const StaffLayout = () => {
   const { t } = useTranslation();
   const { data, isLoading: loading } = useAnalyticsQuery();
-
+  const { price } = usePrice({
+    amount: Number(data?.total_revenue?.total_cost),
+  });
   return (
     <>
       <div className="mb-8 rounded-lg bg-light p-5 md:p-8">
@@ -22,12 +25,12 @@ const StaffLayout = () => {
         </div>
         <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
 
-          <StickerCard
+          {/* <StickerCard
             titleTransKey="sticker-card-title-today-rev"
             icon={<ChecklistIcon className="h-8 w-8" />}
             color="#D74EFF"
-            price={`$${data?.total_revenue?.total_cost}`}
-          />
+            price={price}
+          /> */}
           <StickerCard
             titleTransKey="sticker-card-title-today-patients"
             // subtitleTransKey="sticker-card-subtitle-rev"
@@ -48,7 +51,7 @@ const StaffLayout = () => {
             color="#E157A0"
             price={data?.dentist_count}
           />
-        
+
         </div>
       </div>
     </>

@@ -62,7 +62,11 @@ export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
 
-  console.log('data', data);
+  const { price } = usePrice({
+      amount: Number(data?.total_revenue?.total_cost),
+    });
+
+  // console.log('data', data);
 
   // const [orderDataRange, setOrderDataRange] = useState(
   //   data?.todayTotalOrderByStatus,
@@ -204,7 +208,7 @@ export default function Dashboard() {
             subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-8 w-8" />}
             color="#1EAE98"
-            price={`$${data?.total_revenue?.total_cost}`}
+            price={price}
           />
           <StickerCard
             titleTransKey="sticker-card-title-dentist"
