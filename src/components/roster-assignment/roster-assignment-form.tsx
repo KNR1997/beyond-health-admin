@@ -8,21 +8,22 @@ import { getErrorMessage } from '@/utils/form-error';
 // form validation
 import { rosterValidationSchema } from './roster-assignment-validation-schema';
 // hooks
-import { useSettingsQuery } from '@/data/settings';
-import { useUpdateRosterMutation } from '@/data/roster-week';
 import { useShiftsQuery } from '@/data/shift';
+import { useStaffsQuery } from '@/data/staff';
 import { useCreateRosterAssignmentMutation } from '@/data/roster-assignment';
 // types
-import { Dentist, Shift } from '@/types';
+import { Dentist, Shift, User } from '@/types';
 import { useDentistsQuery } from '@/data/dentist';
 // components
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
-import Description from '@/components/ui/description';
-import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
-import SelectInput from '@/components/ui/select-input';
-import ValidationError from '@/components/ui/form-validation-error';
 import DatePicker from '@/components/ui/date-picker';
+import Description from '@/components/ui/description';
+import SelectInput from '@/components/ui/select-input';
+import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
+import ValidationError from '@/components/ui/form-validation-error';
+import { CalendarIcon } from '../icons/calendar';
+import { useRosterQuery } from '@/data/roster-week';
 
 function SelectDentist({
   control,
@@ -33,13 +34,13 @@ function SelectDentist({
 }) {
   const { t } = useTranslation();
   const { dentists, paginatorInfo, loading, error } = useDentistsQuery({
-    limit: 20,
+    limit: 999,
   });
   return (
     <div className="mb-5">
       <SelectInput
         label={t('form:input-label-dentist')}
-        required
+        // required
         name="dentist"
         control={control}
         isClearable={true}
@@ -48,12 +49,77 @@ function SelectDentist({
           `${option.user?.first_name} ${option.user?.last_name}`
         }
         // @ts-ignore
-        getOptionValue={(option: Dentist) => option.id}
-        placeholder='Select Dentist'
+        getOptionValue={(option: Dentist) => option?.user.id}
+        placeholder="Select Dentist"
         options={dentists!}
         isLoading={loading}
       />
       <ValidationError message={t(errors.dentist?.message)} />
+    </div>
+  );
+}
+
+function SelectStaff({
+  control,
+  errors,
+}: {
+  control: Control<FormValues>;
+  errors: FieldErrors;
+}) {
+  const { t } = useTranslation();
+  const { staffs, paginatorInfo, loading, error } = useStaffsQuery({
+    limit: 999,
+  });
+  return (
+    <div className="mb-5">
+      <SelectInput
+        label="Staff"
+        // required
+        name="staff"
+        control={control}
+        isClearable={true}
+        // @ts-ignore
+        getOptionLabel={(option: User) =>
+          `${option?.first_name} ${option?.last_name}`
+        }
+        // @ts-ignore
+        getOptionValue={(option: User) => option.id}
+        placeholder="Select Staff"
+        options={staffs!}
+        isLoading={loading}
+      />
+      <ValidationError message={t(errors.staff?.message)} />
+    </div>
+  );
+}
+
+function RosterWeekInfo({ rosterWeekId }: { rosterWeekId: string }) {
+  const { t } = useTranslation();
+  // You'll need to fetch the roster week data here
+  const { roster, loading } = useRosterQuery({ slug: rosterWeekId });
+
+  // Example data - replace with actual query
+  const startDate = new Date(roster?.week_start_date);
+  const endDate = new Date(roster?.week_end_date);
+
+  return (
+    <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div className="flex items-center gap-2 text-blue-800">
+        <CalendarIcon className="w-5 h-5" />
+        <span className="font-semibold">
+          {/* {t('form:roster-week-label') || 'Roster Week'} */}
+          Roster Week
+        </span>
+      </div>
+      <div className="mt-2 text-sm text-blue-700">
+        <span>
+          {format(startDate, 'MMMM d, yyyy')} —{' '}
+          {format(endDate, 'MMMM d, yyyy')}
+        </span>
+        <span className="ml-4 text-xs text-blue-500">
+          ({format(startDate, 'EEE')} - {format(endDate, 'EEE')})
+        </span>
+      </div>
     </div>
   );
 }
@@ -70,7 +136,7 @@ function SelectShift({
     limit: 20,
   });
   return (
-    <div className="mb-5">
+    <div className="my-5">
       <SelectInput
         label={t('form:input-label-shift')}
         required
@@ -81,7 +147,7 @@ function SelectShift({
         getOptionLabel={(option: Shift) => option.code}
         // @ts-ignore
         getOptionValue={(option: Shift) => option.id}
-        placeholder='Select Shift'
+        placeholder="Select Shift"
         options={shifts!}
         isLoading={loading}
       />
@@ -91,7 +157,8 @@ function SelectShift({
 }
 
 type FormValues = {
-  dentist: Dentist;
+  dentist: Dentist | null;
+  staff: User | null;
   shift: Shift;
   week_start_date: Date | string;
   week_end_date: Date | string;
@@ -104,12 +171,10 @@ const defaultValues = {
 };
 
 type IProps = {
-  initialValues?: any;
   rosterWeekId: string;
 };
 
 export default function CreateOrUpdateRosterAssignmentForm({
-  initialValues,
   rosterWeekId,
 }: IProps) {
   const router = useRouter();
@@ -124,108 +189,75 @@ export default function CreateOrUpdateRosterAssignmentForm({
     shouldUnregister: true,
 
     //@ts-ignore
-    defaultValues: initialValues
-      ? {
-          ...initialValues,
-        }
-      : defaultValues,
+    defaultValues: defaultValues,
     //@ts-ignore
     resolver: yupResolver(rosterValidationSchema),
   });
 
-  const { locale } = router;
-  const {
-    // @ts-ignore
-    settings: { options },
-  } = useSettingsQuery({
-    language: locale!,
-  });
-
   const { mutate: createRosterAssignment, isLoading: creating } =
     useCreateRosterAssignmentMutation();
-  const { mutate: updateRoster, isLoading: updating } =
-    useUpdateRosterMutation();
 
   const onSubmit = async (values: FormValues) => {
     const input = {
       roster_week: rosterWeekId,
       date: format(new Date(values.date), 'yyyy-MM-dd'),
-      user: values.dentist.user.id,
       shift: values.shift.id,
-      assigned_role: 'DENTIST',
+      dentist: values?.dentist ? values.dentist?.user.id : null,
+      staff: values.staff ? values.staff?.id : null,
     };
 
     try {
-      if (!initialValues) {
-        createRosterAssignment({
-          ...input,
-        });
-      } else {
-        // updateRoster({
-        //   ...input,
-        //   id: initialValues.id!,
-        // });
-      }
+      createRosterAssignment({
+        ...input,
+      });
     } catch (err) {
       getErrorMessage(err);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-wrap my-5 sm:my-8">
-        <Description
-          title={t('form:input-label-description')}
-          details={`${
-            initialValues
-              ? t('form:item-description-edit')
-              : t('form:item-description-add')
-          } ${t('form:roster-description-helper-text')}`}
-          className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
-        />
-
-        <Card className="w-full sm:w-8/12 md:w-2/3">
-          <DatePicker
-            required={true}
-            control={control}
-            name="date"
-            minDate={today}
-            // startDate={new Date(startDate)}
-            placeholder="End Date"
-            // toolTipText={t('form:input-tooltip-maintenance-end-time')}
-            label={t('form:input-label-date')}
-            error={t(errors.date?.message!)}
-            dateFormat="yyyy MMMM d"
+    <>
+      <RosterWeekInfo rosterWeekId={rosterWeekId} />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-wrap my-5 sm:my-8">
+          <Description
+            title={t('form:input-label-description')}
+            details={`${t(
+              'form:item-description-add',
+            )} ${t('form:roster-description-helper-text')}`}
+            className="w-full px-0 pb-5 sm:w-4/12 sm:py-8 sm:pe-4 md:w-1/3 md:pe-5 "
           />
-          <SelectShift control={control} errors={errors} />
 
-          <SelectDentist control={control} errors={errors} />
-        </Card>
-      </div>
-      <StickyFooterPanel className="z-0">
-        <div className="text-end">
-          {initialValues && (
-            <Button
-              variant="outline"
-              onClick={router.back}
-              className="text-sm me-4 md:text-base"
-              type="button"
-            >
-              {t('form:button-label-back')}
-            </Button>
-          )}
-
-          <Button
-            loading={creating || updating}
-            disabled={creating || updating}
-            className="text-sm md:text-base"
-          >
-            {initialValues
-              ? t('form:button-label-update-roster')
-              : t('form:button-label-add-roster')}
-          </Button>
+          <Card className="w-full sm:w-8/12 md:w-2/3">
+            <DatePicker
+              required={true}
+              control={control}
+              name="date"
+              minDate={today}
+              // startDate={new Date(startDate)}
+              placeholder="End Date"
+              // toolTipText={t('form:input-tooltip-maintenance-end-time')}
+              label={t('form:input-label-date')}
+              error={t(errors.date?.message!)}
+              dateFormat="yyyy MMMM d"
+            />
+            <SelectShift control={control} errors={errors} />
+            <SelectDentist control={control} errors={errors} />
+            <SelectStaff control={control} errors={errors} />
+          </Card>
         </div>
-      </StickyFooterPanel>
-    </form>
+        <StickyFooterPanel className="z-0">
+          <div className="text-end">
+            <Button
+              loading={creating}
+              disabled={creating}
+              className="text-sm md:text-base"
+            >
+              {t('form:button-label-add-roster')}
+            </Button>
+          </div>
+        </StickyFooterPanel>
+      </form>
+    </>
   );
 }
