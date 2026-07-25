@@ -17,9 +17,9 @@ import { Table } from '@/components/ui/table';
 import Avatar from '@/components/common/avatar';
 import Badge from '@/components/ui/badge/badge';
 import Pagination from '@/components/ui/pagination';
+import ActionButtons from '@/components/common/action-buttons';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import StatusColor from '@/components/appointment/status-color';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -32,7 +32,7 @@ type IProps = {
   onOrdering: (current: any) => void;
 };
 
-const AppointmentList = ({
+const MyAppointmentList = ({
   appointments,
   paginatorInfo,
   onPagination,
@@ -152,12 +152,9 @@ const AppointmentList = ({
       align: 'right',
       width: 160,
       render: (id: string, record: Appointment) => (
-        <LanguageSwitcher
-          slug={id}
-          record={record}
-          deleteModalView="DELETE_APPOINTMENT"
-          deleteBySlug={record.id}
-          routes={Routes?.appointment}
+        <ActionButtons
+          id={id}
+          detailsUrl={`${Routes.myAppointments.list}/${id}/details`}
         />
       ),
     },
@@ -198,4 +195,4 @@ const AppointmentList = ({
   );
 };
 
-export default AppointmentList;
+export default MyAppointmentList;

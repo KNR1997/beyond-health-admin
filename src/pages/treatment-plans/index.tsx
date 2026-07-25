@@ -1,46 +1,43 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-//components
-import Card from '@/components/common/card';
-import PageHeading from '@/components/common/page-heading';
-import Search from '@/components/common/search';
-import Layout from '@/components/layouts/admin';
-import TreatmentPlanList from '@/components/treatment-plan/treatment-plan-list';
-import ErrorMessage from '@/components/ui/error-message';
-import LinkButton from '@/components/ui/link-button';
-import Loader from '@/components/ui/loader/loader';
-
-//configs
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// configs
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
-
-//hooks
+// hooks
 import { useTreatmentPlansQuery } from '@/data/treatment-plan';
-
-//types
+// types
 import { SortOrder } from '@/types';
-
-//utils
-import { adminOnly } from '@/utils/auth-utils';
-
+// components
+import Card from '@/components/common/card';
+import Search from '@/components/common/search';
+import Layout from '@/components/layouts/admin';
+import Loader from '@/components/ui/loader/loader';
+import LinkButton from '@/components/ui/link-button';
+import ErrorMessage from '@/components/ui/error-message';
+import PageHeading from '@/components/common/page-heading';
+import TreatmentPlanList from '@/components/treatment-plan/treatment-plan-list';
 
 export default function TreatmentPlans() {
   const { t } = useTranslation();
   const { locale } = useRouter();
+  // states
+  const [page, setPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
-  const { treatmentPlans, loading, paginatorInfo, error } = useTreatmentPlansQuery({
-    language: locale,
-    limit: 20,
-    page,
-    name: searchTerm,
-    orderBy,
-    sortedBy,
-  });
+  // query
+  const { treatmentPlans, loading, paginatorInfo, error } =
+    useTreatmentPlansQuery({
+      language: locale,
+      limit: 20,
+      page,
+      name: searchTerm,
+      sortedBy,
+    });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;

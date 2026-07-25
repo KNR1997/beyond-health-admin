@@ -1,30 +1,33 @@
+import { useState } from 'react';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
+// hooks
+import { useUsersQuery } from '@/data/user';
+// components
 import Card from '@/components/common/card';
 import Layout from '@/components/layouts/admin';
 import Search from '@/components/common/search';
 import UserList from '@/components/user/user-list';
-import LinkButton from '@/components/ui/link-button';
-import { useState } from 'react';
-import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
-import { useUsersQuery } from '@/data/user';
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { Routes } from '@/config/routes';
-import { SortOrder } from '@/types';
-import { adminOnly } from '@/utils/auth-utils';
+import RoleFilter from '@/components/user/role-filter';
+import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
 
 export default function AllUsersPage() {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [page, setPage] = useState(1);
   const { t } = useTranslation();
-  const [ordering, setOrdering] = useState('-created_at');
-  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
-
+  // states
+  const [page, setPage] = useState(1);
+  const [role, setRole] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [ordering, setOrdering] = useState('created_at');
+  // query
   const { users, paginatorInfo, loading, error } = useUsersQuery({
     limit: 20,
     page,
     name: searchTerm,
+    role: role,
     ordering,
   });
 
@@ -52,24 +55,22 @@ export default function AllUsersPage() {
             onSearch={handleSearch}
             placeholderText={t('form:input-placeholder-search-name')}
           />
-
-          <LinkButton
-            href={`${Routes.user.create}`}
-            className="h-12 w-full md:w-auto md:ms-6"
-          >
-            <span>+ {t('form:button-label-add-user')}</span>
-          </LinkButton>
+          <RoleFilter
+            className="md:ms-6"
+            onRoleFilter={(option: { name: string; value: string }) => {
+              setRole(option?.value);
+              setPage(1);
+            }}
+          />
         </div>
       </Card>
 
-      {loading ? null : (
-        <UserList
-          customers={users}
-          paginatorInfo={paginatorInfo}
-          onPagination={handlePagination}
-          onOrdering={setOrdering}
-        />
-      )}
+      <UserList
+        customers={users}
+        paginatorInfo={paginatorInfo}
+        onPagination={handlePagination}
+        onOrdering={setOrdering}
+      />
     </>
   );
 }

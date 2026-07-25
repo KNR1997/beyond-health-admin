@@ -6,7 +6,13 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 //configs
 import { Config } from '@/config';
 //utils
-import { adminOnly } from '@/utils/auth-utils';
+import {
+  adminAndDentistOnly,
+  adminAndStaffOnly,
+  dentistOnly,
+  getAuthCredentials,
+  hasAccess,
+} from '@/utils/auth-utils';
 // clients
 import { reportClient } from '@/data/client/report';
 // hooks
@@ -15,7 +21,7 @@ import { usePatientsQuery } from '@/data/patient';
 import Card from '@/components/common/card';
 import Button from '@/components/ui/button';
 import Search from '@/components/common/search';
-import Layout from '@/components/layouts/admin';
+import Layout from '@/components/layouts/app';
 import Loader from '@/components/ui/loader/loader';
 import LinkButton from '@/components/ui/link-button';
 import ErrorMessage from '@/components/ui/error-message';
@@ -26,6 +32,11 @@ import { DownloadIcon } from '@/components/icons/download-icon';
 export default function Patients() {
   const { t } = useTranslation();
   const { locale } = useRouter();
+  const { permissions } = getAuthCredentials();
+  const hasCreatePermission = hasAccess(adminAndStaffOnly, permissions);
+  const hasEditPermission = hasAccess(adminAndStaffOnly, permissions);
+  const hasViewPermission = hasAccess(dentistOnly, permissions);
+  const hasDeletePermission = hasAccess(adminAndStaffOnly, permissions);
   // states
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
@@ -113,7 +124,7 @@ export default function Patients() {
             onSearch={handleSearch}
             placeholderText={t('form:input-placeholder-search-name')}
           />
-          {locale === Config.defaultLanguage && (
+          {hasCreatePermission && (
             <LinkButton
               href="/patients/create"
               className="w-full h-12 md:w-auto md:ms-6"
@@ -121,7 +132,6 @@ export default function Patients() {
               <span>+ {t('form:button-label-add-patient')}</span>
             </LinkButton>
           )}
-          &nbsp; &nbsp;
           <Button onClick={handleDownloadInvoice} className="bg-blue-500">
             <DownloadIcon className="h-4 w-4 me-3" />
             {t('common:Print')}
@@ -133,13 +143,16 @@ export default function Patients() {
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
         onOrdering={setOrdering}
+        hasEditPermission={hasEditPermission}
+        hasViewPermission={hasViewPermission}
+        hasDeletePermission={hasDeletePermission}
       />
     </>
   );
 }
 
 Patients.authenticate = {
-  permissions: adminOnly,
+  permissions: adminAndDentistOnly,
 };
 
 Patients.Layout = Layout;

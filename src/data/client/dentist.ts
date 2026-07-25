@@ -5,6 +5,7 @@ import {
   DentistPaginator,
   DentistQueryOptions,
   DentistResetPasswordInput,
+  AppointmentPaginator,
 } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
 import { crudFactory } from './curd-factory';
@@ -21,5 +22,13 @@ export const dentistClient = {
   },
   resetPassword: (data: DentistResetPasswordInput) => {
     return HttpClient.post(`${API_ENDPOINTS.DENTISTS}/reset-password`, data);
+  },
+  appointments: (dentistId: string) => {
+    return HttpClient.get<AppointmentPaginator>(
+      `${API_ENDPOINTS.DENTISTS}/${dentistId}/appointments`,
+    );
+  },
+  me: () => {
+    return HttpClient.get<Dentist>(`${API_ENDPOINTS.DENTISTS}/me`);
   },
 };

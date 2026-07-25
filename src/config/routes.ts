@@ -45,6 +45,9 @@ export const Routes = {
   },
   patient: {
     ...routesFactory('/patients'),
+    treatmentHistory: (patientId: string) => {
+      return `/patients/${patientId}/treatmentHistory`
+    }
   },
   dentist: {
     ...routesFactory('/dentists'),
@@ -154,6 +157,9 @@ export const Routes = {
   },
   refundReasons: {
     ...routesFactory('/refund-reasons'),
+  },
+  myAppointments: {
+    ...routesFactory('/my-appointments'),
   },
   newShops: '/new-shops',
   draftProducts: '/products/draft',

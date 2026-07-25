@@ -43,7 +43,9 @@ const CategoryDeleteView = dynamic(
 const CouponDeleteView = dynamic(
   () => import('@/components/coupon/coupon-delete-view'),
 );
-
+const PatientDeleteView = dynamic(
+  () => import('@/components/patient/patient-delete-view'),
+);
 const ProductDeleteView = dynamic(
   () => import('@/components/product/product-delete-view'),
 );
@@ -171,7 +173,9 @@ const DisApproveVendorFSRequestView = dynamic(
 const TransferShopOwnershipView = dynamic(
   () => import('@/components/shop/transfer-shop-ownership-view'),
 );
-
+const ResetPasswordView = dynamic(
+  () => import('@/components/user/reset-password-view'),
+);
 const DeleteOwnershipTransferRequest = dynamic(
   () =>
     import('@/components/ownership-transfer/ownership-transfer-delete-view'),
@@ -183,12 +187,16 @@ function renderModal(view: MODAL_VIEWS | undefined, data: any) {
       return <ProductDeleteView />;
     case 'DELETE_TYPE':
       return <TypeDeleteView />;
+    case 'RESET_PASSWORD':
+      return <ResetPasswordView />;
     case 'DELETE_ATTRIBUTE':
       return <AttributeDeleteView />;
     case 'DELETE_CATEGORY':
       return <CategoryDeleteView />;
     case 'DELETE_COUPON':
       return <CouponDeleteView />;
+    case 'DELETE_PATIENT':
+      return <PatientDeleteView />;
     case 'DELETE_APPOINTMENT':
       return <AppointmentDeleteView />;
     case 'DELETE_TAX':

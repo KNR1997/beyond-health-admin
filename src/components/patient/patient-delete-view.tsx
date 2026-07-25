@@ -1,22 +1,21 @@
-//components
+// hooks
+import { useDeletePatientMutation } from '@/data/patient';
+// components
 import ConfirmationCard from '@/components/common/confirmation-card';
 import {
   useModalAction,
   useModalState,
 } from '@/components/ui/modal/modal.context';
 
-//hooks
-import { useDeleteCouponMutation } from '@/data/coupon';
-
-const CouponDeleteView = () => {
-  const { mutate: deleteCoupon, isLoading: loading } =
-    useDeleteCouponMutation();
+const PatientDeleteView = () => {
+  const { mutate: deletePatient, isLoading: loading } =
+    useDeletePatientMutation();
 
   const { data } = useModalState();
   const { closeModal } = useModalAction();
 
   function handleDelete() {
-    deleteCoupon({
+    deletePatient({
       id: data,
     });
     closeModal();
@@ -31,4 +30,4 @@ const CouponDeleteView = () => {
   );
 };
 
-export default CouponDeleteView;
+export default PatientDeleteView;

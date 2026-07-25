@@ -15,6 +15,7 @@ import {
   Patient,
   PatientPaginator,
   PatientQueryOptions,
+  TreatmentPlanPaginator,
 } from '@/types';
 
 export const useCreatePatientMutation = () => {
@@ -108,6 +109,28 @@ export const usePatientsQuery = (options: Partial<PatientQueryOptions>) => {
 
   return {
     patients: data?.data ?? [],
+    paginatorInfo: mapPaginatorData(data),
+    error,
+    loading: isLoading,
+  };
+};
+
+export const usePatientTreatmentPlansQuery = ({
+  patientId,
+}: {
+  patientId: string;
+}) => {
+  const { data, error, isLoading } = useQuery<TreatmentPlanPaginator, Error>(
+    [`${API_ENDPOINTS.PATIENTS}/${patientId}/treatment-plans`],
+    () => patientClient.treatmentPlans(patientId),
+    {
+      keepPreviousData: true,
+      enabled: !!patientId,
+    },
+  );
+
+  return {
+    treatmentPlans: data?.data ?? [],
     paginatorInfo: mapPaginatorData(data),
     error,
     loading: isLoading,

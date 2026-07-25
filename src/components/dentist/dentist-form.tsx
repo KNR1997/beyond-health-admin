@@ -195,6 +195,7 @@ export default function CreateOrUpdateDentistForm({ initialValues }: IProps) {
               variant="outline"
               className="mb-4"
               error={t(errors.email?.message!)}
+              required
             />
             <PhoneNumberInput
               label={t('form:input-label-contact')}

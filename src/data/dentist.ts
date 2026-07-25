@@ -10,6 +10,7 @@ import {
   GetParams,
   Dentist,
   DentistPaginator,
+  AppointmentPaginator,
 } from '@/types';
 //configs
 import { Routes } from '@/config/routes';
@@ -122,4 +123,17 @@ export const useDentistResetPasswordMutation = () => {
       queryClient.invalidateQueries(API_ENDPOINTS.DENTISTS);
     },
   });
+};
+
+export const useDentistMeQuery = () => {
+  return useQuery<Dentist, Error>(
+    [`${API_ENDPOINTS.DENTISTS}/me`],
+    dentistClient.me,
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnReconnect: false,
+      refetchOnMount: false,
+    },
+  );
 };

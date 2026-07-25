@@ -1,30 +1,26 @@
-import Pagination from '@/components/ui/pagination';
-import Image from 'next/image';
-import { Table } from '@/components/ui/table';
-import ActionButtons from '@/components/common/action-buttons';
-import { siteSettings } from '@/settings/site.settings';
-import {
-  Category,
-  MappedPaginatorInfo,
-  SortOrder,
-  User,
-  UserPaginator,
-} from '@/types';
-import { useMeQuery } from '@/data/user';
-import { useTranslation } from 'next-i18next';
-import { useIsRTL } from '@/utils/locals';
 import { useState } from 'react';
-import TitleWithSort from '@/components/ui/title-with-sort';
-import { NoDataFound } from '@/components/icons/no-data-found';
+import { useTranslation } from 'next-i18next';
+// types
+import { MappedPaginatorInfo, SortOrder, User } from '@/types';
+// hooks
+import { useMeQuery } from '@/data/user';
+// utils
+import { useIsRTL } from '@/utils/locals';
+// helpers
+import RoleColor from '@/helpers/role-color';
+// components
+import { Table } from '@/components/ui/table';
 import Avatar from '@/components/common/avatar';
 import Badge from '@/components/ui/badge/badge';
-import RoleColor from './role-color';
+import Pagination from '@/components/ui/pagination';
+import TitleWithSort from '@/components/ui/title-with-sort';
+import ActionButtons from '@/components/common/action-buttons';
+import { NoDataFound } from '@/components/icons/no-data-found';
 
 type IProps = {
   customers: User[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
-  onSort: (current: any) => void;
   onOrdering: (current: any) => void;
 };
 const UserList = ({
@@ -35,7 +31,6 @@ const UserList = ({
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
-  
   const [sortingObj, setSortingObj] = useState<{
     sort: SortOrder;
     column: any | null;
@@ -45,44 +40,29 @@ const UserList = ({
   });
 
   const onHeaderClick = (column: any | null) => ({
-     onClick: () => {
+    onClick: () => {
       const nextSort =
         sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
       const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
 
       onOrdering(ordering);
+
       setSortingObj({
         sort: nextSort,
         column: column,
       });
     },
   });
+
   const columns = [
-    // {
-    //   title: (
-    //     <TitleWithSort
-    //       title={t('table:table-item-id')}
-    //       ascending={
-    //         sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-    //       }
-    //       isActive={sortingObj.column === 'id'}
-    //     />
-    //   ),
-    //   className: 'cursor-pointer',
-    //   dataIndex: 'id',
-    //   key: 'id',
-    //   align: alignLeft,
-    //   width: 150,
-    //   onHeaderCell: () => onHeaderClick('id'),
-    //   render: (id: number) => `#${t('table:table-item-id')}: ${id}`,
-    // },
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-title')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'first_name'
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'first_name'
           }
           isActive={sortingObj.column === 'first_name'}
         />
@@ -97,10 +77,13 @@ const UserList = ({
       render: (
         first_name: string,
         record: User,
-        { profile, email }: { profile: any; email: string }
+        { profile, email }: { profile: any; email: string },
       ) => (
         <div className="flex items-center">
-          <Avatar name={first_name} src={profile?.avatar?.thumbnail} />
+          <Avatar
+            name={`${first_name} ${record.last_name}`}
+            src={profile?.avatar?.thumbnail}
+          />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
             {first_name} {record?.last_name}
             <span className="text-[13px] font-normal text-gray-500/80">
@@ -111,53 +94,19 @@ const UserList = ({
       ),
     },
     {
-       title: (
-        <TitleWithSort
-          title={t('table:table-item-role')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'role'
-          }
-          isActive={sortingObj.column === 'role'}
-        />
-      ),
+      title: t('table:table-item-role'),
       dataIndex: 'role_name',
       key: 'role_name',
       align: 'center',
-       onHeaderCell: () => onHeaderClick('role'),
+      width: 150,
       render: (role_name: string) => (
-        <Badge text={t(role_name)} color={RoleColor(role_name)} className='capitalize' />
+        <Badge
+          text={t(role_name)}
+          color={RoleColor(role_name)}
+          className="capitalize"
+        />
       ),
     },
-    // {
-    //   title: t('table:table-item-permissions'),
-    //   dataIndex: 'permissions',
-    //   key: 'permissions',
-    //   align: alignLeft,
-    //   width: 300,
-    //   render: (permissions: any) => {
-    //     return (
-    //       <div className="flex flex-wrap gap-1.5 whitespace-nowrap">
-    //         {permissions?.map(
-    //           ({ name, index }: { name: string; index: number }) => (
-    //             <span
-    //               key={index}
-    //               className="rounded bg-gray-200/50 px-2.5 py-1"
-    //             >
-    //               {name}
-    //             </span>
-    //           )
-    //         )}
-    //       </div>
-    //     );
-    //   },
-    // },
-    // {
-    //   title: t('table:table-item-available_wallet_points'),
-    //   dataIndex: ['wallet', 'available_points'],
-    //   key: 'available_wallet_points',
-    //   align: 'center',
-    //   width: 150,
-    // },
     {
       title: (
         <TitleWithSort
@@ -201,8 +150,8 @@ const UserList = ({
                 id={id}
                 userStatus={true}
                 isUserActive={is_active}
-                // showAddWalletPoints={true}
-                showMakeAdminButton={true}
+                // showMakeAdminButton={true}
+                resetPasswordButton={true}
               />
             )}
           </>

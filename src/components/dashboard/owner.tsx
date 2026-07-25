@@ -1,11 +1,16 @@
+import cn from 'classnames';
+import dynamic from 'next/dynamic';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import ColumnChart from '@/components/widgets/column-chart';
-import StickerCard from '@/components/widgets/sticker-card';
+import { useTranslation } from 'next-i18next';
+// hooks
 import {
   useAnalyticsQuery,
   useProductByCategoryQuery,
   useTopRatedProductsQuery,
 } from '@/data/dashboard';
+// utils
 import {
   adminOnly,
   adminAndOwnerOnly,
@@ -13,17 +18,16 @@ import {
   hasAccess,
 } from '@/utils/auth-utils';
 import usePrice from '@/utils/use-price';
-import cn from 'classnames';
-import { useTranslation } from 'next-i18next';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/router';
+// icons
+import { BasketIcon } from '@/components/icons/summary/basket';
 import { EaringIcon } from '@/components/icons/summary/earning';
 import { ShoppingIcon } from '@/components/icons/summary/shopping';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
-import { BasketIcon } from '@/components/icons/summary/basket';
+// components
 import Button from '@/components/ui/button';
-import { motion } from 'framer-motion';
 import PageHeading from '@/components/common/page-heading';
+import ColumnChart from '@/components/widgets/column-chart';
+import StickerCard from '@/components/widgets/sticker-card';
 const ShopList = dynamic(() => import('@/components/dashboard/shops/shops'));
 const Message = dynamic(() => import('@/components/dashboard/shops/message'));
 const StoreNotices = dynamic(
@@ -38,7 +42,6 @@ const ProductCountByCategory = dynamic(
       '@/components/dashboard/widgets/table/widget-product-count-by-category'
     ),
 );
-
 const TopRatedProducts = dynamic(
   () => import('@/components/dashboard/widgets/box/widget-top-rate-product'),
 );

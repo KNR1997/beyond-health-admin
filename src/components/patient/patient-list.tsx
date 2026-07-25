@@ -17,8 +17,8 @@ import { Table } from '@/components/ui/table';
 import Avatar from '@/components/common/avatar';
 import Pagination from '@/components/ui/pagination';
 import TitleWithSort from '@/components/ui/title-with-sort';
+import ActionButtons from '@/components/common/action-buttons';
 import { NoDataFound } from '@/components/icons/no-data-found';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -29,12 +29,18 @@ type IProps = {
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
   onOrdering: (current: any) => void;
+  hasEditPermission: boolean;
+  hasViewPermission: boolean;
+  hasDeletePermission: boolean;
 };
 const PatientList = ({
   patients,
   paginatorInfo,
   onPagination,
   onOrdering,
+  hasEditPermission,
+  hasViewPermission,
+  hasDeletePermission,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
@@ -100,10 +106,7 @@ const PatientList = ({
       onHeaderCell: () => onHeaderClick('name'),
       render: (name: string, record: Patient) => (
         <div className="flex items-center">
-          <Avatar
-           name={name}
-           src={record?.image}
-          />
+          <Avatar name={name} src={record?.image} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
             {name}
             <span className="text-[13px] font-normal text-gray-500/80">
@@ -172,12 +175,18 @@ const PatientList = ({
       align: 'right',
       width: 260,
       render: (id: string, record: Patient) => (
-        <LanguageSwitcher
-          slug={id}
-          record={record}
-          deleteModalView="DELETE_COUPON"
-          deleteBySlug={record.id}
-          routes={Routes?.patient}
+        <ActionButtons
+          id={id}
+          editUrl={
+            hasEditPermission
+              ? Routes.patient.editByIdWithoutLang(record.id)
+              : undefined
+          }
+          deleteModalView={hasDeletePermission ? 'DELETE_PATIENT' : undefined}
+          deleteBySlug={hasDeletePermission ? record.id : undefined}
+          detailsUrl={
+            hasViewPermission ? Routes.patient.details(record.id) : undefined
+          }
         />
       ),
     },

@@ -252,7 +252,7 @@ export const useUserQuery = ({ id }: { id: string }) => {
   );
 };
 
-export const useUsersQuery = (params: Partial<QueryOptionsType>) => {
+export const useUsersQuery = (params: Partial<UserQueryOptions>) => {
   const { data, isLoading, error } = useQuery<UserPaginator, Error>(
     [API_ENDPOINTS.USERS, params],
     () => userClient.fetchUsers(params),
@@ -267,6 +267,19 @@ export const useUsersQuery = (params: Partial<QueryOptionsType>) => {
     loading: isLoading,
     error,
   };
+};
+
+export const useResetUserPasswordMutation = () => {
+  const { t } = useTranslation();
+
+  return useMutation(userClient.resetUserPassword, {
+    onSuccess: () => {
+      toast.success(t('common:successfully-updated'));
+    },
+    onError: () => {
+      toast.error(t('common:PICKBAZAR_MESSAGE.SOMETHING_WENT_WRONG'));
+    }
+  });
 };
 
 export const useAdminsQuery = (params: Partial<QueryOptionsType>) => {

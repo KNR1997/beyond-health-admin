@@ -14,6 +14,7 @@ import { Config } from '@/config';
 import { useDentistQuery } from '@/data/dentist';
 import CreateOrUpdateAppointmentForm from '@/components/appointment/appointment-form';
 import { useAppointmentQuery } from '@/data/appointment';
+import { adminOnly } from '@/utils/auth-utils';
 
 export default function UpdateAppointmentPage() {
   const { query, locale } = useRouter();
@@ -44,6 +45,9 @@ export default function UpdateAppointmentPage() {
   );
 }
 
+UpdateAppointmentPage.authenticate = {
+  permissions: adminOnly,
+};
 UpdateAppointmentPage.Layout = Layout;
 
 export const getServerSideProps = async ({ locale }: any) => ({

@@ -977,6 +977,10 @@ export interface DigitalFileInput {
   url: string;
 }
 
+export interface ResetUserPasswordInput {
+  password: string;
+}
+
 export interface UpsertVariationsHasMany {
   delete?: string[];
   upsert?: VariationInput[];
@@ -2126,6 +2130,11 @@ export interface OrderQueryOptions extends QueryOptions {
   tracking_number: string;
   refund_reason: string;
   with: string;
+}
+
+export interface UserQueryOptions extends QueryOptions {
+  name: string;
+  role: string;
 }
 
 export interface NotifyLogsQueryOptions extends QueryOptions {

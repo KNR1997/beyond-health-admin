@@ -18,6 +18,7 @@ import { approveModalInitialValues } from '@/utils/constants';
 import { useAtom } from 'jotai';
 import { ExternalLinkIcon } from '@/components/icons/external-link';
 import { Tooltip } from '@/components/ui/tooltip';
+import { ResetIcon } from '@/components/icons/reset';
 
 type Props = {
   id: string;
@@ -53,6 +54,7 @@ type Props = {
   };
   disabled?: boolean;
   deleteBySlug?: string;
+  resetPasswordButton?: boolean;
 };
 
 const ActionButtons = ({
@@ -87,6 +89,7 @@ const ActionButtons = ({
   data,
   disabled,
   deleteBySlug,
+  resetPasswordButton,
 }: Props) => {
   const { t } = useTranslation();
   const { openModal } = useModalAction();
@@ -153,6 +156,10 @@ const ActionButtons = ({
     }
   }
 
+    function handleResetPassword() {
+    openModal('RESET_PASSWORD', id);
+  }
+
   function handleDentalProblemStatus(status: boolean) {
     openModal('DENTAL_PROBLEM_STATUS_CHANGE_VIEW', { id: id, status: status });
   }
@@ -217,7 +224,15 @@ const ActionButtons = ({
           <WalletPointsIcon width={18} />
         </button>
       )}
-
+      {resetPasswordButton && (
+        <button
+          onClick={handleResetPassword}
+          className="transition duration-200 text-accent hover:text-accent-hover focus:outline-none"
+          title={t('common:text-reset-password')}
+        >
+          <ResetIcon width={17} />
+        </button>
+      )}
       {changeRefundStatus && (
         <button
           onClick={handleUpdateRefundStatus}

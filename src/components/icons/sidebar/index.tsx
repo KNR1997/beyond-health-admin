@@ -23,6 +23,7 @@ export { CustomersIcon } from '@/components/icons/sidebar/customers';
 export { InventoryIcon } from '@/components/icons/sidebar/inventory';
 export { UsersIcon } from '@/components/icons/sidebar/users';
 export { UserIcon } from '@/components/icons/sidebar/user';
+export { UserIconSimple } from '@/components/icons/sidebar/user';
 export { StaffIcon } from '@/components/icons/sidebar/staff';
 export { VendorsIcon } from '@/components/icons/sidebar/vendors';
 export { ShippingsIcon } from '@/components/icons/sidebar/shippings';

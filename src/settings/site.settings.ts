@@ -85,21 +85,39 @@ export const siteSettings = {
             label: 'text-all-dental-problems',
             icon: 'DentalDrillIcon',
           },
-          {
-            href: Routes.treatmentPlan.list,
-            label: 'text-all-treatment-plans',
-            icon: 'HospitalFileIcon',
-          },
-          {
-            href: Routes.appointment.list,
-            label: 'text-all-appointments',
-            icon: 'CalendarScheduleIcon',
-          },
+          // {
+          //   href: Routes.treatmentPlan.list,
+          //   label: 'text-all-treatment-plans',
+          //   icon: 'HospitalFileIcon',
+          // },
+          // {
+          //   href: Routes.appointment.list,
+          //   label: 'text-all-appointments',
+          //   icon: 'CalendarScheduleIcon',
+          // },
           // {
           //   href: Routes.medicalVital.list,
           //   label: 'text-all-medical-vitals',
           //   icon: 'DentalDrillIcon',
           // },
+        ],
+      },
+
+      treatmentDetails: {
+        href: '',
+        label: 'text-treatment-details',
+        icon: 'SettingsIcon',
+        childMenu: [
+          {
+            href: Routes.appointment.list,
+            label: 'text-all-appointments',
+            icon: 'CalendarScheduleIcon',
+          },
+          {
+            href: Routes.treatmentPlan.list,
+            label: 'text-all-patient-treatments',
+            icon: 'HospitalFileIcon',
+          },
         ],
       },
 
@@ -137,43 +155,28 @@ export const siteSettings = {
         icon: 'ScheduleRepeatIcon',
         childMenu: [
           {
-            href: '',
+            href: Routes.roster.list,
             label: 'text-rosters',
             icon: 'ScheduleRepeatIcon',
-            childMenu: [
-              {
-                href: Routes.roster.list,
-                label: 'text-all-rosters',
-                icon: 'ProductsIcon',
-                permissions: adminOwnerAndStaffOnly,
-              },
-              {
-                href: Routes.roster.create,
-                label: 'text-new-rosters',
-                icon: 'ProductsIcon',
-              },
-            ],
           },
         ],
       },
 
-      report: {
-        href: '',
-        label: 'text-reports',
-        icon: 'ReportIcon',
-        childMenu: [
-          {
-            href: Routes.reports.incomeReport,
-            label: 'text-income-report',
-            icon: 'ReportIcon',
-          },
-        ],
-      },
+      // report: {
+      //   href: '',
+      //   label: 'text-reports',
+      //   icon: 'ReportIcon',
+      //   childMenu: [
+      //     {
+      //       href: Routes.reports.incomeReport,
+      //       label: 'text-income-report',
+      //       icon: 'ReportIcon',
+      //     },
+      //   ],
+      // },
     },
 
-    Portal: {
-
-    },
+    Portal: {},
 
     shop: {
       root: {
@@ -660,7 +663,7 @@ export const siteSettings = {
     },
 
     patient: [
-            {
+      {
         href: Routes.dashboard,
         label: 'sidebar-nav-item-dashboard',
         icon: 'DashboardIcon',
@@ -673,6 +676,24 @@ export const siteSettings = {
         href: Routes.dashboard,
         label: 'sidebar-nav-item-dashboard',
         icon: 'DashboardIcon',
+        permissions: dentistOnly,
+      },
+      {
+        href: Routes?.profileUpdate,
+        label: 'Profile',
+        icon: 'UserIconSimple',
+        permissions: dentistOnly,
+      },
+      {
+        href: Routes.patient.list,
+        label: 'text-all-patients',
+        icon: 'WheelChairDisabledIcon',
+        permissions: dentistOnly,
+      },
+      {
+        href: Routes?.myAppointments.list,
+        label: 'common:sidebar-nav-item-my-appointments',
+        icon: 'CalendarScheduleIcon',
         permissions: dentistOnly,
       },
     ],

@@ -39,6 +39,11 @@ export default function PatientPageHeader({
       label: 'text-general-info',
       icon: 'SettingsIcon',
     },
+    {
+      href: Routes.patient.treatmentHistory(patientId),
+      label: 'Treatement History',
+      icon: 'RefundsIcon',
+    },
     // {
     //   href: Routes.patient.diseases(patientId),
     //   label: 'text-diseases',

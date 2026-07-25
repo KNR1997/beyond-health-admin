@@ -18,6 +18,7 @@ import {
   KeyInput,
   LicensedDomainPaginator,
   LicenseAdditionalData,
+  ResetUserPasswordInput,
 } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
 import { HttpClient } from './http-client';
@@ -31,6 +32,9 @@ export const userClient = {
   },
   logout: () => {
     return HttpClient.post<any>(API_ENDPOINTS.LOGOUT, {});
+  },
+  resetUserPassword: ({ user_id, input }: { user_id: string, input: ResetUserPasswordInput}) => {
+    return HttpClient.post<any>(`admin/users/${user_id}/reset-password`, input);
   },
   register: (variables: RegisterInput) => {
     return HttpClient.post<AuthResponse>(API_ENDPOINTS.REGISTER, variables);

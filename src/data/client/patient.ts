@@ -4,6 +4,8 @@ import {
   PatientInput,
   PatientPaginator,
   QueryOptions,
+  TreatmentPlanPaginator,
+  TreatmentPlanQueryOptions,
 } from '@/types';
 import { API_ENDPOINTS } from './api-endpoints';
 import { crudFactory } from './curd-factory';
@@ -17,5 +19,10 @@ export const patientClient = {
       ...params,
       search: HttpClient.formatSearchParams({ name }),
     });
+  },
+  treatmentPlans: (patientId: string) => {
+    return HttpClient.get<TreatmentPlanPaginator>(
+      `${API_ENDPOINTS.PATIENTS}/${patientId}/treatment-plans`,
+    );
   },
 };
