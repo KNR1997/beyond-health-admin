@@ -1,12 +1,10 @@
-import {Fragment, useState } from 'react';
+import classNames from 'classnames';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import { Fragment, useState } from 'react';
 import { useTranslation } from 'next-i18next';
-import classNames from 'classnames';
 import { Menu, Transition } from '@headlessui/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-//configs
-import { Config } from '@/config';
 //utils
 import {
   adminAndDentistOnly,
@@ -21,16 +19,15 @@ import { reportClient } from '@/data/client/report';
 import { usePatientsQuery } from '@/data/patient';
 //components
 import Card from '@/components/common/card';
-import Button from '@/components/ui/button';
 import Search from '@/components/common/search';
 import Layout from '@/components/layouts/app';
 import Loader from '@/components/ui/loader/loader';
 import LinkButton from '@/components/ui/link-button';
+import { MoreIcon } from '@/components/icons/more-icon';
 import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
 import PatientList from '@/components/patient/patient-list';
 import { DownloadIcon } from '@/components/icons/download-icon';
-import { MoreIcon } from '@/components/icons/more-icon';
 
 export default function Patients() {
   const { t } = useTranslation();
@@ -127,8 +124,6 @@ export default function Patients() {
             onSearch={handleSearch}
             placeholderText={t('form:input-placeholder-search-name')}
           />
-          {hasCreatePermission && (
-
           <Menu
             as="div"
             className="relative inline-block ltr:text-left rtl:text-right"
@@ -161,18 +156,14 @@ export default function Patients() {
                       )}
                     >
                       <DownloadIcon className="w-5 shrink-0" />
-                      <span className="whitespace-nowrap">
-                        Export Patients
-                      </span>
+                      <span className="whitespace-nowrap">Export Patients</span>
                     </button>
                   )}
                 </Menu.Item>
               </Menu.Items>
             </Transition>
           </Menu>
-
-
-          {locale === Config.defaultLanguage && (
+          {hasCreatePermission && (
             <LinkButton
               href="/patients/create"
               className="w-full h-12 md:w-auto md:ms-6"
@@ -180,12 +171,6 @@ export default function Patients() {
               <span>+ {t('form:button-label-add-patient')}</span>
             </LinkButton>
           )}
-
-          {/* <Button onClick={handleDownloadInvoice} className="bg-blue-500">
-          <Button onClick={handleDownloadInvoice} className="bg-blue-500">
-            <DownloadIcon className="h-4 w-4 me-3" />
-            {t('common:Print')}
-          </Button>  */}
         </div>
       </Card>
       <PatientList

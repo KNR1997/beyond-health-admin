@@ -1,31 +1,46 @@
-import { useState } from 'react';
+import cn from 'classnames';
+import classNames from 'classnames';
+import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
+import { Fragment, useState } from 'react';
 import { useTranslation } from 'next-i18next';
+import { Menu, Transition } from '@headlessui/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-// utils
-import { adminOnly } from '@/utils/auth-utils';
 // configs
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
+// utils
+import { adminOnly } from '@/utils/auth-utils';
 // hooks
 import { useTreatmentPlansQuery } from '@/data/treatment-plan';
+// client
+import { reportClient } from '@/data/client/report';
 // types
-import { SortOrder } from '@/types';
+import { Dentist, Patient, SortOrder } from '@/types';
 // components
 import Card from '@/components/common/card';
 import Search from '@/components/common/search';
 import Layout from '@/components/layouts/admin';
 import Loader from '@/components/ui/loader/loader';
 import LinkButton from '@/components/ui/link-button';
+import { ArrowUp } from '@/components/icons/arrow-up';
+import { MoreIcon } from '@/components/icons/more-icon';
+import { DownloadIcon } from '@/components/icons/download-icon';
+import { ArrowDown } from '@/components/icons/arrow-down';
 import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
 import TreatmentPlanList from '@/components/treatment-plan/treatment-plan-list';
+import TreatmentPlanFilter from '@/components/treatment-plan/treatment-plan-filter';
 
 export default function TreatmentPlans() {
   const { t } = useTranslation();
   const { locale } = useRouter();
   // states
   const [page, setPage] = useState(1);
+  const [visible, setVisible] = useState(true);
+  const [dentist, setDentist] = useState('');
+  const [patient, setPatient] = useState('');
+  const [status, setStatus] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [orderBy, setOrder] = useState('created_at');
   const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
@@ -42,10 +57,9 @@ export default function TreatmentPlans() {
   if (loading) return <Loader text={t('common:text-loading')} />;
   if (error) return <ErrorMessage message={error.message} />;
 
-   const toggleVisible = () => {
+  const toggleVisible = () => {
     setVisible((v) => !v);
   };
-
 
   function handleSearch({ searchText }: { searchText: string }) {
     setSearchTerm(searchText);
@@ -109,110 +123,109 @@ export default function TreatmentPlans() {
   return (
     <>
       <Card className="mb-8 flex flex-col">
-      <div className="flex flex-col items-center mb-8 md:flex-row">
-        <div className="mb-4 md:mb-0 md:w-1/4">
-          <PageHeading title={t('form:input-label-treatment-plans')} />
-        </div>
+        <div className="flex flex-col items-center mb-8 md:flex-row">
+          <div className="mb-4 md:mb-0 md:w-1/4">
+            <PageHeading title={t('form:input-label-treatment-plans')} />
+          </div>
 
-        <div className="flex flex-col items-center w-full space-y-4 ms-auto md:w-3/4 md:flex-row md:space-y-0 xl:w-1/2">
-          <Search
-            onSearch={handleSearch}
-            placeholderText={t('form:input-placeholder-search-name')}
-          />
+          <div className="flex flex-col items-center w-full space-y-4 ms-auto md:w-3/4 md:flex-row md:space-y-0 xl:w-1/2">
+            <Search
+              onSearch={handleSearch}
+              placeholderText={t('form:input-placeholder-search-name')}
+            />
 
-          <Menu
-            as="div"
-            className="relative inline-block ltr:text-left rtl:text-right"
-          >
-            <Menu.Button className="group p-2">
-              <MoreIcon className="w-3.5 text-body" />
-            </Menu.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
+            <Menu
+              as="div"
+              className="relative inline-block ltr:text-left rtl:text-right"
             >
-              <Menu.Items
-                as="ul"
-                className={classNames(
-                  'shadow-700 absolute z-50 mt-2 w-52 overflow-hidden rounded border border-border-200 bg-light py-2 focus:outline-none ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-left',
-                )}
+              <Menu.Button className="group p-2">
+                <MoreIcon className="w-3.5 text-body" />
+              </Menu.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Item>
-                  {({ active }) => (
-                    <button
-                      onClick={handleDownload}
-                      className={classNames(
-                        'flex w-full items-center space-x-3 px-5 py-2.5 text-sm font-semibold capitalize transition duration-200 hover:text-accent focus:outline-none rtl:space-x-reverse',
-                        active ? 'text-accent' : 'text-body',
-                      )}
-                    >
-                      <DownloadIcon className="w-5 shrink-0" />
-                      <span className="whitespace-nowrap">
-                        Export Treatment Plans
-                      </span>
-                    </button>
+                <Menu.Items
+                  as="ul"
+                  className={classNames(
+                    'shadow-700 absolute z-50 mt-2 w-52 overflow-hidden rounded border border-border-200 bg-light py-2 focus:outline-none ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-left',
                   )}
-                </Menu.Item>
-              </Menu.Items>
-            </Transition>
-          </Menu>
+                >
+                  <Menu.Item>
+                    {({ active }) => (
+                      <button
+                        onClick={handleDownload}
+                        className={classNames(
+                          'flex w-full items-center space-x-3 px-5 py-2.5 text-sm font-semibold capitalize transition duration-200 hover:text-accent focus:outline-none rtl:space-x-reverse',
+                          active ? 'text-accent' : 'text-body',
+                        )}
+                      >
+                        <DownloadIcon className="w-5 shrink-0" />
+                        <span className="whitespace-nowrap">
+                          Export Treatment Plans
+                        </span>
+                      </button>
+                    )}
+                  </Menu.Item>
+                </Menu.Items>
+              </Transition>
+            </Menu>
 
-          {locale === Config.defaultLanguage && (
-            <LinkButton
-              href={Routes.treatmentPlan.create}
-              className="w-full h-12 md:w-auto md:ms-6"
-            >
-              <span>+ {t('form:button-label-add-treatment-plan')}</span>
-            </LinkButton>
-          )}
+            {locale === Config.defaultLanguage && (
+              <LinkButton
+                href={Routes.treatmentPlan.create}
+                className="w-full h-12 md:w-auto md:ms-6"
+              >
+                <span>+ {t('form:button-label-add-treatment-plan')}</span>
+              </LinkButton>
+            )}
+          </div>
+
+          <button
+            className="mt-5 flex items-center whitespace-nowrap text-base font-semibold text-accent md:mt-0 md:ms-5"
+            onClick={toggleVisible}
+          >
+            {t('common:text-filter')}{' '}
+            {visible ? (
+              <ArrowUp className="ms-2" />
+            ) : (
+              <ArrowDown className="ms-2" />
+            )}
+          </button>
         </div>
-
-        <button
-          className="mt-5 flex items-center whitespace-nowrap text-base font-semibold text-accent md:mt-0 md:ms-5"
-          onClick={toggleVisible}
-        >
-          {t('common:text-filter')}{' '}
-          {visible ? (
-            <ArrowUp className="ms-2" />
-          ) : (
-            <ArrowDown className="ms-2" />
-          )}
-        </button>
-
-      </div>
 
         <div
-            className={cn('flex w-full transition', {
-              'visible h-auto': visible,
-              'invisible h-0': !visible,
-            })}
+          className={cn('flex w-full transition', {
+            'visible h-auto': visible,
+            'invisible h-0': !visible,
+          })}
         >
           <div className="mt-5 flex w-full flex-col border-t border-gray-200 pt-5 md:mt-8 md:flex-row md:items-center md:pt-8">
-              <TreatmentPlanFilter
-                enableDentist
-                enablePatient
-                enableStatus
-                // enableDateRange
-                onPatientFilter={(patient: Patient) => {
-                  setPatient(patient?.id!);
-                  setPage(1);
-                }}
-                onDentistFilter={(dentist: Dentist) => {
-                  setDentist(dentist?.id!);
-                  setPage(1);
-                }}
-                onStatusFilter={(status: any) => {
-                  setStatus(status?.value!);
-                  setPage(1);
-                }}
-                className="w-full"
-              />
-            </div>
+            <TreatmentPlanFilter
+              enableDentist
+              enablePatient
+              enableStatus
+              // enableDateRange
+              onPatientFilter={(patient: Patient) => {
+                setPatient(patient?.id!);
+                setPage(1);
+              }}
+              onDentistFilter={(dentist: Dentist) => {
+                setDentist(dentist?.id!);
+                setPage(1);
+              }}
+              onStatusFilter={(status: any) => {
+                setStatus(status?.value!);
+                setPage(1);
+              }}
+              className="w-full"
+            />
+          </div>
         </div>
       </Card>
       <TreatmentPlanList

@@ -11,8 +11,6 @@ import ErrorMessage from '@/components/ui/error-message';
 import EmailUpdateForm from '@/components/auth/email-update-form';
 import ProfileUpdateFrom from '@/components/auth/profile-update-form';
 import ChangePasswordForm from '@/components/auth/change-password-from';
-import ProfileUpdateFrom from '@/components/auth/profile-update-form';
-import ChangePasswordForm from '@/components/auth/change-password-from';
 
 export default function ProfilePage() {
   const { t } = useTranslation();

@@ -1,7 +1,6 @@
 import cn from 'classnames';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // utils
@@ -20,9 +19,6 @@ import LinkButton from '@/components/ui/link-button';
 import ErrorMessage from '@/components/ui/error-message';
 import RosterList from '@/components/roster/roster-list';
 import PageHeading from '@/components/common/page-heading';
-import AppointmentFilter from '@/components/appointment/appointment-filter';
-import { ArrowUp } from '@/components/icons/arrow-up';
-import { ArrowDown } from '@/components/icons/arrow-down';
 
 export default function RosterWeeks() {
   const { t } = useTranslation();
@@ -30,11 +26,7 @@ export default function RosterWeeks() {
   // states
   const [page, setPage] = useState(1);
   const [visible, setVisible] = useState(true);
-  const [dentist, setDentist] = useState('');
-  const [patient, setPatient] = useState('');
-  const [status, setStatus] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [ordering, setOrdering] = useState('-created_at');
   const [ordering, setOrdering] = useState('-created_at');
   // query
   const {
@@ -44,12 +36,9 @@ export default function RosterWeeks() {
     error,
   } = useRosterWeeksQuery({
     language: locale,
-    language: locale,
     limit: 10,
     page,
-    page,
     name: searchTerm,
-    ordering,
     ordering,
   });
 
@@ -71,47 +60,39 @@ export default function RosterWeeks() {
   return (
     <>
       <Card className="mb-8 flex flex-col">
-      <div className="mb-8 flex flex-col items-center md:flex-row">
-        <div className="mb-4 md:mb-0 md:w-1/4">
-          <PageHeading title={t('common:sidebar-nav-item-rosters')} />
+        <div className="mb-8 flex flex-col items-center md:flex-row">
+          <div className="mb-4 md:mb-0 md:w-1/4">
+            <PageHeading title={t('common:sidebar-nav-item-rosters')} />
+          </div>
+
+          <div className="flex w-full flex-col items-center space-y-4 ms-auto md:w-1/2 md:flex-row md:space-y-0">
+            <Search
+              onSearch={handleSearch}
+              placeholderText={t('form:input-placeholder-search-name')}
+            />
+
+            {locale === Config.defaultLanguage && (
+              <LinkButton
+                href={`${Routes.roster.create}`}
+                className="h-12 w-full md:w-auto md:ms-6"
+              >
+                <span className="block md:hidden xl:block">
+                  + {t('form:button-label-add-roster')}
+                </span>
+                <span className="hidden md:block xl:hidden">
+                  + {t('form:button-label-add')}
+                </span>
+              </LinkButton>
+            )}
+          </div>
         </div>
-
-        <div className="flex w-full flex-col items-center space-y-4 ms-auto md:w-1/2 md:flex-row md:space-y-0">
-          <Search
-            onSearch={handleSearch}
-            placeholderText={t('form:input-placeholder-search-name')}
-          />
-
-          {locale === Config.defaultLanguage && (
-            <LinkButton
-              href={`${Routes.roster.create}`}
-              className="h-12 w-full md:w-auto md:ms-6"
-            >
-              <span className="block md:hidden xl:block">
-                + {t('form:button-label-add-roster')}
-              </span>
-              <span className="hidden md:block xl:hidden">
-                + {t('form:button-label-add')}
-              </span>
-            </LinkButton>
-
-          )}
-        </div>
-
-        
-
-      </div>
-          
-          
-        
       </Card>
 
       <RosterList
         rosters={rosters}
         onPagination={handlePagination}
-        onOrdering={setOrdering}
-        onOrdering={setOrdering}
         paginatorInfo={paginatorInfo}
+        onOrdering={setOrdering}
       />
     </>
   );
