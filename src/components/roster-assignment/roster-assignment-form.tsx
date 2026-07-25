@@ -1,8 +1,8 @@
 import { format } from 'date-fns';
 import { useRouter } from 'next/router';
-import { Control, FieldErrors, useForm } from 'react-hook-form';
 import { useTranslation } from 'next-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { Control, FieldErrors, useForm } from 'react-hook-form';
 // utils
 import { getErrorMessage } from '@/utils/form-error';
 // form validation
@@ -10,6 +10,7 @@ import { rosterValidationSchema } from './roster-assignment-validation-schema';
 // hooks
 import { useShiftsQuery } from '@/data/shift';
 import { useStaffsQuery } from '@/data/staff';
+import { useRosterQuery } from '@/data/roster-week';
 import { useCreateRosterAssignmentMutation } from '@/data/roster-assignment';
 // types
 import { Dentist, Shift, User } from '@/types';
@@ -17,13 +18,14 @@ import { useDentistsQuery } from '@/data/dentist';
 // components
 import Button from '@/components/ui/button';
 import Card from '@/components/common/card';
+import Loader from '@/components/ui/loader/loader';
 import DatePicker from '@/components/ui/date-picker';
 import Description from '@/components/ui/description';
 import SelectInput from '@/components/ui/select-input';
+import ErrorMessage from '@/components/ui/error-message';
+import { CalendarIcon } from '@/components/icons/calendar';
 import StickyFooterPanel from '@/components/ui/sticky-footer-panel';
 import ValidationError from '@/components/ui/form-validation-error';
-import { CalendarIcon } from '../icons/calendar';
-import { useRosterQuery } from '@/data/roster-week';
 
 function SelectDentist({
   control,
@@ -95,8 +97,10 @@ function SelectStaff({
 
 function RosterWeekInfo({ rosterWeekId }: { rosterWeekId: string }) {
   const { t } = useTranslation();
-  // You'll need to fetch the roster week data here
-  const { roster, loading } = useRosterQuery({ slug: rosterWeekId });
+  const { roster, loading, error } = useRosterQuery({ slug: rosterWeekId });
+
+  if (loading) return <Loader text={t('common:text-loading')} />;
+  if (error) return <ErrorMessage message={error.message} />;
 
   // Example data - replace with actual query
   const startDate = new Date(roster?.week_start_date);

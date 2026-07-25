@@ -3,14 +3,11 @@ import { Config } from '@/config';
 import { toast } from 'react-toastify';
 import { useMutation, useQueryClient } from 'react-query';
 import { useTranslation } from 'next-i18next';
-
-//configs
+// configs
 import { Routes } from '@/config/routes';
-
 import { API_ENDPOINTS } from './client/api-endpoints';
 import { rosterAssignmentClient } from './client/roster-assignment';
-
-//types
+// types
 import { RosterAssignment } from '@/types';
 
 export const useCreateRosterAssignmentMutation = () => {
@@ -28,6 +25,11 @@ export const useCreateRosterAssignmentMutation = () => {
     onSettled: () => {
       queryClient.invalidateQueries(API_ENDPOINTS.ROSTER_WEEKS);
     },
+    onError: (error: any) => {
+      console.log("error------------: ", error)
+      // toast.error(t(`comon:${error?.response?.data.error}`));
+      toast.error(error?.response?.data.error[0]);
+    },
   });
 };
 
@@ -41,7 +43,7 @@ export const useDeleteRosterAssignmentMutation = () => {
     },
     // Always refetch after error or success:
     onSettled: () => {
-      queryClient.invalidateQueries(API_ENDPOINTS.ROSTER_WEEKS);
+      queryClient.invalidateQueries(API_ENDPOINTS.ROSTER_ASSIGNMENTS);
     },
   });
 };

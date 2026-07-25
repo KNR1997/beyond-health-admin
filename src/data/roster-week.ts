@@ -19,12 +19,11 @@ import {
   RosterPaginator,
   RosterAssignment,
   RosterAssignmentPaginator,
+  RosterWeekAssignmentsQueryOptions,
 } from '@/types';
-
 
 import { API_ENDPOINTS } from './client/api-endpoints';
 import { rosterClient } from './client/roster-week';
-
 
 export const useRosterWeeksQuery = (options: Partial<RosterQueryOptions>) => {
   const { data, error, isLoading } = useQuery<RosterPaginator, Error>(
@@ -63,7 +62,7 @@ export const useCreateRosterMutation = () => {
 
   return useMutation(rosterClient.create, {
     onSuccess: (data: Roster) => {
-      router.push(Routes.roster.assignments(data.id))
+      router.push(Routes.roster.assignments(data.id));
       toast.success(t('common:successfully-created'));
     },
     // Always refetch after error or success:
@@ -112,14 +111,14 @@ export const useDeleteRosterMutation = () => {
   });
 };
 
-export const useRosterWeekAssignmentsQuery = ({
-  rosterWeekId,
-}: {
-  rosterWeekId: string;
-}) => {
+export const useRosterWeekAssignmentsQuery = (options: Partial<RosterWeekAssignmentsQueryOptions>) => {
   const { data, error, isLoading } = useQuery<RosterAssignmentPaginator, Error>(
-    rosterAssignmentsKey(rosterWeekId),
-    () => rosterClient.assignments(rosterWeekId),
+    [API_ENDPOINTS.ROSTER_ASSIGNMENTS, options],
+    ({ queryKey, pageParam }) =>
+      rosterClient.assignments(Object.assign({}, queryKey[1], pageParam)),
+    {
+      keepPreviousData: true,
+    },
   );
 
   return {
@@ -129,3 +128,19 @@ export const useRosterWeekAssignmentsQuery = ({
     loading: isLoading,
   };
 };
+
+// export const useRosterWeekAssignmentsQuery = (
+//   options: Partial<RosterWeekAssignmentsQueryOptions>,
+// ) => {
+//   const { data, error, isLoading } = useQuery<RosterAssignmentPaginator, Error>(
+//     [API_ENDPOINTS.ROSTER_ASSIGNMENTS, options],
+//     () => rosterClient.assignments(options?.rosterWeekId),
+//   );
+
+//   return {
+//     rosterAssignments: data?.data ?? [],
+//     paginatorInfo: mapPaginatorData(data),
+//     error,
+//     loading: isLoading,
+//   };
+// };

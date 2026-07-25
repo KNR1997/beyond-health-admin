@@ -5,30 +5,30 @@ import { useIsRTL } from '@/utils/locals';
 // config
 import { Routes } from '@/config/routes';
 // types
-import { Roster, RosterAssignment, Shift, SortOrder, User } from '@/types';
 import { MappedPaginatorInfo, Tag } from '@/types';
+import { RosterAssignment, Shift, SortOrder, User } from '@/types';
+// helpers
+import RoleColor from '@/helpers/role-color';
 // components
 import { Table } from '@/components/ui/table';
 import Badge from '@/components/ui/badge/badge';
+import Avatar from '@/components/common/avatar';
 import Pagination from '@/components/ui/pagination';
 import TitleWithSort from '@/components/ui/title-with-sort';
 import { NoDataFound } from '@/components/icons/no-data-found';
 import LanguageSwitcher from '@/components/ui/lang-action/action';
-import Avatar from '../common/avatar';
 
 export type IProps = {
   rosterAssignments: RosterAssignment[] | undefined | null;
   onPagination: (key: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
   paginatorInfo: MappedPaginatorInfo | null;
 };
 
 const RosterAssignmentList = ({
   rosterAssignments,
   onPagination,
-  onSort,
-  onOrder,
+  onOrdering,
   paginatorInfo,
 }: IProps) => {
   const { t } = useTranslation();
@@ -42,18 +42,16 @@ const RosterAssignmentList = ({
     column: null,
   });
 
-  const onHeaderClick = (column: string | null) => ({
+  const onHeaderClick = (column: any | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
@@ -111,11 +109,17 @@ const RosterAssignmentList = ({
     },
     {
       title: t('table:table-item-role'),
-      dataIndex: 'assigned_role',
-      key: 'assigned_role',
+      dataIndex: 'role_name',
+      key: 'role_name',
       align: 'center',
-      width: 250,
-      // onHeaderCell: () => onHeaderClick('week_end_date'),
+      width: 150,
+      render: (role_name: string) => (
+        <Badge
+          text={t(role_name)}
+          color={RoleColor(role_name)}
+          className="capitalize"
+        />
+      ),
     },
     {
       title: t('table:table-item-shift'),

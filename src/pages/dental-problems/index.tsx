@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
 import { useTranslation } from 'next-i18next';
@@ -9,7 +10,6 @@ import { Config } from '@/config';
 import { Routes } from '@/config/routes';
 // utils
 import { adminAndStaffOnly } from '@/utils/auth-utils';
-import { toast } from 'react-toastify';
 // client
 import { reportClient } from '@/data/client/report';
 // hooks

@@ -6,6 +6,8 @@ import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+// utils
+import { adminDentistAndStaffOnly } from '@/utils/auth-utils';
 // hooks
 import { useNoticationQuery } from '@/data/notification';
 // components
@@ -14,7 +16,6 @@ import Layout from '@/components/layouts/dentist';
 import Loader from '@/components/ui/loader/loader';
 import ErrorMessage from '@/components/ui/error-message';
 import { IosArrowLeft } from '@/components/icons/ios-arrow-left';
-import { adminOnly, dentistOnly } from '@/utils/auth-utils';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -79,7 +80,7 @@ const NotificationPage = () => {
 };
 
 NotificationPage.authenticate = {
-  permissions: dentistOnly,
+  permissions: adminDentistAndStaffOnly,
 };
 NotificationPage.Layout = Layout;
 

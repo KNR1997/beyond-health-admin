@@ -28,6 +28,7 @@ type FormValues = {
 };
 
 const defaultValues = {
+  status: { label: 'Draft', value: 'DRAFT' },
   week_start_date: null,
   week_end_date: null,
 };

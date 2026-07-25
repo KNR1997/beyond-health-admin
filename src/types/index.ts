@@ -2230,6 +2230,14 @@ export interface PatientQueryOptions extends QueryOptions {
   name: string;
 }
 
+export interface RosterWeekAssignmentsQueryOptions extends QueryOptions {
+  rosterWeekId: string;
+  date: string;
+  user__id: string;
+  user__role: string;
+  shift: string;
+}
+
 export interface TreatmentQueryOptions extends QueryOptions {
   name: string;
 }

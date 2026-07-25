@@ -7,6 +7,7 @@ import {
   RosterAssignmentPaginator,
   RosterPaginator,
   RosterQueryOptions,
+  RosterWeekAssignmentsQueryOptions,
 } from '@/types';
 import { API_ENDPOINTS } from '@/data/client/api-endpoints';
 import { HttpClient } from '@/data/client/http-client';
@@ -22,9 +23,20 @@ export const rosterClient = {
       search: HttpClient.formatSearchParams({ name }),
     });
   },
-  assignments: (rosterWeekId: string) => {
+  assignments: ({
+    rosterWeekId,
+    ...params
+  }: RosterWeekAssignmentsQueryOptions) => {
     return HttpClient.get<RosterAssignmentPaginator>(
       `${API_ENDPOINTS.ROSTER_WEEKS}/${rosterWeekId}/assignments`,
+      {
+        searchJoin: 'and',
+        ...params,
+        search: HttpClient.formatSearchParams({}),
+      },
     );
+    // return HttpClient.get<RosterAssignmentPaginator>(
+    //   `${API_ENDPOINTS.ROSTER_WEEKS}/${rosterWeekId}/assignments`,
+    // );
   },
 };

@@ -1,58 +1,14 @@
-import RecentOrders from '@/components/order/recent-orders';
-import { motion } from 'framer-motion';
-import PopularProductList from '@/components/product/popular-product-list';
-import ErrorMessage from '@/components/ui/error-message';
 import Loader from '@/components/ui/loader/loader';
 import ColumnChart from '@/components/widgets/column-chart';
 import StickerCard from '@/components/widgets/sticker-card';
-import WithdrawTable from '@/components/withdraw/withdraw-table';
-import Button from '@/components/ui/button';
-import {
-  useAnalyticsQuery,
-  usePopularProductsQuery,
-  useLowProductStockQuery,
-  useProductByCategoryQuery,
-  useTopRatedProductsQuery,
-} from '@/data/dashboard';
-import { useOrdersQuery } from '@/data/order';
-import { useWithdrawsQuery } from '@/data/withdraw';
-import usePrice from '@/utils/use-price';
+import { useAnalyticsQuery } from '@/data/dashboard';
 import { useTranslation } from 'next-i18next';
-import cn from 'classnames';
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
-import LowStockProduct from '@/components/product/product-stock';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { EaringIcon } from '@/components/icons/summary/earning';
 import { ShoppingIcon } from '@/components/icons/summary/shopping';
 import { BasketIcon } from '@/components/icons/summary/basket';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
-import Search from '@/components/common/search';
-
-// const TotalOrderByStatus = dynamic(
-//   () => import('@/components/dashboard/total-order-by-status')
-// );
-// const WeeklyDaysTotalOrderByStatus = dynamic(
-//   () => import('@/components/dashboard/total-order-by-status')
-// );
-// const MonthlyTotalOrderByStatus = dynamic(
-//   () => import('@/components/dashboard/total-order-by-status')
-// );
-
-const OrderStatusWidget = dynamic(
-  () => import('@/components/dashboard/widgets/box/widget-order-by-status'),
-);
-
-const ProductCountByCategory = dynamic(
-  () =>
-    import(
-      '@/components/dashboard/widgets/table/widget-product-count-by-category'
-    ),
-);
-
-const TopRatedProducts = dynamic(
-  () => import('@/components/dashboard/widgets/box/widget-top-rate-product'),
-);
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -61,68 +17,6 @@ export default function Dashboard() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
-
-  console.log('data', data);
-
-  // const [orderDataRange, setOrderDataRange] = useState(
-  //   data?.todayTotalOrderByStatus,
-  // );
-
-  // const { price: total_revenue } = usePrice(
-  //   data && {
-  //     amount: data?.totalRevenue!,
-  //   },
-  // );
-  // const { price: todays_revenue } = usePrice(
-  //   data && {
-  //     amount: data?.todaysRevenue!,
-  //   },
-  // );
-  // const {
-  //   error: orderError,
-  //   orders: orderData,
-  //   loading: orderLoading,
-  //   paginatorInfo: orderPaginatorInfo,
-  // } = useOrdersQuery({
-  //   language: locale,
-  //   limit: 5,
-  //   page,
-  //   tracking_number: searchTerm,
-  // });
-  // const {
-  //   data: popularProductData,
-  //   isLoading: popularProductLoading,
-  //   error: popularProductError,
-  // } = usePopularProductsQuery({ limit: 10, language: locale });
-
-  // const {
-  //   data: topRatedProducts,
-  //   isLoading: topRatedProductsLoading,
-  //   error: topRatedProductsError,
-  // } = useTopRatedProductsQuery({ limit: 10, language: locale });
-
-  // const {
-  //   data: lowStockProduct,
-  //   isLoading: lowStockProductLoading,
-  //   error: lowStockProductError,
-  // } = useLowProductStockQuery({
-  //   limit: 10,
-  //   language: locale,
-  // });
-
-  // const {
-  //   data: productByCategory,
-  //   isLoading: productByCategoryLoading,
-  //   error: productByCategoryError,
-  // } = useProductByCategoryQuery({ limit: 10, language: locale });
-
-  // const {
-  //   withdraws,
-  //   loading: withdrawLoading,
-  //   paginatorInfo: withdrawPaginatorInfo,
-  // } = useWithdrawsQuery({
-  //   limit: 10,
-  // });
 
   let appointmentsByYear: number[] = Array.from({ length: 12 }, (_) => 0);
   if (!!data?.appointments_by_month?.length) {
@@ -204,7 +98,7 @@ export default function Dashboard() {
             subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-8 w-8" />}
             color="#1EAE98"
-            price={5000.00}
+            price={5000.0}
           />
           <StickerCard
             titleTransKey="sticker-card-title-dentist"
@@ -228,14 +122,13 @@ export default function Dashboard() {
             price={data?.dental_problem_count}
           />
 
-           {/* <StickerCard
+          {/* <StickerCard
             titleTransKey="sticker-card-title-schedule-appointments"
             subtitleTransKey="sticker-card-subtitle-schedule-appointments"
             icon={<BasketIcon className="h-8 w-8" />}
             color="#E157A0"
             price={data?.schedule_appointment_count}
           /> */}
-          
         </div>
       </div>
 
