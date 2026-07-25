@@ -1,22 +1,23 @@
-// types
-import { Dentist, Patient, SortOrder, User } from '@/types';
 import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
+import { useState } from 'react';
 import utc from 'dayjs/plugin/utc';
 import timezone from 'dayjs/plugin/timezone';
 import { useTranslation } from 'next-i18next';
-import { useState } from 'react';
+import relativeTime from 'dayjs/plugin/relativeTime';
+// types
+import { Dentist, SortOrder } from '@/types';
 import { MappedPaginatorInfo } from '@/types';
+// config
 import { Routes } from '@/config/routes';
-// components
-import Pagination from '@/components/ui/pagination';
-import { Table } from '@/components/ui/table';
-import TitleWithSort from '@/components/ui/title-with-sort';
-import LanguageSwitcher from '@/components/ui/lang-action/action';
-import { NoDataFound } from '@/components/icons/no-data-found';
-import Avatar from '@/components/common/avatar';
 //utils
 import { useIsRTL } from '@/utils/locals';
+// components
+import { Table } from '@/components/ui/table';
+import Avatar from '@/components/common/avatar';
+import Pagination from '@/components/ui/pagination';
+import TitleWithSort from '@/components/ui/title-with-sort';
+import { NoDataFound } from '@/components/icons/no-data-found';
+import LanguageSwitcher from '@/components/ui/lang-action/action';
 
 dayjs.extend(relativeTime);
 dayjs.extend(utc);
@@ -66,7 +67,8 @@ const DentistList = ({
         <TitleWithSort
           title={t('table:table-item-title')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'user__first_name'
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'user__first_name'
           }
           isActive={sortingObj.column === 'user__first_name'}
         />
@@ -90,13 +92,14 @@ const DentistList = ({
         </div>
       ),
     },
-    
+
     {
       title: (
         <TitleWithSort
           title={t('table:table-item-specialization')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'specialization'
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'specialization'
           }
           isActive={sortingObj.column === 'specialization'}
         />
@@ -116,7 +119,8 @@ const DentistList = ({
         <TitleWithSort
           title={t('table:table-item-license-number')}
           ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'license_number'
+            sortingObj.sort === SortOrder.Asc &&
+            sortingObj.column === 'license_number'
           }
           isActive={sortingObj.column === 'license_number'}
         />

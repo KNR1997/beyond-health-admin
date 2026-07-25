@@ -189,6 +189,20 @@ export default function CreateOrUpdateTreatmenPlanItemsForm({
                         defaultValue={item?.title!} // make sure to set up defaultValue
                         error={t(errors?.items?.[index]?.tooth_number?.message)}
                       />
+                      {/* <ToothNumberInput
+                        required
+                        label={t('form:input-tooth-number')}
+                        toolTipText={t('form:input-tooltip-shop-title')}
+                        variant="outline"
+                        {...register(`items.${index}.tooth_number` as const)}
+                        defaultValue={item?.tooth_number!}
+                        error={t(errors?.items?.[index]?.tooth_number?.message)}
+                        // onToothSelect={(value) => {
+                        //   // Optionally handle the selected tooth number
+                        //   console.log('Selected tooth:', value);
+                        // }}
+                        {...register(`items.${index}.tooth_number` as const)}
+                      /> */}
                       <Input
                         required
                         label={t('form:input-cost')}

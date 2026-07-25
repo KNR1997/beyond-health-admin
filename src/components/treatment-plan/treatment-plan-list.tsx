@@ -30,15 +30,13 @@ type IProps = {
   treatmentPlans: TreatmentPlan[] | undefined;
   paginatorInfo: MappedPaginatorInfo | null;
   onPagination: (current: number) => void;
-  onSort: (current: any) => void;
-  onOrder: (current: string) => void;
+  onOrdering: (current: any) => void;
 };
 const TreatmentPlanList = ({
   treatmentPlans,
   paginatorInfo,
   onPagination,
-  onSort,
-  onOrder,
+  onOrdering,
 }: IProps) => {
   const { t } = useTranslation();
   const { alignLeft } = useIsRTL();
@@ -53,16 +51,14 @@ const TreatmentPlanList = ({
 
   const onHeaderClick = (column: string | null) => ({
     onClick: () => {
-      onSort((currentSortDirection: SortOrder) =>
-        currentSortDirection === SortOrder.Desc
-          ? SortOrder.Asc
-          : SortOrder.Desc,
-      );
-      onOrder(column!);
+      const nextSort =
+        sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
 
+      const ordering = nextSort === SortOrder.Desc ? `-${column}` : column;
+
+      onOrdering(ordering);
       setSortingObj({
-        sort:
-          sortingObj.sort === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc,
+        sort: nextSort,
         column: column,
       });
     },
@@ -70,15 +66,7 @@ const TreatmentPlanList = ({
 
   const columns = [
     {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-patient')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc && sortingObj.column === 'id'
-          }
-          isActive={sortingObj.column === 'id'}
-        />
-      ),
+      title: t('table:table-item-patient'),
       className: 'cursor-pointer',
       dataIndex: 'name',
       key: 'name',
@@ -87,42 +75,38 @@ const TreatmentPlanList = ({
       ellipsis: true,
       render: (name: string, record: TreatmentPlan) => (
         <div className="flex items-center">
-          <Avatar name={record?.patient.name} />
+          <Avatar name={record?.patient?.name} />
           <div className="flex flex-col whitespace-nowrap font-medium ms-2">
-            {record?.patient.name}
+            {record?.patient?.name}
             <span className="text-[13px] font-normal text-gray-500/80">
-              {record?.patient.email}
+              {record?.patient?.mobile_number}
             </span>
           </div>
         </div>
       ),
     },
     {
-      title: (
-        <TitleWithSort
-          title={t('table:table-item-status')}
-          ascending={
-            sortingObj.sort === SortOrder.Asc &&
-            sortingObj.column === 'is_active'
-          }
-          isActive={sortingObj.column === 'is_active'}
-        />
-      ),
-      width: 150,
+      title: 'Dentist',
       className: 'cursor-pointer',
-      dataIndex: 'status',
-      key: 'status',
-      align: 'center',
-      onHeaderCell: () => onHeaderClick('is_active'),
-      render: (status: string) => (
-        <Badge
-          text={t(status)}
-          color={StatusColor(status)}
-          className="capitalize"
-        />
+      dataIndex: 'dentist',
+      key: 'dentist',
+      align: alignLeft,
+      width: 250,
+      ellipsis: true,
+      render: (name: string, record: TreatmentPlan) => (
+        <div className="flex items-center">
+          <Avatar name={record?.dentist?.user?.first_name} />
+          <div className="flex flex-col whitespace-nowrap font-medium ms-2">
+            {record?.dentist?.user?.first_name}{' '}
+            {record?.dentist?.user?.last_name}
+            <span className="text-[13px] font-normal text-gray-500/80">
+              {record?.dentist?.user?.email}
+            </span>
+          </div>
+        </div>
       ),
     },
-    {
+        {
       title: t('table:table-item-cost'),
       className: 'cursor-pointer',
       dataIndex: 'total_cost',
@@ -142,11 +126,27 @@ const TreatmentPlanList = ({
       },
     },
     {
+      title: t('table:table-item-status'),
+      className: 'cursor-pointer',
+      dataIndex: 'status',
+      key: 'status',
+      align: 'center',
+      width: 120,
+      onHeaderCell: () => onHeaderClick('status'),
+      render: (order_status: string) => (
+        <Badge
+          text={t(order_status)}
+          color={StatusColor(order_status)}
+          className="capitalize"
+        />
+      ),
+    },
+    {
       title: t('table:table-item-actions'),
       dataIndex: 'id',
       key: 'actions',
       align: 'right',
-      width: 260,
+      width: 160,
       render: (id: string, record: TreatmentPlan) => (
         <LanguageSwitcher
           slug={id}

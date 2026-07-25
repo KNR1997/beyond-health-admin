@@ -16,7 +16,7 @@ import { useTreatmentPlansQuery } from '@/data/treatment-plan';
 // client
 import { reportClient } from '@/data/client/report';
 // types
-import { Dentist, Patient, SortOrder } from '@/types';
+import { Dentist, Patient } from '@/types';
 // components
 import Card from '@/components/common/card';
 import Layout from '@/components/layouts/app';
@@ -42,8 +42,7 @@ export default function TreatmentPlans() {
   const [patient, setPatient] = useState('');
   const [status, setStatus] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [orderBy, setOrder] = useState('created_at');
-  const [sortedBy, setColumn] = useState<SortOrder>(SortOrder.Desc);
+  const [ordering, setOrdering] = useState('-created_at');
   // query
   const { treatmentPlans, loading, paginatorInfo, error } =
     useTreatmentPlansQuery({
@@ -51,7 +50,10 @@ export default function TreatmentPlans() {
       limit: 20,
       page,
       name: searchTerm,
-      sortedBy,
+      dentist: dentist,
+      patient: patient,
+      status: status,
+      ordering,
     });
 
   if (loading) return <Loader text={t('common:text-loading')} />;
@@ -232,8 +234,7 @@ export default function TreatmentPlans() {
         treatmentPlans={treatmentPlans}
         paginatorInfo={paginatorInfo}
         onPagination={handlePagination}
-        onOrder={setOrder}
-        onSort={setColumn}
+        onOrdering={setOrdering}
       />
     </>
   );

@@ -91,6 +91,7 @@ interface SearchParamOptions {
   product_type: string;
   is_read: boolean;
   transaction_identifier: string;
+  invoice_number: string;
 }
 
 export class HttpClient {
@@ -114,6 +115,11 @@ export class HttpClient {
 
   static async put<T>(url: string, data: unknown) {
     const response = await Axios.put<T>(url, data);
+    return response.data;
+  }
+
+  static async patch<T>(url: string, data: unknown) {
+    const response = await Axios.patch<T>(url, data);
     return response.data;
   }
 

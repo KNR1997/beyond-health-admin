@@ -1,40 +1,39 @@
-import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import classNames from 'classnames';
+import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { Fragment, useState } from 'react';
-import classNames from 'classnames';
+import { useTranslation } from 'next-i18next';
 import { Menu, Transition } from '@headlessui/react';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 // configs
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
-// hooks
-import { useDentistsQuery } from '@/data/dentist';
-// types
-import { SortOrder } from '@/types';
 // utils
 import { adminOnly } from '@/utils/auth-utils';
+// client
+import { reportClient } from '@/data/client/report';
+// hooks
+import { useDentistsQuery } from '@/data/dentist';
 // components
 import Card from '@/components/common/card';
-import PageHeading from '@/components/common/page-heading';
 import Search from '@/components/common/search';
-import DentistList from '@/components/dentist/dentist-list';
 import Layout from '@/components/layouts/admin';
-import ErrorMessage from '@/components/ui/error-message';
-import LinkButton from '@/components/ui/link-button';
 import Loader from '@/components/ui/loader/loader';
-import Button from '@/components/ui/button';
-import { DownloadIcon } from '@/components/icons/download-icon';
-import { toast } from 'react-toastify';
-import { reportClient } from '@/data/client/report';
+import LinkButton from '@/components/ui/link-button';
 import { MoreIcon } from '@/components/icons/more-icon';
+import ErrorMessage from '@/components/ui/error-message';
+import DentistList from '@/components/dentist/dentist-list';
+import PageHeading from '@/components/common/page-heading';
+import { DownloadIcon } from '@/components/icons/download-icon';
 
 export default function Dentists() {
   const { t } = useTranslation();
   const { locale } = useRouter();
   const [ordering, setOrdering] = useState('-created_at');
-
+  // states
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
+  // query
   const { dentists, loading, paginatorInfo, error } = useDentistsQuery({
     language: locale,
     limit: 20,
@@ -150,9 +149,7 @@ export default function Dentists() {
                       )}
                     >
                       <DownloadIcon className="w-5 shrink-0" />
-                      <span className="whitespace-nowrap">
-                        Export Dentists
-                      </span>
+                      <span className="whitespace-nowrap">Export Dentists</span>
                     </button>
                   )}
                 </Menu.Item>

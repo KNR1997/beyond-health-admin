@@ -25,6 +25,9 @@ export const Routes = {
   user: {
     ...routesFactory('/users'),
   },
+  invoice: {
+    ...routesFactory('/invoices'),
+  },
   treatment: {
     ...routesFactory('/treatments'),
   },

@@ -1,7 +1,7 @@
 import {
   adminAndDentistOnly,
   adminAndOwnerOnly,
-  adminOnly,
+  adminDentistAndStaffOnly,
   adminOwnerAndStaffOnly,
   dentistOnly,
   ownerAndStaffOnly,
@@ -52,7 +52,7 @@ export const siteSettings = {
       href: Routes.logout,
       labelTransKey: 'authorized-nav-item-logout',
       icon: 'LogOutIcon',
-      permission: adminAndDentistOnly,
+      permission: adminDentistAndStaffOnly,
     },
   ],
   currencyCode: 'USD',
@@ -119,6 +119,11 @@ export const siteSettings = {
             label: 'text-all-patient-treatments',
             icon: 'HospitalFileIcon',
           },
+          // {
+          //   href: Routes.invoice.list,
+          //   label: 'text-all-treatment-payments',
+          //   icon: 'TaxesIcon',
+          // },
         ],
       },
 

@@ -275,6 +275,60 @@ export interface Appointment {
   appointment_type: AppointmentType;
 }
 
+export interface Payment {
+  id: string;
+  payment_number: string;
+  invoice: string;
+  amount: number;
+  payment_date: string;
+  payment_method: string;
+  transaction_reference: string;
+  notes: string;
+  status: string;
+}
+
+export interface InvoiceLineItem {
+  id: string;
+  charge: string;
+  description: string;
+  quantity: number;
+  unit_price: string;
+  line_total: string;
+}
+
+
+export interface CreateInvoiceInput {
+  id: string;
+  invoice_number: string;
+  enrollment: string;
+  issue_date: number;
+  due_date: string;
+  subtotal: string;
+  discount_amount: string;
+  tax_amount: string;
+  total_amount: string;
+  notes: string;
+  status: string;
+  payment: Payment;
+  line_items: InvoiceLineItem[]
+}
+
+export interface Invoice {
+  id: string;
+  invoice_number: string;
+  issue_date: number;
+  due_date: string;
+  subtotal: string;
+  discount_amount: string;
+  tax_amount: string;
+  total_amount: string;
+  notes: string;
+  status: string;
+  payment: Payment;
+  line_items: InvoiceLineItem[];
+  treatment_plan: TreatmentPlan;
+}
+
 export interface Attribute {
   id: string;
   name: string;
@@ -637,6 +691,7 @@ export interface Treatment {
 export interface TreatmentPlan {
   id: string;
   patient: Patient;
+  dentist: Dentist;
   doctor: User;
   deliveryTime: any;
   status: string;
@@ -2166,6 +2221,10 @@ export interface CouponQueryOptions extends QueryOptions {
   shop_id: string;
 }
 
+export interface InvoiceQueryOptions extends QueryOptions {
+  invoice_number: string;
+}
+
 export interface PatientQueryOptions extends QueryOptions {
   name: string;
 }
@@ -2176,6 +2235,9 @@ export interface TreatmentQueryOptions extends QueryOptions {
 
 export interface TreatmentPlanQueryOptions extends QueryOptions {
   name: string;
+  dentist: string;
+  patient: string;
+  status: string;
 }
 
 export interface DentistQueryOptions extends QueryOptions {
@@ -2325,6 +2387,8 @@ export interface ReviewPaginator extends PaginatorInfo<Review> {}
 export interface TagPaginator extends PaginatorInfo<Tag> {}
 
 export interface RosterPaginator extends PaginatorInfo<Roster> {}
+
+export interface InvoicePaginator extends PaginatorInfo<Invoice> {}
 
 export interface RosterAssignmentPaginator extends PaginatorInfo<RosterAssignment> {}
 
