@@ -1,7 +1,13 @@
 import * as yup from 'yup';
 
 export const patientValidationSchema = yup.object().shape({
-  name: yup.string().required('form:error-name-required'),
+  name: yup
+  .string()
+  .required('form:error-name-required')
+  .matches(
+    /^[a-zA-Z\s]+$/,
+    'Name must only contain letters and spaces'
+  ),
   // last_name: yup.string().required('form:error-last-name-required'),
   dob: yup
     .date()

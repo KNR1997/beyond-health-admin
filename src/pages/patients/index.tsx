@@ -1,7 +1,9 @@
-import { useState } from 'react';
+import {Fragment, useState } from 'react';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import classNames from 'classnames';
+import { Menu, Transition } from '@headlessui/react';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 //configs
 import { Config } from '@/config';
@@ -28,6 +30,7 @@ import ErrorMessage from '@/components/ui/error-message';
 import PageHeading from '@/components/common/page-heading';
 import PatientList from '@/components/patient/patient-list';
 import { DownloadIcon } from '@/components/icons/download-icon';
+import { MoreIcon } from '@/components/icons/more-icon';
 
 export default function Patients() {
   const { t } = useTranslation();
@@ -62,7 +65,7 @@ export default function Patients() {
     setPage(current);
   }
 
-  async function handleDownloadInvoice() {
+  async function handleDownload() {
     try {
       // Now this will return a Blob directly
       const blob = await reportClient.patientRegistrationReportDownload();
@@ -125,6 +128,51 @@ export default function Patients() {
             placeholderText={t('form:input-placeholder-search-name')}
           />
           {hasCreatePermission && (
+
+          <Menu
+            as="div"
+            className="relative inline-block ltr:text-left rtl:text-right"
+          >
+            <Menu.Button className="group p-2">
+              <MoreIcon className="w-3.5 text-body" />
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items
+                as="ul"
+                className={classNames(
+                  'shadow-700 absolute z-50 mt-2 w-52 overflow-hidden rounded border border-border-200 bg-light py-2 focus:outline-none ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-left',
+                )}
+              >
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      onClick={handleDownload}
+                      className={classNames(
+                        'flex w-full items-center space-x-3 px-5 py-2.5 text-sm font-semibold capitalize transition duration-200 hover:text-accent focus:outline-none rtl:space-x-reverse',
+                        active ? 'text-accent' : 'text-body',
+                      )}
+                    >
+                      <DownloadIcon className="w-5 shrink-0" />
+                      <span className="whitespace-nowrap">
+                        Export Patients
+                      </span>
+                    </button>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+
+
+          {locale === Config.defaultLanguage && (
             <LinkButton
               href="/patients/create"
               className="w-full h-12 md:w-auto md:ms-6"
@@ -132,10 +180,12 @@ export default function Patients() {
               <span>+ {t('form:button-label-add-patient')}</span>
             </LinkButton>
           )}
+
+          {/* <Button onClick={handleDownloadInvoice} className="bg-blue-500">
           <Button onClick={handleDownloadInvoice} className="bg-blue-500">
             <DownloadIcon className="h-4 w-4 me-3" />
             {t('common:Print')}
-          </Button>
+          </Button>  */}
         </div>
       </Card>
       <PatientList

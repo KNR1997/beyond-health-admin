@@ -46,7 +46,7 @@ export default function CustomersPage() {
     <>
       <Card className="mb-8 flex flex-col items-center md:flex-row">
         <div className="mb-4 md:mb-0 md:w-1/4">
-          <PageHeading title={t('form:input-label-customers')} />
+          <PageHeading title={t('form:input-label-users')} />
         </div>
 
         <div className="flex w-full flex-col items-center space-y-4 md:w-3/4 md:flex-row md:space-y-0 md:ms-auto xl:w-1/2">
@@ -55,7 +55,7 @@ export default function CustomersPage() {
             href={`${Routes.user.create}`}
             className="h-12 w-full md:w-auto md:ms-6"
           >
-            <span>+ {t('form:button-label-add-customer')}</span>
+            <span>+ {t('form:button-label-add-user')}</span>
           </LinkButton>
         </div>
       </Card>

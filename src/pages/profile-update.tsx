@@ -11,6 +11,8 @@ import ErrorMessage from '@/components/ui/error-message';
 import EmailUpdateForm from '@/components/auth/email-update-form';
 import ProfileUpdateFrom from '@/components/auth/profile-update-form';
 import ChangePasswordForm from '@/components/auth/change-password-from';
+import ProfileUpdateFrom from '@/components/auth/profile-update-form';
+import ChangePasswordForm from '@/components/auth/change-password-from';
 
 export default function ProfilePage() {
   const { t } = useTranslation();
@@ -34,10 +36,17 @@ export default function ProfilePage() {
 
       <ProfileUpdateFrom me={data} hasPermission={hasPermission} />
 
+      <EmailUpdateForm me={data} hasPermission={hasPermission} />
+
+      <ProfileUpdateFrom me={data} hasPermission={hasPermission} />
+
+      <ChangePasswordForm hasPermission={hasPermission} />
       <ChangePasswordForm hasPermission={hasPermission} />
     </>
   );
 }
+
+ProfilePage.Layout = AppLayout;
 
 ProfilePage.Layout = AppLayout;
 

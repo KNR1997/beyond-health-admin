@@ -1,7 +1,9 @@
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
+import classNames from 'classnames';
+import { Menu, Transition } from '@headlessui/react';
 // configs
 import { Config } from '@/config';
 import { Routes } from '@/config/routes';
@@ -24,12 +26,13 @@ import Button from '@/components/ui/button';
 import { DownloadIcon } from '@/components/icons/download-icon';
 import { toast } from 'react-toastify';
 import { reportClient } from '@/data/client/report';
+import { MoreIcon } from '@/components/icons/more-icon';
 
 export default function Dentists() {
   const { t } = useTranslation();
   const { locale } = useRouter();
   const [ordering, setOrdering] = useState('-created_at');
-  
+
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
   const { dentists, loading, paginatorInfo, error } = useDentistsQuery({
@@ -52,55 +55,55 @@ export default function Dentists() {
     setPage(current);
   }
 
-  async function handleDownloadInvoice() {
-      try {
-        // Now this will return a Blob directly
-        const blob = await reportClient.dentistReportDownload();
-  
-        // Verify it's a Blob
-        if (!(blob instanceof Blob)) {
-          console.error('Response is not a Blob:', blob);
-          throw new Error('Invalid response format');
+  async function handleDownload() {
+    try {
+      // Now this will return a Blob directly
+      const blob = await reportClient.dentistReportDownload();
+
+      // Verify it's a Blob
+      if (!(blob instanceof Blob)) {
+        console.error('Response is not a Blob:', blob);
+        throw new Error('Invalid response format');
+      }
+
+      // Check if blob has content
+      if (blob.size === 0) {
+        throw new Error('Downloaded file is empty');
+      }
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'dentist.pdf';
+      document.body.appendChild(link);
+      link.click();
+
+      // Clean up
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success(t('common:report-downloaded-successfully'));
+    } catch (error: any) {
+      console.error('Error downloading report:', error);
+
+      // Check if error has response data (JSON error message)
+      if (error.response?.data) {
+        // Try to parse as JSON for error message
+        try {
+          const errorData = await error.response.data.text();
+          const parsedError = JSON.parse(errorData);
+          toast.error(
+            parsedError.detail || t('common:error-downloading-report'),
+          );
+        } catch {
+          toast.error(t('common:error-downloading-report'));
         }
-  
-        // Check if blob has content
-        if (blob.size === 0) {
-          throw new Error('Downloaded file is empty');
-        }
-  
-        // Create download link
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'dentist.pdf';
-        document.body.appendChild(link);
-        link.click();
-  
-        // Clean up
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
-  
-        toast.success(t('common:report-downloaded-successfully'));
-      } catch (error: any) {
-        console.error('Error downloading report:', error);
-  
-        // Check if error has response data (JSON error message)
-        if (error.response?.data) {
-          // Try to parse as JSON for error message
-          try {
-            const errorData = await error.response.data.text();
-            const parsedError = JSON.parse(errorData);
-            toast.error(
-              parsedError.detail || t('common:error-downloading-report'),
-            );
-          } catch {
-            toast.error(t('common:error-downloading-report'));
-          }
-        } else {
-          toast.error(error.message || t('common:error-downloading-report'));
-        }
+      } else {
+        toast.error(error.message || t('common:error-downloading-report'));
       }
     }
+  }
 
   return (
     <>
@@ -115,6 +118,48 @@ export default function Dentists() {
             placeholderText={t('form:input-placeholder-search-name')}
           />
 
+          <Menu
+            as="div"
+            className="relative inline-block ltr:text-left rtl:text-right"
+          >
+            <Menu.Button className="group p-2">
+              <MoreIcon className="w-3.5 text-body" />
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items
+                as="ul"
+                className={classNames(
+                  'shadow-700 absolute z-50 mt-2 w-52 overflow-hidden rounded border border-border-200 bg-light py-2 focus:outline-none ltr:right-0 ltr:origin-top-right rtl:left-0 rtl:origin-top-left',
+                )}
+              >
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      onClick={handleDownload}
+                      className={classNames(
+                        'flex w-full items-center space-x-3 px-5 py-2.5 text-sm font-semibold capitalize transition duration-200 hover:text-accent focus:outline-none rtl:space-x-reverse',
+                        active ? 'text-accent' : 'text-body',
+                      )}
+                    >
+                      <DownloadIcon className="w-5 shrink-0" />
+                      <span className="whitespace-nowrap">
+                        Export Dentists
+                      </span>
+                    </button>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+
           {locale === Config.defaultLanguage && (
             <LinkButton
               href={Routes.dentist.create}
@@ -124,11 +169,11 @@ export default function Dentists() {
             </LinkButton>
           )}
 
-          &nbsp; &nbsp;
+          {/* &nbsp; &nbsp;
           <Button onClick={handleDownloadInvoice} className="bg-blue-500">
             <DownloadIcon className="h-4 w-4 me-3" />
             {t('common:Print')} 
-          </Button>
+          </Button> */}
         </div>
       </Card>
       <DentistList
