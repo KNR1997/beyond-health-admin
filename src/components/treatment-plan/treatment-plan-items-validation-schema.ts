@@ -14,7 +14,8 @@ export const treatmentPlanItemsValidationSchema = yup.object().shape({
           .number()
           .typeError('form:error-tooth-number-must-number')
           .required('form:error-tooth-number-required')
-          .positive('form:error-tooth-number-must-positive'),
+          .positive('form:error-tooth-number-must-positive')
+          .max(32, 'form:error-tooth-number-must-less-than-32'),
 
         cost: yup
           .number()

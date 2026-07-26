@@ -8,9 +8,16 @@ import { ChecklistIcon } from '@/components/icons/summary/checklist';
 // components
 import PageHeading from '@/components/common/page-heading';
 import StickerCard from '@/components/widgets/sticker-card';
+import { useAnalyticsQuery } from '@/data/dashboard';
+import Loader from '@/components/ui/loader/loader';
 
 const DentistLayout = () => {
   const { t } = useTranslation();
+  const { data, isLoading: loading } = useAnalyticsQuery();
+
+  if (loading) {
+    return <Loader text={t('common:text-loading')} />;
+  }
 
   return (
     <>
@@ -19,32 +26,32 @@ const DentistLayout = () => {
           <PageHeading title={t('text-summary')} />
         </div>
         <div className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
-          <StickerCard
+          {/* <StickerCard
             titleTransKey="sticker-card-title-rev"
             // subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-8 w-8" />}
             color="#047857"
             price={12}
-          />
+          /> */}
           <StickerCard
-            titleTransKey="sticker-card-title-today-refunds"
+            titleTransKey="sticker-card-title-today-patients"
             // subtitleTransKey="sticker-card-subtitle-order"
             icon={<ShoppingIcon className="h-8 w-8" />}
             color="#865DFF"
-            price={12}
+            price={data?.patient_count}
           />
           <StickerCard
-            titleTransKey="sticker-card-title-total-shops"
+            titleTransKey="sticker-card-title-dental-problems"
             icon={<BasketIcon className="h-8 w-8" />}
             color="#E157A0"
-            price={12}
+            price={data?.dental_problem_count}
           />
-          <StickerCard
+          {/* <StickerCard
             titleTransKey="sticker-card-title-today-rev"
             icon={<ChecklistIcon className="h-8 w-8" />}
             color="#D74EFF"
             price={12}
-          />
+          /> */}
         </div>
       </div>
     </>

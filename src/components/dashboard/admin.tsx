@@ -9,6 +9,7 @@ import { EaringIcon } from '@/components/icons/summary/earning';
 import { ShoppingIcon } from '@/components/icons/summary/shopping';
 import { BasketIcon } from '@/components/icons/summary/basket';
 import { ChecklistIcon } from '@/components/icons/summary/checklist';
+import usePrice from '@/utils/use-price';
 
 export default function Dashboard() {
   const { t } = useTranslation();
@@ -17,6 +18,10 @@ export default function Dashboard() {
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTimeFrame, setActiveTimeFrame] = useState(1);
+
+  const { price } = usePrice({
+    amount: Number(data?.total_revenue?.total_cost),
+  });
 
   let appointmentsByYear: number[] = Array.from({ length: 12 }, (_) => 0);
   if (!!data?.appointments_by_month?.length) {
@@ -98,7 +103,7 @@ export default function Dashboard() {
             subtitleTransKey="sticker-card-subtitle-rev"
             icon={<EaringIcon className="h-8 w-8" />}
             color="#1EAE98"
-            price={5000.0}
+            price={price}
           />
           <StickerCard
             titleTransKey="sticker-card-title-dentist"

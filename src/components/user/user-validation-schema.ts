@@ -6,6 +6,17 @@ export const userValidationSchema = yup.object().shape({
     .string()
     .required('form:error-display-name-required')
     .matches(/^[a-zA-Z\s]+$/, 'Name must only contain letters and spaces'),
+  first_name: yup
+    .string()
+    .required('form:error-first-name-required')
+    .matches(
+      /^[a-zA-Z\s]+$/,
+      'First name must only contain letters and spaces',
+    ),
+  last_name: yup
+    .string()
+    .required('form:error-last-name-required')
+    .matches(/^[a-zA-Z\s]+$/, 'Last name must only contain letters and spaces'),
   email: yup
     .string()
     .email('form:error-email-format')

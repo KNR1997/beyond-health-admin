@@ -16,5 +16,8 @@
   "sticker-card-title-total-shops": "Total Shops",
   "sticker-card-title-dental-problems": "Total Dental Problems",
   "sticker-card-title-schedule-appointments": "Total Schedule Appointments",
-  "sticker-card-title-today-refunds": "Todays Refunds"
+  "sticker-card-title-today-refunds": "Todays Refunds",
+  "sticker-card-title-today-appointments": "Todays Appointments",
+  "sticker-card-title-today-patients": "Todays Patients",
+  "sticker-card-title-today-dentists": "Todays Dentists"
 }

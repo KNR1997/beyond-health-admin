@@ -307,6 +307,7 @@
   "error-tooth-number-required": "Tooth Number is required",
   "error-tooth-number-must-number": "Tooth Number must be a number",
   "error-tooth-number-must-positive": "Tooth Number must be positive",
+  "error-tooth-number-must-less-than-32": "Tooth Number must be less than 32",
   "error-doctor-required": "Doctor is required",
   "error-category-required": "Category is required",
   "error-duration-required": "Duration is required",
